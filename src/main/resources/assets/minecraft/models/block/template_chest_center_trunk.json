@@ -1,0 +1,22 @@
+{
+	"parent": "block/block",
+	"texture_size": [64, 64],
+	"textures": {
+		"particle": "#chest"
+	},
+	"elements": [
+		{
+			"from": [1, 0, 1],
+			"to": [15, 10, 15],
+			"rotation": {"angle": 0, "axis": "y", "origin": [9, 8, 9]},
+			"faces": {
+				"north": {"uv": [10.5, 8.25, 14, 10.75], "rotation": 180, "texture": "#chest"},
+				"east": {"uv": [0, 8.25, 3.5, 10.75], "rotation": 180, "texture": "#chest"},
+				"south": {"uv": [3.5, 8.25, 7, 10.75], "rotation": 180, "texture": "#chest"},
+				"west": {"uv": [7, 8.25, 10.5, 10.75], "rotation": 180, "texture": "#chest"},
+				"up": {"uv": [7, 4.75, 10.5, 8.25], "texture": "#chest"},
+				"down": {"uv": [3.5, 4.75, 7, 8.25], "texture": "#chest"}
+			}
+		}
+	]
+}

@@ -1,0 +1,16 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "foundationgames.enhancedblockentities.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "client": [
+    "ChestBlockMixin",
+    "ChestBlockEntityRendererMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "mixins": [
+
+  ]
+}

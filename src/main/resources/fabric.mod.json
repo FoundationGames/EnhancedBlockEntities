@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "id": "enhancedblockentities",
+  "version": "${version}",
+
+  "name": "Enhanced Block Entities",
+  "description": "Optimize and customize block entity rendering with a more modern approach.",
+  "authors": [
+    "FoundationGames"
+  ],
+  "contact": {
+    "homepage": "",
+    "sources": ""
+  },
+
+  "license": "GPLv3",
+  "icon": "assets/enhancedblockentities/icon.png",
+
+  "environment": "*",
+  "entrypoints": {
+    "client": [
+      "foundationgames.enhancedblockentities.EnhancedBlockEntities"
+    ]
+  },
+  "mixins": [
+    "enhancedblockentities.mixins.json"
+  ],
+
+  "depends": {
+    "fabricloader": ">=0.7.4",
+    "fabric": "*",
+    "minecraft": "1.16.x"
+  }
+}

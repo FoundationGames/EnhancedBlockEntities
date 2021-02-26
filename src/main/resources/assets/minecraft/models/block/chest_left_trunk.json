@@ -1,0 +1,6 @@
+{
+	"parent": "block/template_chest_left_trunk",
+	"textures": {
+		"chest": "entity/chest/normal_left"
+	}
+}
