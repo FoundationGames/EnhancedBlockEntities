@@ -1,0 +1,6 @@
+{
+	"parent": "block/template_chest_right",
+	"textures": {
+		"chest": "entity/chest/trapped_right"
+	}
+}

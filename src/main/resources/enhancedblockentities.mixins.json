@@ -12,6 +12,8 @@
     "defaultRequire": 1
   },
   "mixins": [
+    "BakedModelManagerMixin",
+    "BlockEntityRenderDispatcherMixin",
     "EnderChestBlockEntityMixin"
   ]
 }
