@@ -1,7 +1,8 @@
 package foundationgames.enhancedblockentities.mixin;
 
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.block.entity.ChestBlockEntity;
+import net.minecraft.block.entity.EnderChestBlockEntity;
 import net.minecraft.block.entity.LootableContainerBlockEntity;
 import net.minecraft.client.MinecraftClient;
 import org.objectweb.asm.Opcodes;
@@ -12,16 +13,17 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Slice;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(ChestBlockEntity.class)
-public abstract class ChestBlockEntityMixin extends LootableContainerBlockEntity {
-    @Shadow protected float animationAngle;
+@Mixin(EnderChestBlockEntity.class)
+public abstract class EnderChestBlockEntityMixin extends BlockEntity {
+    @Shadow
+    public float animationProgress;
 
-    protected ChestBlockEntityMixin(BlockEntityType<?> blockEntityType) {
+    protected EnderChestBlockEntityMixin(BlockEntityType<?> blockEntityType) {
         super(blockEntityType);
     }
 
     @Inject(method = "tick", at = @At(
-            value = "INVOKE", target = "Lnet/minecraft/block/entity/ChestBlockEntity;playSound(Lnet/minecraft/sound/SoundEvent;)V", shift = At.Shift.AFTER, ordinal = 0
+            value = "INVOKE", target = "Lnet/minecraft/world/World;playSound(Lnet/minecraft/entity/player/PlayerEntity;DDDLnet/minecraft/sound/SoundEvent;Lnet/minecraft/sound/SoundCategory;FF)V", shift = At.Shift.AFTER, ordinal = 0
     ))
     public void listenForOpen(CallbackInfo ci) {
         if(this.world.isClient()) {
@@ -33,11 +35,11 @@ public abstract class ChestBlockEntityMixin extends LootableContainerBlockEntity
     @Inject(method = "tick", at = @At(
             value = "JUMP", opcode = Opcodes.IFGE, ordinal = 0, shift = At.Shift.BEFORE
     ), slice = @Slice(
-            from = @At(value = "INVOKE", target = "Lnet/minecraft/block/entity/ChestBlockEntity;playSound(Lnet/minecraft/sound/SoundEvent;)V", shift = At.Shift.AFTER, ordinal = 1)
+            from = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;playSound(Lnet/minecraft/entity/player/PlayerEntity;DDDLnet/minecraft/sound/SoundEvent;Lnet/minecraft/sound/SoundCategory;FF)V", shift = At.Shift.AFTER, ordinal = 1)
     ))
     public void listenForClose(CallbackInfo ci) {
         if(this.world.isClient()) {
-            if(this.animationAngle <= 0) {
+            if(this.animationProgress <= 0) {
                 rebuildChunk();
             }
         }

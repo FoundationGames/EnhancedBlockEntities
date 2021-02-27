@@ -4,13 +4,14 @@
   "package": "foundationgames.enhancedblockentities.mixin",
   "compatibilityLevel": "JAVA_8",
   "client": [
-    "ChestBlockMixin",
+    "AbstractBlockStateMixin",
+    "ChestBlockEntityMixin",
     "ChestBlockEntityRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1
   },
   "mixins": [
-
+    "EnderChestBlockEntityMixin"
   ]
 }

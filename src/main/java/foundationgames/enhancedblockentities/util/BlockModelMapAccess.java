@@ -1,4 +1,4 @@
-package foundationgames.enhancedblockentities.impl;
+package foundationgames.enhancedblockentities.util;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.render.model.BakedModel;

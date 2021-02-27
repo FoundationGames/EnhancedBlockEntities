@@ -16,7 +16,7 @@
       "y": 270
     },
 	"facing=east,type=left": {
-      "model": "block/chest_left",
+      "model": "builtin:chest_left",
       "y": 90
     },
     "facing=north,type=left": {
@@ -31,7 +31,7 @@
       "y": 270
     },
 	"facing=east,type=right": {
-      "model": "block/chest_right",
+      "model": "builtin:chest_right",
       "y": 90
     },
     "facing=north,type=right": {

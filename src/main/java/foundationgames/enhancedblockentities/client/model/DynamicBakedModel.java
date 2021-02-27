@@ -42,8 +42,9 @@ public class DynamicBakedModel implements BakedModel, FabricBakedModel {
         BakedModel model = models[selector.getModelIndex(view, state, blockPos, rng, context)];
         for (int i = 0; i <= 6; i++) {
             Direction dir = ModelHelper.faceFromIndex(i);
+            //System.out.println("DIRECTION: "+dir+"; QUADS: "+model.getQuads(state, dir, rng.get()));
             for(BakedQuad quad : model.getQuads(state, dir, rng.get())) {
-                emitter.fromVanilla(quad, null, null);
+                emitter.fromVanilla(quad, null, dir);
                 emitter.emit();
             }
         }
@@ -61,7 +62,7 @@ public class DynamicBakedModel implements BakedModel, FabricBakedModel {
 
     @Override
     public boolean useAmbientOcclusion() {
-        return true;
+        return false;
     }
 
     @Override
