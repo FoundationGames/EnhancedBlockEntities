@@ -1,15 +1,9 @@
 package foundationgames.enhancedblockentities.client.model;
 
-import net.fabricmc.fabric.api.client.model.ExtraModelProvider;
 import net.fabricmc.fabric.api.client.model.ModelLoadingRegistry;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.util.ModelIdentifier;
-import net.minecraft.resource.ResourceManager;
 import net.minecraft.util.Identifier;
 
-import java.util.function.Consumer;
-
-public class ModelIdentifiers {
+public final class ModelIdentifiers {
     public static final Identifier CHEST_CENTER = of("block/chest_center");
     public static final Identifier CHEST_CENTER_TRUNK = of("block/chest_center_trunk");
     public static final Identifier CHEST_CENTER_LID = of("block/chest_center_lid");

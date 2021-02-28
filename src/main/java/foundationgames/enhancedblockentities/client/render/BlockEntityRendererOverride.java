@@ -1,5 +1,6 @@
 package foundationgames.enhancedblockentities.client.render;
 
+import foundationgames.enhancedblockentities.event.EBEEvents;
 import net.fabricmc.fabric.api.renderer.v1.model.ModelHelper;
 import net.minecraft.block.ChestBlock;
 import net.minecraft.block.entity.BlockEntity;
@@ -7,7 +8,6 @@ import net.minecraft.client.block.ChestAnimationProgress;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.render.block.BlockModelRenderer;
 import net.minecraft.client.render.model.BakedModel;
 import net.minecraft.client.render.model.BakedQuad;
 import net.minecraft.client.util.math.MatrixStack;
@@ -23,8 +23,10 @@ public abstract class BlockEntityRendererOverride {
 
     public abstract void render(BlockEntity blockEntity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay);
 
+    public void onModelsReload() {}
+
     public static BlockEntityRendererOverride chest(Supplier<BakedModel[]> lidModels, Function<BlockEntity, Integer> selector) {
-        return new BlockEntityRendererOverride() {
+        BlockEntityRendererOverride r = new BlockEntityRendererOverride() {
             private BakedModel[] models = null;
             private final float yPiv = 9f/16;
             private final float zPiv = 15f/16;
@@ -47,7 +49,13 @@ public abstract class BlockEntityRendererOverride {
                     matrices.pop();
                 }
             }
+
+            public void onModelsReload() {
+                this.models = null;
+            }
         };
+        EBEEvents.RELOAD_MODELS.register((loader, manager, profiler) -> r.onModelsReload());
+        return r;
     }
 
     public static void renderBakedModel(VertexConsumer vertices, MatrixStack matrices, BakedModel model, int light, int overlay, Direction facing) {
@@ -69,7 +77,7 @@ public abstract class BlockEntityRendererOverride {
             case WEST:
                 return 0.6f;
             case DOWN:
-                return 0.4f;
+                return 0.5f;
             default:
                 return 1.0f;
         }

@@ -3,7 +3,6 @@ package foundationgames.enhancedblockentities.mixin;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.block.entity.EnderChestBlockEntity;
-import net.minecraft.block.entity.LootableContainerBlockEntity;
 import net.minecraft.client.MinecraftClient;
 import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
@@ -28,7 +27,7 @@ public abstract class EnderChestBlockEntityMixin extends BlockEntity {
     ))
     public void listenForOpen(CallbackInfo ci) {
         if(this.world.isClient()) {
-            rebuildScheduler = 1;
+            rebuildChunk();
         }
     }
 

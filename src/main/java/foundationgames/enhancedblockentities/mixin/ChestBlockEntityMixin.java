@@ -26,7 +26,7 @@ public abstract class ChestBlockEntityMixin extends LootableContainerBlockEntity
     ))
     public void listenForOpen(CallbackInfo ci) {
         if(this.world.isClient()) {
-            rebuildScheduler = 1;
+            rebuildChunk();
         }
     }
 

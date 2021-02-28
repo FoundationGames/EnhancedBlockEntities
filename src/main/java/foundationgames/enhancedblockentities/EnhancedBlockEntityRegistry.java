@@ -11,7 +11,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class EnhancedBlockEntityRegistry {
+public final class EnhancedBlockEntityRegistry {
     public static final Map<BlockEntityType<?>, Pair<BlockEntityRenderCondition, BlockEntityRendererOverride>> ENTITIES = new HashMap<>();
     public static final Set<Block> BLOCKS = new HashSet<>();
 

@@ -5,15 +5,12 @@
   "compatibilityLevel": "JAVA_8",
   "client": [
     "AbstractBlockStateMixin",
+    "BakedModelManagerMixin",
+    "BlockEntityRenderDispatcherMixin",
     "ChestBlockEntityMixin",
-    "ChestBlockEntityRendererMixin"
+    "EnderChestBlockEntityMixin"
   ],
   "injectors": {
     "defaultRequire": 1
-  },
-  "mixins": [
-    "BakedModelManagerMixin",
-    "BlockEntityRenderDispatcherMixin",
-    "EnderChestBlockEntityMixin"
-  ]
+  }
 }

@@ -3,12 +3,10 @@ package foundationgames.enhancedblockentities.client.model;
 import foundationgames.enhancedblockentities.util.DateUtil;
 import net.fabricmc.fabric.api.renderer.v1.render.RenderContext;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.ChestBlockEntity;
 import net.minecraft.client.block.ChestAnimationProgress;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockRenderView;
 
-import java.util.Calendar;
 import java.util.Random;
 import java.util.function.Supplier;
 
