@@ -15,6 +15,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(ChestBlockEntity.class)
 public abstract class ChestBlockEntityMixin extends LootableContainerBlockEntity {
     @Shadow protected float animationAngle;
+    private int rebuildScheduler = 0;
 
     protected ChestBlockEntityMixin(BlockEntityType<?> blockEntityType) {
         super(blockEntityType);
@@ -25,7 +26,7 @@ public abstract class ChestBlockEntityMixin extends LootableContainerBlockEntity
     ))
     public void listenForOpen(CallbackInfo ci) {
         if(this.world.isClient()) {
-            rebuildChunk();
+            rebuildScheduler = 1;
         }
     }
 
@@ -38,8 +39,16 @@ public abstract class ChestBlockEntityMixin extends LootableContainerBlockEntity
     public void listenForClose(CallbackInfo ci) {
         if(this.world.isClient()) {
             if(this.animationAngle <= 0) {
-                rebuildChunk();
+                rebuildScheduler = 1;
             }
+        }
+    }
+
+    @Inject(method = "tick", at = @At("HEAD"))
+    public void rebuildIfNeeded(CallbackInfo ci) {
+        if(rebuildScheduler > 0) {
+            rebuildScheduler--;
+            if(rebuildScheduler <= 0) rebuildChunk();
         }
     }
 

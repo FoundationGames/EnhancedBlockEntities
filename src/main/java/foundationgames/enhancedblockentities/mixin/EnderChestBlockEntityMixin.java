@@ -17,6 +17,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class EnderChestBlockEntityMixin extends BlockEntity {
     @Shadow
     public float animationProgress;
+    private int rebuildScheduler = 0;
 
     protected EnderChestBlockEntityMixin(BlockEntityType<?> blockEntityType) {
         super(blockEntityType);
@@ -27,7 +28,7 @@ public abstract class EnderChestBlockEntityMixin extends BlockEntity {
     ))
     public void listenForOpen(CallbackInfo ci) {
         if(this.world.isClient()) {
-            rebuildChunk();
+            rebuildScheduler = 1;
         }
     }
 
@@ -40,8 +41,16 @@ public abstract class EnderChestBlockEntityMixin extends BlockEntity {
     public void listenForClose(CallbackInfo ci) {
         if(this.world.isClient()) {
             if(this.animationProgress <= 0) {
-                rebuildChunk();
+                rebuildScheduler = 1;
             }
+        }
+    }
+
+    @Inject(method = "tick", at = @At("HEAD"))
+    public void rebuildIfNeeded(CallbackInfo ci) {
+        if(rebuildScheduler > 0) {
+            rebuildScheduler--;
+            if(rebuildScheduler <= 0) rebuildChunk();
         }
     }
 

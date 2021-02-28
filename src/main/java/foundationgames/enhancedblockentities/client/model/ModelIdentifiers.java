@@ -30,6 +30,16 @@ public class ModelIdentifiers {
     public static final Identifier TRAPPED_CHEST_RIGHT_TRUNK = of("block/trapped_chest_right_trunk");
     public static final Identifier TRAPPED_CHEST_RIGHT_LID = of("block/trapped_chest_right_lid");
 
+    public static final Identifier CHRISTMAS_CHEST_CENTER = of("block/christmas_chest_center");
+    public static final Identifier CHRISTMAS_CHEST_CENTER_TRUNK = of("block/christmas_chest_center_trunk");
+    public static final Identifier CHRISTMAS_CHEST_CENTER_LID = of("block/christmas_chest_center_lid");
+    public static final Identifier CHRISTMAS_CHEST_LEFT = of("block/christmas_chest_left");
+    public static final Identifier CHRISTMAS_CHEST_LEFT_TRUNK = of("block/christmas_chest_left_trunk");
+    public static final Identifier CHRISTMAS_CHEST_LEFT_LID = of("block/christmas_chest_left_lid");
+    public static final Identifier CHRISTMAS_CHEST_RIGHT = of("block/christmas_chest_right");
+    public static final Identifier CHRISTMAS_CHEST_RIGHT_TRUNK = of("block/christmas_chest_right_trunk");
+    public static final Identifier CHRISTMAS_CHEST_RIGHT_LID = of("block/christmas_chest_right_lid");
+
     public static final Identifier ENDER_CHEST_CENTER = of("block/ender_chest_center");
     public static final Identifier ENDER_CHEST_CENTER_TRUNK = of("block/ender_chest_center_trunk");
     public static final Identifier ENDER_CHEST_CENTER_LID = of("block/ender_chest_center_lid");

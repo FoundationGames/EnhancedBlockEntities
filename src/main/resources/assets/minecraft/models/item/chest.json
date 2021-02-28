@@ -1,3 +1,11 @@
 {
-	"parent": "block/chest_center"
+	"parent": "block/chest_center",
+	"overrides": [
+        {
+            "predicate": {
+                "is_christmas": 1
+            },
+            "model": "item/christmas_chest"
+        }
+    ]
 }

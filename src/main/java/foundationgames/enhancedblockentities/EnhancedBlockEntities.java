@@ -7,8 +7,10 @@ import foundationgames.enhancedblockentities.client.model.ModelSelector;
 import foundationgames.enhancedblockentities.client.render.BlockEntityRenderCondition;
 import foundationgames.enhancedblockentities.client.render.BlockEntityRendererOverride;
 import foundationgames.enhancedblockentities.util.BakedModelManagerAccess;
+import foundationgames.enhancedblockentities.util.DateUtil;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.model.ModelLoadingRegistry;
+import net.fabricmc.fabric.api.object.builder.v1.client.model.FabricModelPredicateProviderRegistry;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntityType;
@@ -16,6 +18,7 @@ import net.minecraft.block.enums.ChestType;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.model.BakedModel;
 import net.minecraft.client.render.model.BakedModelManager;
+import net.minecraft.item.Items;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.Identifier;
 
@@ -30,11 +33,15 @@ public class EnhancedBlockEntities implements ClientModInitializer {
                     return new BakedModel[] {
                             manager.getModel(ModelIdentifiers.CHEST_CENTER_LID),
                             manager.getModel(ModelIdentifiers.CHEST_LEFT_LID),
-                            manager.getModel(ModelIdentifiers.CHEST_RIGHT_LID)
+                            manager.getModel(ModelIdentifiers.CHEST_RIGHT_LID),
+                            manager.getModel(ModelIdentifiers.CHRISTMAS_CHEST_CENTER_LID),
+                            manager.getModel(ModelIdentifiers.CHRISTMAS_CHEST_LEFT_LID),
+                            manager.getModel(ModelIdentifiers.CHRISTMAS_CHEST_RIGHT_LID)
                     };
                 }, entity -> {
+                    int os = DateUtil.isChristmas() ? 3 : 0;
                     ChestType type = entity.getCachedState().get(Properties.CHEST_TYPE);
-                    return type == ChestType.RIGHT ? 2 : type == ChestType.LEFT ? 1 : 0;
+                    return type == ChestType.RIGHT ? 2 + os : type == ChestType.LEFT ? 1 + os : os;
                 })
         );
         EnhancedBlockEntityRegistry.register(Blocks.TRAPPED_CHEST, BlockEntityType.TRAPPED_CHEST, BlockEntityRenderCondition.CHEST,
@@ -62,9 +69,11 @@ public class EnhancedBlockEntities implements ClientModInitializer {
                 () -> new DynamicUnbakedModel(
                         new Identifier[] {
                                 ModelIdentifiers.CHEST_CENTER,
-                                ModelIdentifiers.CHEST_CENTER_TRUNK
+                                ModelIdentifiers.CHEST_CENTER_TRUNK,
+                                ModelIdentifiers.CHRISTMAS_CHEST_CENTER,
+                                ModelIdentifiers.CHRISTMAS_CHEST_CENTER_TRUNK
                         },
-                        ModelSelector.CHEST
+                        ModelSelector.CHEST_WITH_CHRISTMAS
                 )
         ));
         ModelLoadingRegistry.INSTANCE.registerResourceProvider(manager -> new DynamicModelProvider(
@@ -72,9 +81,11 @@ public class EnhancedBlockEntities implements ClientModInitializer {
                 () -> new DynamicUnbakedModel(
                         new Identifier[] {
                                 ModelIdentifiers.CHEST_LEFT,
-                                ModelIdentifiers.CHEST_LEFT_TRUNK
+                                ModelIdentifiers.CHEST_LEFT_TRUNK,
+                                ModelIdentifiers.CHRISTMAS_CHEST_LEFT,
+                                ModelIdentifiers.CHRISTMAS_CHEST_LEFT_TRUNK
                         },
-                        ModelSelector.CHEST
+                        ModelSelector.CHEST_WITH_CHRISTMAS
                 )
         ));
         ModelLoadingRegistry.INSTANCE.registerResourceProvider(manager -> new DynamicModelProvider(
@@ -82,9 +93,11 @@ public class EnhancedBlockEntities implements ClientModInitializer {
                 () -> new DynamicUnbakedModel(
                         new Identifier[] {
                                 ModelIdentifiers.CHEST_RIGHT,
-                                ModelIdentifiers.CHEST_RIGHT_TRUNK
+                                ModelIdentifiers.CHEST_RIGHT_TRUNK,
+                                ModelIdentifiers.CHRISTMAS_CHEST_RIGHT,
+                                ModelIdentifiers.CHRISTMAS_CHEST_RIGHT_TRUNK
                         },
-                        ModelSelector.CHEST
+                        ModelSelector.CHEST_WITH_CHRISTMAS
                 )
         ));
         ModelLoadingRegistry.INSTANCE.registerResourceProvider(manager -> new DynamicModelProvider(
@@ -127,5 +140,6 @@ public class EnhancedBlockEntities implements ClientModInitializer {
                         ModelSelector.CHEST
                 )
         ));
+        FabricModelPredicateProviderRegistry.register(Items.CHEST, new Identifier("is_christmas"), (stack, world, entity) -> DateUtil.isChristmas() ? 1 : 0);
     }
 }
