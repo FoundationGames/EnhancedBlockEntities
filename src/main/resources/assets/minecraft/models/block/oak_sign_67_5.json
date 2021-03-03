@@ -1,0 +1,6 @@
+{
+	"parent": "block/template_sign_67_5",
+	"textures": {
+		"sign": "entity/signs/oak"
+	}
+}

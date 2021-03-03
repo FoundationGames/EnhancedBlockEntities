@@ -61,6 +61,15 @@ public class EnhancedBlockEntities implements ClientModInitializer {
                     return new BakedModel[] { manager.getModel(ModelIdentifiers.ENDER_CHEST_CENTER_LID) };
                 }, entity -> 0)
         );
+        EnhancedBlockEntityRegistry.register(Blocks.ENDER_CHEST, BlockEntityType.ENDER_CHEST, BlockEntityRenderCondition.CHEST,
+                BlockEntityRendererOverride.chest(() -> {
+                    BakedModelManagerAccess manager = (BakedModelManagerAccess)MinecraftClient.getInstance().getBakedModelManager();
+                    return new BakedModel[] { manager.getModel(ModelIdentifiers.ENDER_CHEST_CENTER_LID) };
+                }, entity -> 0)
+        );
+        EnhancedBlockEntityRegistry.register(Blocks.OAK_SIGN, BlockEntityType.SIGN, BlockEntityRenderCondition.SIGN,
+                BlockEntityRendererOverride.sign()
+        );
 
         ModelLoadingRegistry.INSTANCE.registerResourceProvider(manager -> new DynamicModelProvider(
                 new Identifier("builtin", "chest_center"),

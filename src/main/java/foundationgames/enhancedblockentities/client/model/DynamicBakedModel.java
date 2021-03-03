@@ -16,9 +16,7 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.world.BlockRenderView;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.function.Supplier;
 
 public class DynamicBakedModel implements BakedModel, FabricBakedModel {
@@ -56,7 +54,7 @@ public class DynamicBakedModel implements BakedModel, FabricBakedModel {
 
     @Override
     public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction face, Random random) {
-        return Collections.emptyList();
+        return models[0].getQuads(state, face, random);
     }
 
     @Override

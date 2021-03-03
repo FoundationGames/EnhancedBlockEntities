@@ -6,6 +6,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.client.block.ChestAnimationProgress;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockRenderView;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Random;
 import java.util.function.Supplier;
@@ -32,5 +33,5 @@ public interface ModelSelector {
         return os;
     };
 
-    int getModelIndex(BlockRenderView view, BlockState state, BlockPos pos, Supplier<Random> rand, RenderContext ctx);
+    int getModelIndex(BlockRenderView view, BlockState state, BlockPos pos, Supplier<Random> rand, @Nullable RenderContext ctx);
 }

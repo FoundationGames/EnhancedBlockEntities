@@ -1,0 +1,20 @@
+{
+  "variants": {
+    "rotation=0": { "model": "block/oak_sign_0", "y": 180 },
+    "rotation=1": { "model": "block/oak_sign_67_5", "y": 270 },
+    "rotation=2": { "model": "block/oak_sign_45", "y": 270 },
+    "rotation=3": { "model": "block/oak_sign_22_5", "y": 270 },
+	"rotation=4": { "model": "block/oak_sign_0", "y": 270 },
+    "rotation=5": { "model": "block/oak_sign_67_5" },
+    "rotation=6": { "model": "block/oak_sign_45" },
+    "rotation=7": { "model": "block/oak_sign_22_5" },
+	"rotation=8": { "model": "block/oak_sign_0" },
+    "rotation=9": { "model": "block/oak_sign_67_5", "y": 90 },
+    "rotation=10": { "model": "block/oak_sign_45", "y": 90 },
+    "rotation=11": { "model": "block/oak_sign_22_5", "y": 90 },
+	"rotation=12": { "model": "block/oak_sign_0", "y": 90 },
+    "rotation=13": { "model": "block/oak_sign_67_5", "y": 180 },
+    "rotation=14": { "model": "block/oak_sign_45", "y": 180 },
+    "rotation=15": { "model": "block/oak_sign_22_5", "y": 180 }
+  }
+}

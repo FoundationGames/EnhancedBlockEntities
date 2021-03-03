@@ -13,7 +13,7 @@
     "sources": "https://github.com/FoundationGames/EnhancedBlockEntities"
   },
 
-  "license": "GPLv3",
+  "license": "LGPLv3",
   "icon": "assets/enhancedblockentities/icon.png",
 
   "environment": "*",
