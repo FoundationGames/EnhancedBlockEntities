@@ -9,8 +9,9 @@
     "FoundationGames"
   ],
   "contact": {
-    "homepage": "",
-    "sources": "https://github.com/FoundationGames/EnhancedBlockEntities"
+    "homepage": "https://github.com/FoundationGames/EnhancedBlockEntities",
+    "sources": "https://github.com/FoundationGames/EnhancedBlockEntities",
+    "issues": "https://github.com/FoundationGames/EnhancedBlockEntities/issues"
   },
 
   "license": "LGPLv3",
