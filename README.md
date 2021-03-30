@@ -27,6 +27,11 @@ Rendering 1700 chests:
 ![After](https://github.com/FoundationGames/EnhancedBlockEntities/raw/116_indev/img/after.png) <br/>
 A 155% frame rate increase!
 
+## Download
+Compile it from Source or go to [Actions](/Actions), klick on the lastest Workflow that has a green check mark, scroll down to Artifacts. Inside of build_artifacts.zip you can find the compiled file.<br>
+Alternatively you can check out the [Modrinth Page](https://modrinth.com/mod/OVuFYfre)
+
+
 ## Resource Packs
 Here's an example of how you can customize chests with resource packs using EBE. <br/><br/>
-![Custom Chest GIF](https://media.forgecdn.net/attachments/344/351/cursed_living_chest_creature.gif)
+![Custom Chest GIF](https://user-images.githubusercontent.com/55095883/112942134-f67fe780-912f-11eb-8b11-cf316544c22b.gif)
