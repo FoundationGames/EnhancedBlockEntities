@@ -23,7 +23,6 @@ Requires [Fabric API](https://modrinth.com/mod/fabric-api) <br/><br/>
 **Q: How is this different from [FastChest](https://www.curseforge.com/minecraft/mc-mods/fastchest)?** <br/>
 **A:** FastChest does not preserve chest animations, and only optimizes chests (in a similar way to EBE). EBE aims to optimize many more block entities (in future releases). <br/><br/>
 
-
 ## FPS Boost
 Rendering 1700 chests:
 ### Vanilla
