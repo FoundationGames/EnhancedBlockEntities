@@ -12,7 +12,7 @@ Requires [Fabric API](https://modrinth.com/mod/fabric-api) <br/><br/>
 ## FAQ and Help
 
 **Q: How do I download the mod?**<br/>
-**A:** For stable releases, you can check out the [Modrinth Page](https://modrinth.com/mod/OVuFYfre). If you want the newest bleeding edge build, you can use GitHub Actions (or alternatively, you can build yourself.
+**A:** For stable releases, you can check out the [Modrinth Page](https://modrinth.com/mod/OVuFYfre). If you want the newest bleeding edge build, you can use GitHub Actions (or alternatively, you can build yourself).
 
 **Q: I need help with the mod/need to report a bug!** <br/>
 **A:** If you're having trouble setting up the mod or using it alongside other mods, I'd recommend you join our [Discord Server](https://discord.gg/7Aw3y4RtY9) and ask for help there. *If the issue is a BUG* please report it on our issue tracker ("Issues" tab at the top of the page)<br/><br/>
