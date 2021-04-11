@@ -10,6 +10,10 @@ EBE is a **100% client side** mod for Minecraft on the **[Fabric](https://fabric
 Requires [Fabric API](https://modrinth.com/mod/fabric-api) <br/><br/>
 
 ## FAQ and Help
+
+**Q: How do I download the mod?**<br/>
+**A:** For stable releases, you can check out the [Modrinth Page](https://modrinth.com/mod/OVuFYfre). If you want the newest bleeding edge build, you can use GitHub Actions (or alternatively, you can build yourself).
+
 **Q: I need help with the mod/need to report a bug!** <br/>
 **A:** If you're having trouble setting up the mod or using it alongside other mods, I'd recommend you join our [Discord Server](https://discord.gg/7Aw3y4RtY9) and ask for help there. *If the issue is a BUG* please report it on our issue tracker ("Issues" tab at the top of the page)<br/><br/>
 
@@ -29,4 +33,4 @@ A 155% frame rate increase!
 
 ## Resource Packs
 Here's an example of how you can customize chests with resource packs using EBE. <br/><br/>
-![Custom Chest GIF](https://media.forgecdn.net/attachments/344/351/cursed_living_chest_creature.gif)
+![Custom Chest GIF](https://user-images.githubusercontent.com/55095883/112942134-f67fe780-912f-11eb-8b11-cf316544c22b.gif)
