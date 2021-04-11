@@ -1,18 +1,17 @@
 ## Enhanced Block Entities
 
-EBE is a **100% client side** mod for Minecraft on the **[Fabric](https://fabricmc.net/use/)** mod loader which aims to increase the performance of block entity rendering, as well as offer customizability via resource packs. <br/><br/>
+EBE is a **100% client side** Minecraft mod for the **[Fabric](https://fabricmc.net/use/)** mod loader which aims to increase the performance of block entity rendering, as well as offer customizability via resource packs. <br/><br/>
 
 **How does it work?** EBE Makes chests (and soon to be more block entities) use baked block models rather than laggy entity models. <br/><br/>
 **What about animations?** The best part about EBE is that you still get to keep animations, while gaining the performance boost of baked models! Most animated block entity models will only render when absolutely necessary. <br/><br/>
 **Can I use it with Sodium?** Yes you can, but it requires some setup. I have a [guide](https://github.com/FoundationGames/EnhancedBlockEntities/discussions/7) that you can follow to get this mod performing as optimally as possible with Sodium. <br/><br/>
-
 
 Requires [Fabric API](https://modrinth.com/mod/fabric-api) <br/><br/>
 
 ## FAQ and Help
 
 **Q: How do I download the mod?**<br/>
-**A:** For stable releases, you can check out the [Modrinth Page](https://modrinth.com/mod/OVuFYfre). If you want the newest bleeding edge build, you can use GitHub Actions (or alternatively, you can build yourself).
+**A:** For stable releases, you can check out the [Modrinth Page](https://modrinth.com/mod/OVuFYfre). If you want the newest bleeding edge build, you can use GitHub Actions (or alternatively, you can build yourself).<br/><br/>
 
 **Q: I need help with the mod/need to report a bug!** <br/>
 **A:** If you're having trouble setting up the mod or using it alongside other mods, I'd recommend you join our [Discord Server](https://discord.gg/7Aw3y4RtY9) and ask for help there. *If the issue is a BUG* please report it on our issue tracker ("Issues" tab at the top of the page)<br/><br/>
