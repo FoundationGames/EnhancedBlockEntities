@@ -1,6 +1,0 @@
-{
-	"parent": "block/template_chest_center_trunk",
-	"textures": {
-		"chest": "entity/chest/normal"
-	}
-}

@@ -74,7 +74,6 @@ public abstract class BlockEntityRendererOverride {
             @Override
             public void render(BlockEntity blockEntity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
                 if(blockEntity instanceof SignBlockEntity) {
-                    SignRenderManager.renderedSigns++;
                     matrices.push();
                     SignBlockEntity be = (SignBlockEntity)blockEntity;
                     float signAngle;
@@ -84,8 +83,8 @@ public abstract class BlockEntityRendererOverride {
                         matrices.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(signAngle));
                     } else {
                         signAngle = - be.getCachedState().get(WallSignBlock.FACING).asRotation();
+                        matrices.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(signAngle));
                         matrices.translate(0.0D, -0.3125, -0.4375);
-                        matrices.multiply(Vector3f.NEGATIVE_Y.getDegreesQuaternion(signAngle));
                     }
                     matrices.translate(0.0, 0.333333, 0.0466666);
                     matrices.scale(0.01f, -0.01f, 0.01f);
@@ -103,7 +102,7 @@ public abstract class BlockEntityRendererOverride {
                         });
                         if (text != null) {
                             float t = (float)(-tr.getWidth(text) / 2);
-                            tr.draw(text, t, (float)(i * 10 - 20), tColor, false, matrices.peek().getModel(), vertexConsumers, false, 0, i);
+                            tr.draw(text, t, (float)(i * 10 - 20), tColor, false, matrices.peek().getModel(), vertexConsumers, false, 0, light);
                         }
                     }
                     matrices.pop();

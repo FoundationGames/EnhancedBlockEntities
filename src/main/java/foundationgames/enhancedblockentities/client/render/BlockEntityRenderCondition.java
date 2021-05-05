@@ -12,8 +12,11 @@ public interface BlockEntityRenderCondition {
         return false;
     };
 
-    BlockEntityRenderCondition SIGN = entity -> MinecraftClient.getInstance().player.getBlockPos().getSquaredDistance(entity.getPos()) <
-            50 + (450 - (SignRenderManager.getRenderedSignAmount() * 0.7));
+    BlockEntityRenderCondition SIGN = entity -> {
+        SignRenderManager.renderedSigns++;
+        return MinecraftClient.getInstance().player.getBlockPos().getSquaredDistance(entity.getPos()) <
+                80 + Math.max(0, 580 - (SignRenderManager.getRenderedSignAmount() * 0.7));
+    };
 
     BlockEntityRenderCondition NEVER = entity -> false;
 

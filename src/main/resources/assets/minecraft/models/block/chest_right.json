@@ -1,6 +1,0 @@
-{
-	"parent": "block/template_chest_right",
-	"textures": {
-		"chest": "entity/chest/normal_right"
-	}
-}

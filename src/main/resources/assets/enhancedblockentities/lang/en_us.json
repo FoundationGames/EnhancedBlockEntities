@@ -1,0 +1,24 @@
+{
+    "option.ebe.config": "Block Entities...",
+
+    "option.ebe.render_enhanced_chests.value.true": "Enhanced Chests: On",
+    "option.ebe.render_enhanced_chests.value.false": "Enhanced Chests: Off",
+    "option.ebe.render_enhanced_chests.comment": "Enables baked chest models, greatly improving performance in areas with lots of chests. May cause incompatibilities or turn chests invisible with certain mods, in which case should be disabled.",
+    "option.ebe.render_enhanced_signs.value.true": "Enhanced Signs: On",
+    "option.ebe.render_enhanced_signs.value.false": "Enhanced Signs: Off",
+    "option.ebe.render_enhanced_signs.comment": "Enables baked sign models and smart sign text rendering, greatly improving performance in areas with lots of signs. May cause incompatibilities or turn signs invisible with certain mods, in which case should be disabled.",
+    "option.ebe.use_ao.value.true": "Smooth Chest Lighting: On",
+    "option.ebe.use_ao.value.false": "Smooth Chest Lighting: Off",
+    "option.ebe.use_ao.comment": "Allows for chests to use smooth lighting and ambient occlusion. Requires Enhanced Chests to be enabled.",
+    "option.ebe.christmas_chests.value.allowed": "Christmas Chests: Allowed",
+    "option.ebe.christmas_chests.valueComment.allowed": "Allowed - Christmas texture will be applied from December 24th to 26th.",
+    "option.ebe.christmas_chests.value.forced": "Christmas Chests: Forced",
+    "option.ebe.christmas_chests.valueComment.forced": "Forced - Christmas texture will always be applied.",
+    "option.ebe.christmas_chests.value.disabled": "Christmas Chests: Disabled",
+    "option.ebe.christmas_chests.valueComment.disabled": "Disabled - Christmas texture will never be applied.",
+    "option.ebe.christmas_chests.comment": "Either allows, forces, or disables the Christmas chest texture. Requires Enhanced Chests to be enabled.",
+
+    "screen.ebe.config": "Block Entity Settings",
+
+    "text.ebe.apply": "Apply"
+}

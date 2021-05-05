@@ -1,7 +1,7 @@
 package foundationgames.enhancedblockentities.mixin;
 
 import foundationgames.enhancedblockentities.event.EBEEvents;
-import foundationgames.enhancedblockentities.util.BakedModelManagerAccess;
+import foundationgames.enhancedblockentities.util.duck.BakedModelManagerAccess;
 import net.minecraft.client.render.model.BakedModel;
 import net.minecraft.client.render.model.BakedModelManager;
 import net.minecraft.client.render.model.ModelLoader;

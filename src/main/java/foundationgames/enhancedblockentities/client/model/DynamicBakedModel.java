@@ -1,5 +1,6 @@
 package foundationgames.enhancedblockentities.client.model;
 
+import foundationgames.enhancedblockentities.EnhancedBlockEntities;
 import net.fabricmc.fabric.api.renderer.v1.mesh.QuadEmitter;
 import net.fabricmc.fabric.api.renderer.v1.model.FabricBakedModel;
 import net.fabricmc.fabric.api.renderer.v1.model.ModelHelper;
@@ -59,7 +60,7 @@ public class DynamicBakedModel implements BakedModel, FabricBakedModel {
 
     @Override
     public boolean useAmbientOcclusion() {
-        return false;
+        return EnhancedBlockEntities.CONFIG.useAO;
     }
 
     @Override

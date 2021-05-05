@@ -1,5 +1,6 @@
 package foundationgames.enhancedblockentities.mixin;
 
+import foundationgames.enhancedblockentities.EnhancedBlockEntities;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.block.entity.EnderChestBlockEntity;
@@ -54,6 +55,8 @@ public abstract class EnderChestBlockEntityMixin extends BlockEntity {
     }
 
     private void rebuildChunk() {
-        MinecraftClient.getInstance().worldRenderer.updateBlock(world, pos, getCachedState(), getCachedState(), 1);
+        if(EnhancedBlockEntities.CONFIG.renderEnhancedChests) {
+            MinecraftClient.getInstance().worldRenderer.updateBlock(world, pos, getCachedState(), getCachedState(), 1);
+        }
     }
 }

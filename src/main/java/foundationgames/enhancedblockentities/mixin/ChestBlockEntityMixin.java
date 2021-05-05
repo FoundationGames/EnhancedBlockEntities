@@ -1,5 +1,6 @@
 package foundationgames.enhancedblockentities.mixin;
 
+import foundationgames.enhancedblockentities.EnhancedBlockEntities;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.block.entity.ChestBlockEntity;
 import net.minecraft.block.entity.LootableContainerBlockEntity;
@@ -53,6 +54,8 @@ public abstract class ChestBlockEntityMixin extends LootableContainerBlockEntity
     }
 
     private void rebuildChunk() {
-        MinecraftClient.getInstance().worldRenderer.updateBlock(world, pos, getCachedState(), getCachedState(), 1);
+        if(EnhancedBlockEntities.CONFIG.renderEnhancedChests) {
+            MinecraftClient.getInstance().worldRenderer.updateBlock(world, pos, getCachedState(), getCachedState(), 1);
+        }
     }
 }
