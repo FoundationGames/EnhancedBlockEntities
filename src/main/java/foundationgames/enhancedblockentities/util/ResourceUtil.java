@@ -1,5 +1,6 @@
 package foundationgames.enhancedblockentities.util;
 
+import foundationgames.enhancedblockentities.EnhancedBlockEntities;
 import net.devtech.arrp.api.RuntimeResourcePack;
 import net.devtech.arrp.json.blockstate.JState;
 import net.devtech.arrp.json.models.JModel;
@@ -7,6 +8,8 @@ import net.minecraft.util.Identifier;
 
 public enum ResourceUtil {;
     private static RuntimeResourcePack PACK;
+
+    public static final String CHEST_ITEM_MODEL_RESOURCE = "{\"parent\":\"block/chest_center\",\"overrides\":[{\"predicate\":{\"is_christmas\":1},\"model\": \"item/christmas_chest\"}]}";
 
     public static void addSingleChestModels(String texture, String chestName, RuntimeResourcePack pack) {
         pack.addModel(JModel.model().parent("block/template_chest_center").textures(JModel.textures().var("chest", texture)), new Identifier("block/" + chestName + "_center"));
@@ -56,11 +59,16 @@ public enum ResourceUtil {;
     }
 
     public static void addSignModels(String texture, String signName, String wallSignName, RuntimeResourcePack pack) {
-        pack.addModel(JModel.model().parent("block/template_sign_0").textures(JModel.textures().var("sign", texture)), new Identifier("block/" + signName + "_0"));
-        pack.addModel(JModel.model().parent("block/template_sign_22_5").textures(JModel.textures().var("sign", texture)), new Identifier("block/" + signName + "_22_5"));
-        pack.addModel(JModel.model().parent("block/template_sign_45").textures(JModel.textures().var("sign", texture)), new Identifier("block/" + signName + "_45"));
-        pack.addModel(JModel.model().parent("block/template_sign_67_5").textures(JModel.textures().var("sign", texture)), new Identifier("block/" + signName + "_67_5"));
-        pack.addModel(JModel.model().parent("block/template_wall_sign").textures(JModel.textures().var("sign", texture)), new Identifier("block/" + wallSignName));
+        pack.addModel(JModel.model().parent(signAOSuffix("block/template_sign_0")).textures(JModel.textures().var("sign", texture)), new Identifier("block/" + signName + "_0"));
+        pack.addModel(JModel.model().parent(signAOSuffix("block/template_sign_22_5")).textures(JModel.textures().var("sign", texture)), new Identifier("block/" + signName + "_22_5"));
+        pack.addModel(JModel.model().parent(signAOSuffix("block/template_sign_45")).textures(JModel.textures().var("sign", texture)), new Identifier("block/" + signName + "_45"));
+        pack.addModel(JModel.model().parent(signAOSuffix("block/template_sign_67_5")).textures(JModel.textures().var("sign", texture)), new Identifier("block/" + signName + "_67_5"));
+        pack.addModel(JModel.model().parent(signAOSuffix("block/template_wall_sign")).textures(JModel.textures().var("sign", texture)), new Identifier("block/" + wallSignName));
+    }
+
+    private static String signAOSuffix(String model) {
+        if (EnhancedBlockEntities.CONFIG.signAO) model += "_ao";
+        return model;
     }
 
     public static void addSignBlockStates(String signName, String wallSignName, RuntimeResourcePack pack) {

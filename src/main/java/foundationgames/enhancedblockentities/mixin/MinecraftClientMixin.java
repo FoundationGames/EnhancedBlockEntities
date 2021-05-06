@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(MinecraftClient.class)
 public class MinecraftClientMixin {
     @Inject(method = "render", at = @At("TAIL"))
-    public void onEndRender(boolean tick, CallbackInfo ci) {
+    public void enhanced_bes$onEndRender(boolean tick, CallbackInfo ci) {
         SignRenderManager.endFrame();
     }
 }

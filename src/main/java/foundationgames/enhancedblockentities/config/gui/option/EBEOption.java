@@ -1,5 +1,10 @@
 package foundationgames.enhancedblockentities.config.gui.option;
 
+import foundationgames.enhancedblockentities.util.GuiUtil;
+import net.minecraft.client.resource.language.I18n;
+import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
+
 import java.util.List;
 
 public final class EBEOption {
@@ -8,6 +13,8 @@ public final class EBEOption {
     private final int defaultValue;
     private int selected;
     public final boolean hasValueComments;
+    public final List<Text> commentLines;
+    private List<Text> valueCommentLines = null;
 
     public EBEOption(String key, List<String> values, int defaultValue, boolean hasValueComments) {
         this.key = key;
@@ -15,6 +22,9 @@ public final class EBEOption {
         this.defaultValue = defaultValue;
         this.selected = defaultValue;
         this.hasValueComments = hasValueComments;
+
+        String comment = I18n.translate(String.format("option.ebe.%s.comment", key));
+        commentLines = GuiUtil.shorten(comment, 20);
     }
 
     public String getValue() {
@@ -25,17 +35,17 @@ public final class EBEOption {
         return String.format("option.ebe.%s.value.%s", key, getValue());
     }
 
-    public String getCommentKey() {
-        return String.format("option.ebe.%s.comment", key);
-    }
-
-    public String getValueCommentKey() {
-        return String.format("option.ebe.%s.valueComment.%s", key, getValue());
+    public List<Text> getValueCommentLines() {
+        if (valueCommentLines == null) {
+            valueCommentLines = GuiUtil.shorten(I18n.translate(String.format("option.ebe.%s.valueComment.%s", key, getValue())), 20, Formatting.YELLOW);
+        }
+        return valueCommentLines;
     }
 
     public void next() {
         selected++;
         if (selected >= values.size()) selected = 0;
+        valueCommentLines = null;
     }
 
     public boolean isDefault() {

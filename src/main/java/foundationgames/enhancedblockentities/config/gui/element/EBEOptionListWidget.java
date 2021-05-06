@@ -12,21 +12,53 @@ import net.minecraft.client.resource.language.I18n;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.MathHelper;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class EBEOptionListWidget extends ElementListWidget<EBEOptionListWidget.EBEOptionEntry> {
-    private static final int WIDTH = 270;
+public class EBEOptionListWidget extends ElementListWidget<EBEOptionListWidget.BaseEntry> {
+    private static final int WIDTH = 312;
 
     public EBEOptionListWidget(MinecraftClient minecraftClient, int width, int height, int top, int bottom, int itemHeight) {
         super(minecraftClient, width, height, top, bottom, itemHeight);
+        this.left = 0;
+        this.right = width;
     }
 
     @Override
     public int getRowWidth() {
         return WIDTH;
+    }
+
+    @Override
+    protected int getScrollbarPositionX() {
+        return width - 6;
+    }
+
+    @Nullable
+    public EBEOptionEntry getHovered(double x, double y) {
+        int halfRowWidth = this.getRowWidth() / 2;
+        int centerX = this.left + this.width / 2;
+        int leftBound = centerX - halfRowWidth;
+        int rightBound = centerX + halfRowWidth;
+        int boundedY = MathHelper.floor(y - (double)this.top) - this.headerHeight + (int)this.getScrollAmount() - 4;
+        int index = boundedY / this.itemHeight;
+        BaseEntry entry =
+                x < (double)this.getScrollbarPositionX() &&
+                x >= (double)leftBound &&
+                x <= (double)rightBound &&
+                index >= 0 && boundedY >= 0 &&
+                index < this.getEntryCount()
+        ? this.children().get(index) : null;
+        if (entry instanceof EBEOptionEntry) {
+            return (EBEOptionEntry)entry;
+        }
+        if (entry instanceof PairEntry) {
+            return ((PairEntry)entry).getHovered((int) x);
+        }
+        return null;
     }
 
     public void add(EBEOption ... options) {
@@ -35,14 +67,61 @@ public class EBEOptionListWidget extends ElementListWidget<EBEOptionListWidget.E
         }
     }
 
+    public void addPair(EBEOption left, EBEOption right) {
+        this.addEntry(new PairEntry(new EBEOptionEntry(left), new EBEOptionEntry(right), this));
+    }
+
     public void forEach(Consumer<EBEOption> action) {
         for (int i = 0; i < getEntryCount(); i++) {
-            action.accept(getEntry(i).option);
+            if (getEntry(i) instanceof EBEOptionEntry) {
+                action.accept(((EBEOptionEntry)getEntry(i)).option);
+            }
+            if (getEntry(i) instanceof PairEntry) {
+                action.accept(((PairEntry)getEntry(i)).left.option);
+                action.accept(((PairEntry)getEntry(i)).right.option);
+            }
         }
     }
 
-    public static class EBEOptionEntry extends ElementListWidget.Entry<EBEOptionListWidget.EBEOptionEntry> {
-        private final EBEOption option;
+    public static abstract class BaseEntry extends ElementListWidget.Entry<EBEOptionListWidget.BaseEntry> {}
+
+    public static class PairEntry extends BaseEntry {
+        public final EBEOptionEntry left;
+        public final EBEOptionEntry right;
+        private final EBEOptionListWidget list;
+
+        public PairEntry(EBEOptionEntry left, EBEOptionEntry right, EBEOptionListWidget list) {
+            this.left = left;
+            this.right = right;
+            this.list = list;
+        }
+
+        @Override
+        public void render(MatrixStack matrices, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
+            left.render(matrices, index, y, x, (entryWidth / 2) - 2, entryHeight, mouseX, mouseY, hovered && isMouseLeft(mouseX), tickDelta);
+            right.render(matrices, index, y, x + 2 + (entryWidth / 2), (entryWidth / 2) - 2, entryHeight, mouseX, mouseY, hovered && !isMouseLeft(mouseX), tickDelta);
+        }
+
+        private boolean isMouseLeft(int mouseX) {
+            return mouseX < (list.width / 2);
+        }
+
+        public EBEOptionEntry getHovered(int mouseX) {
+            return isMouseLeft(mouseX) ? left : right;
+        }
+
+        @Override
+        public boolean mouseClicked(double mouseX, double mouseY, int button) {
+            if (isMouseLeft((int)mouseX)) return left.mouseClicked(mouseX, mouseY, button);
+            else return right.mouseClicked(mouseX, mouseY, button);
+        }
+
+        @Override
+        public List<? extends Element> children() { return Collections.emptyList(); }
+    }
+
+    public static class EBEOptionEntry extends BaseEntry {
+        public final EBEOption option;
 
         public EBEOptionEntry(EBEOption option) {
             this.option = option;

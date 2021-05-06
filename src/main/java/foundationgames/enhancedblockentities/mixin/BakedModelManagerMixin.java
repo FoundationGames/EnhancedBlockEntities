@@ -27,7 +27,7 @@ public class BakedModelManagerMixin implements BakedModelManagerAccess {
     }
 
     @Inject(method = "apply", at = @At("TAIL"))
-    public void invokeReloadEvent(ModelLoader modelLoader, ResourceManager resourceManager, Profiler profiler, CallbackInfo ci) {
+    public void enhanced_bes$invokeReloadEvent(ModelLoader modelLoader, ResourceManager resourceManager, Profiler profiler, CallbackInfo ci) {
         EBEEvents.RELOAD_MODELS.invoker().onReload(modelLoader, resourceManager, profiler);
     }
 }

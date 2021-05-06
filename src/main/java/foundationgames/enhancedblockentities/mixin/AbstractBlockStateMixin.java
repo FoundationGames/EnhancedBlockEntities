@@ -15,7 +15,7 @@ public abstract class AbstractBlockStateMixin {
     @Shadow public abstract Block getBlock();
 
     @Inject(method = "getRenderType", at = @At("HEAD"), cancellable = true)
-    public void override(CallbackInfoReturnable<BlockRenderType> cir) {
+    public void enhanced_bes$override(CallbackInfoReturnable<BlockRenderType> cir) {
         Block block = this.getBlock();
         if(EnhancedBlockEntityRegistry.BLOCKS.contains(block)) {
             cir.setReturnValue(BlockRenderType.MODEL);

@@ -26,7 +26,7 @@ public abstract class EnderChestBlockEntityMixin extends BlockEntity {
     @Inject(method = "tick", at = @At(
             value = "INVOKE", target = "Lnet/minecraft/world/World;playSound(Lnet/minecraft/entity/player/PlayerEntity;DDDLnet/minecraft/sound/SoundEvent;Lnet/minecraft/sound/SoundCategory;FF)V", shift = At.Shift.AFTER, ordinal = 0
     ))
-    public void listenForOpen(CallbackInfo ci) {
+    public void enhanced_bes$listenForOpen(CallbackInfo ci) {
         if(this.world.isClient()) {
             rebuildChunk();
         }
@@ -38,7 +38,7 @@ public abstract class EnderChestBlockEntityMixin extends BlockEntity {
     ), slice = @Slice(
             from = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;playSound(Lnet/minecraft/entity/player/PlayerEntity;DDDLnet/minecraft/sound/SoundEvent;Lnet/minecraft/sound/SoundCategory;FF)V", shift = At.Shift.AFTER, ordinal = 1)
     ))
-    public void listenForClose(CallbackInfo ci) {
+    public void enhanced_bes$listenForClose(CallbackInfo ci) {
         if(this.world.isClient()) {
             if(this.animationProgress <= 0) {
                 rebuildScheduler = 1;
@@ -47,7 +47,7 @@ public abstract class EnderChestBlockEntityMixin extends BlockEntity {
     }
 
     @Inject(method = "tick", at = @At("HEAD"))
-    public void rebuildIfNeeded(CallbackInfo ci) {
+    public void enhanced_bes$rebuildIfNeeded(CallbackInfo ci) {
         if(rebuildScheduler > 0) {
             rebuildScheduler--;
             if(rebuildScheduler <= 0) rebuildChunk();

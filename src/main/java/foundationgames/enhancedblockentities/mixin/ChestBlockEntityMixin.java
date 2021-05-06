@@ -25,7 +25,7 @@ public abstract class ChestBlockEntityMixin extends LootableContainerBlockEntity
     @Inject(method = "tick", at = @At(
             value = "INVOKE", target = "Lnet/minecraft/block/entity/ChestBlockEntity;playSound(Lnet/minecraft/sound/SoundEvent;)V", shift = At.Shift.AFTER, ordinal = 0
     ))
-    public void listenForOpen(CallbackInfo ci) {
+    public void enhanced_bes$listenForOpen(CallbackInfo ci) {
         if(this.world.isClient()) {
             rebuildChunk();
         }
@@ -37,7 +37,7 @@ public abstract class ChestBlockEntityMixin extends LootableContainerBlockEntity
     ), slice = @Slice(
             from = @At(value = "INVOKE", target = "Lnet/minecraft/block/entity/ChestBlockEntity;playSound(Lnet/minecraft/sound/SoundEvent;)V", shift = At.Shift.AFTER, ordinal = 1)
     ))
-    public void listenForClose(CallbackInfo ci) {
+    public void enhanced_bes$listenForClose(CallbackInfo ci) {
         if(this.world.isClient()) {
             if(this.animationAngle <= 0) {
                 rebuildScheduler = 1;
@@ -46,7 +46,7 @@ public abstract class ChestBlockEntityMixin extends LootableContainerBlockEntity
     }
 
     @Inject(method = "tick", at = @At("HEAD"))
-    public void rebuildIfNeeded(CallbackInfo ci) {
+    public void enhanced_bes$rebuildIfNeeded(CallbackInfo ci) {
         if(rebuildScheduler > 0) {
             rebuildScheduler--;
             if(rebuildScheduler <= 0) rebuildChunk();

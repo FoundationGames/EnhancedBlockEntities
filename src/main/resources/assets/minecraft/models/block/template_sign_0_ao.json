@@ -1,5 +1,5 @@
 {
-	"ambientocclusion": false,
+    "ambientocclusion": true,
 	"texture_size": [64, 32],
 	"textures": {
 		"particle": "#sign"
@@ -8,7 +8,6 @@
 		{
 			"from": [7.3333, 0, 7.3333],
 			"to": [8.66663, 9.33333, 8.66663],
-			"rotation": {"angle": 45, "axis": "y", "origin": [8, 8, 8]},
 			"faces": {
 				"north": {"uv": [0.5, 8, 1, 15], "texture": "#sign"},
 				"east": {"uv": [0, 8, 0.5, 15], "texture": "#sign"},
@@ -21,7 +20,6 @@
 		{
 			"from": [0, 9.3333, 7.3333],
 			"to": [16, 17.3333, 8.66663],
-			"rotation": {"angle": 45, "axis": "y", "origin": [8, 8, 8]},
 			"faces": {
 				"north": {"uv": [0.5, 1, 6.5, 7], "texture": "#sign"},
 				"east": {"uv": [0, 1, 0.5, 7], "texture": "#sign"},

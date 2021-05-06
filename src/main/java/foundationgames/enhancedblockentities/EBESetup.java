@@ -1,24 +1,20 @@
 package foundationgames.enhancedblockentities;
 
-import foundationgames.enhancedblockentities.client.model.DynamicModelProvider;
-import foundationgames.enhancedblockentities.client.model.DynamicUnbakedModel;
-import foundationgames.enhancedblockentities.client.model.ModelIdentifiers;
-import foundationgames.enhancedblockentities.client.model.ModelSelector;
+import foundationgames.enhancedblockentities.client.model.*;
 import foundationgames.enhancedblockentities.client.render.BlockEntityRenderCondition;
 import foundationgames.enhancedblockentities.client.render.BlockEntityRendererOverride;
+import foundationgames.enhancedblockentities.util.DateUtil;
 import foundationgames.enhancedblockentities.util.ResourceUtil;
 import foundationgames.enhancedblockentities.util.duck.BakedModelManagerAccess;
-import foundationgames.enhancedblockentities.util.DateUtil;
 import net.devtech.arrp.api.RuntimeResourcePack;
 import net.devtech.arrp.json.models.JModel;
 import net.fabricmc.fabric.api.client.model.ModelLoadingRegistry;
-import net.fabricmc.fabric.api.object.builder.v1.client.model.FabricModelPredicateProviderRegistry;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.block.enums.ChestType;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.model.BakedModel;
-import net.minecraft.item.Items;
+import net.minecraft.resource.ResourceType;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.Identifier;
 
@@ -39,7 +35,7 @@ public enum EBESetup {;
         ResourceUtil.addDoubleChestModels("entity/chest/christmas_left", "entity/chest/christmas_right","christmas_chest", p);
         ResourceUtil.addSingleChestModels("entity/chest/ender", "ender_chest", p);
 
-        p.addModel(JModel.model("item/chest_model"), new Identifier("item/chest"));
+        p.addResource(ResourceType.CLIENT_RESOURCES, new Identifier("models/item/chest.json"), ResourceUtil.CHEST_ITEM_MODEL_RESOURCE.getBytes());
         p.addModel(JModel.model("block/trapped_chest_center"), new Identifier("item/trapped_chest"));
         p.addModel(JModel.model("block/ender_chest_center"), new Identifier("item/ender_chest"));
     }
@@ -76,7 +72,8 @@ public enum EBESetup {;
                                 ModelIdentifiers.CHRISTMAS_CHEST_CENTER,
                                 ModelIdentifiers.CHRISTMAS_CHEST_CENTER_TRUNK
                         },
-                        ModelSelector.CHEST_WITH_CHRISTMAS
+                        ModelSelector.CHEST_WITH_CHRISTMAS,
+                        DynamicModelEffects.CHEST
                 )
         ));
         ModelLoadingRegistry.INSTANCE.registerResourceProvider(manager -> new DynamicModelProvider(
@@ -88,7 +85,8 @@ public enum EBESetup {;
                                 ModelIdentifiers.CHRISTMAS_CHEST_LEFT,
                                 ModelIdentifiers.CHRISTMAS_CHEST_LEFT_TRUNK
                         },
-                        ModelSelector.CHEST_WITH_CHRISTMAS
+                        ModelSelector.CHEST_WITH_CHRISTMAS,
+                        DynamicModelEffects.CHEST
                 )
         ));
 
@@ -101,7 +99,8 @@ public enum EBESetup {;
                                 ModelIdentifiers.CHRISTMAS_CHEST_RIGHT,
                                 ModelIdentifiers.CHRISTMAS_CHEST_RIGHT_TRUNK
                         },
-                        ModelSelector.CHEST_WITH_CHRISTMAS
+                        ModelSelector.CHEST_WITH_CHRISTMAS,
+                        DynamicModelEffects.CHEST
                 )
         ));
         ModelLoadingRegistry.INSTANCE.registerResourceProvider(manager -> new DynamicModelProvider(
@@ -111,7 +110,8 @@ public enum EBESetup {;
                                 ModelIdentifiers.TRAPPED_CHEST_CENTER,
                                 ModelIdentifiers.TRAPPED_CHEST_CENTER_TRUNK
                         },
-                        ModelSelector.CHEST
+                        ModelSelector.CHEST,
+                        DynamicModelEffects.CHEST
                 )
         ));
         ModelLoadingRegistry.INSTANCE.registerResourceProvider(manager -> new DynamicModelProvider(
@@ -121,7 +121,8 @@ public enum EBESetup {;
                                 ModelIdentifiers.TRAPPED_CHEST_LEFT,
                                 ModelIdentifiers.TRAPPED_CHEST_LEFT_TRUNK
                         },
-                        ModelSelector.CHEST
+                        ModelSelector.CHEST,
+                        DynamicModelEffects.CHEST
                 )
         ));
         ModelLoadingRegistry.INSTANCE.registerResourceProvider(manager -> new DynamicModelProvider(
@@ -131,7 +132,8 @@ public enum EBESetup {;
                                 ModelIdentifiers.TRAPPED_CHEST_RIGHT,
                                 ModelIdentifiers.TRAPPED_CHEST_RIGHT_TRUNK
                         },
-                        ModelSelector.CHEST
+                        ModelSelector.CHEST,
+                        DynamicModelEffects.CHEST
                 )
         ));
         ModelLoadingRegistry.INSTANCE.registerResourceProvider(manager -> new DynamicModelProvider(
@@ -141,7 +143,8 @@ public enum EBESetup {;
                                 ModelIdentifiers.ENDER_CHEST_CENTER,
                                 ModelIdentifiers.ENDER_CHEST_CENTER_TRUNK
                         },
-                        ModelSelector.CHEST
+                        ModelSelector.CHEST,
+                        DynamicModelEffects.CHEST
                 )
         ));
     }

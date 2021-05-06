@@ -9,16 +9,22 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ScreenTexts;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
+import net.minecraft.util.Formatting;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 public class EBEConfigScreen extends Screen {
     private EBEOptionListWidget options;
     private final Screen parent;
 
-    private final ImmutableList<String> BOOLEAN_OPTIONS = ImmutableList.of("true", "false");
-    private final ImmutableList<String> ALLOWED_FORCED_DISABLED = ImmutableList.of("allowed", "forced", "disabled");
+    private static final ImmutableList<String> BOOLEAN_OPTIONS = ImmutableList.of("true", "false");
+    private static final ImmutableList<String> ALLOWED_FORCED_DISABLED = ImmutableList.of("allowed", "forced", "disabled");
+
+    private static final Text HOLD_SHIFT = new TranslatableText("text.ebe.shiftForDesc").formatted(Formatting.DARK_GRAY, Formatting.ITALIC);
 
     public EBEConfigScreen(Screen screen) {
         super(new TranslatableText("screen.ebe.config"));
@@ -31,7 +37,7 @@ public class EBEConfigScreen extends Screen {
         int bottomCenter = this.width / 2 - 50;
         boolean inWorld = this.client.world != null;
 
-        this.options = new EBEOptionListWidget(this.client, this.width, this.height, 26, this.height - 35, 22);
+        this.options = new EBEOptionListWidget(this.client, this.width, this.height, 34, this.height - 35, 24);
         if (inWorld) {
             this.options.method_31322(false);
         }
@@ -57,8 +63,23 @@ public class EBEConfigScreen extends Screen {
         this.options.render(matrices, mouseX, mouseY, delta);
 
         drawCenteredText(matrices, this.textRenderer, this.title, (int)(this.width * 0.5), 8, 0xFFFFFF);
+        drawCenteredText(matrices, this.textRenderer, HOLD_SHIFT, (int)(this.width * 0.5), 21, 0xFFFFFF);
 
         super.render(matrices, mouseX, mouseY, delta);
+
+        EBEOptionListWidget.EBEOptionEntry hovered = this.options.getHovered(mouseX, mouseY);
+        if (hovered != null && Screen.hasShiftDown()) {
+            EBEOption option = hovered.option;
+            List<Text> lines;
+            if (option.hasValueComments) {
+                lines = new ArrayList<>();
+                lines.addAll(option.getValueCommentLines());
+                lines.addAll(option.commentLines);
+            } else {
+                lines = option.commentLines;
+            }
+            renderTooltip(matrices, lines, mouseX, mouseY);
+        }
     }
 
     @Override
@@ -79,10 +100,15 @@ public class EBEConfigScreen extends Screen {
         Properties config = new Properties();
         EnhancedBlockEntities.CONFIG.writeTo(config);
         options.add(
-                new EBEOption("render_enhanced_chests", BOOLEAN_OPTIONS, BOOLEAN_OPTIONS.indexOf(config.getProperty("render_enhanced_chests")), false),
-                new EBEOption("render_enhanced_signs", BOOLEAN_OPTIONS, BOOLEAN_OPTIONS.indexOf(config.getProperty("render_enhanced_signs")), false),
-                new EBEOption("use_ao", BOOLEAN_OPTIONS, BOOLEAN_OPTIONS.indexOf(config.getProperty("use_ao")), false),
-                new EBEOption("christmas_chests", ALLOWED_FORCED_DISABLED, ALLOWED_FORCED_DISABLED.indexOf(config.getProperty("christmas_chests")), true)
+                new EBEOption(EBEConfig.RENDER_ENHANCED_CHESTS_KEY, BOOLEAN_OPTIONS, BOOLEAN_OPTIONS.indexOf(config.getProperty(EBEConfig.RENDER_ENHANCED_CHESTS_KEY)), false)
+        );
+        options.addPair(
+                new EBEOption(EBEConfig.CHEST_AO_KEY, BOOLEAN_OPTIONS, BOOLEAN_OPTIONS.indexOf(config.getProperty(EBEConfig.CHEST_AO_KEY)), false),
+                new EBEOption(EBEConfig.CHRISTMAS_CHESTS_KEY, ALLOWED_FORCED_DISABLED, ALLOWED_FORCED_DISABLED.indexOf(config.getProperty(EBEConfig.CHRISTMAS_CHESTS_KEY)), true)
+        );
+        options.add(
+                new EBEOption(EBEConfig.RENDER_ENHANCED_SIGNS_KEY, BOOLEAN_OPTIONS, BOOLEAN_OPTIONS.indexOf(config.getProperty(EBEConfig.RENDER_ENHANCED_SIGNS_KEY)), false),
+                new EBEOption(EBEConfig.SIGN_AO_KEY, BOOLEAN_OPTIONS, BOOLEAN_OPTIONS.indexOf(config.getProperty(EBEConfig.SIGN_AO_KEY)), false)
         );
     }
 }

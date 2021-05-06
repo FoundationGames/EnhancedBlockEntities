@@ -1,5 +1,5 @@
 {
-    "ambientocclusion": false,
+	"ambientocclusion": false,
 	"texture_size": [64, 32],
 	"textures": {
 		"particle": "#sign"
