@@ -1,0 +1,51 @@
+{
+	"textures": {
+		"bell": "entity/bell/bell_body",
+		"bar": "block/dark_oak_planks",
+		"particle": "entity/bell/bell_body"
+	},
+	"elements": [
+		{
+			"from": [7, 13, 7],
+			"to": [9, 16, 9],
+			"faces": {
+				"north": {"uv": [7, 2, 9, 5], "texture": "#bar"},
+				"east": {"uv": [1, 2, 3, 5], "texture": "#bar"},
+				"south": {"uv": [6, 2, 8, 5], "texture": "#bar"},
+				"west": {"uv": [4, 2, 6, 5], "texture": "#bar"},
+				"up": {"uv": [1, 3, 3, 5], "texture": "#bar", "cullface": "up"}
+			}
+		},
+		{
+			"from": [5, 6, 5],
+			"to": [11, 13, 11],
+			"faces": {
+				"north": {"uv": [3, 3, 6, 6.5], "rotation": 180, "texture": "#bell"},
+				"east": {"uv": [0, 3, 3, 6.5], "rotation": 180, "texture": "#bell"},
+				"south": {"uv": [9, 3, 12, 6.5], "rotation": 180, "texture": "#bell"},
+				"west": {"uv": [6, 3, 9, 6.5], "rotation": 180, "texture": "#bell"},
+				"up": {"uv": [3, 0, 6, 3], "rotation": 180, "texture": "#bell"},
+				"down": {"uv": [6, 0, 9, 3], "rotation": 180, "texture": "#bell"}
+			}
+		},
+		{
+			"from": [4, 4, 4],
+			"to": [12, 6, 12],
+			"faces": {
+				"north": {"uv": [4, 10.5, 8, 11.5], "rotation": 180, "texture": "#bell"},
+				"east": {"uv": [0, 10.5, 4, 11.5], "rotation": 180, "texture": "#bell"},
+				"south": {"uv": [4, 10.5, 8, 11.5], "rotation": 180, "texture": "#bell"},
+				"west": {"uv": [8, 10.5, 12, 11.5], "rotation": 180, "texture": "#bell"},
+				"up": {"uv": [4, 6.5, 8, 10.5], "rotation": 180, "texture": "#bell"},
+				"down": {"uv": [8, 6.5, 12, 10.5], "rotation": 180, "texture": "#bell"}
+			}
+		}
+	],
+	"groups": [0,
+		{
+			"name": "bell_base_DELETETHIS",
+			"origin": [8, 8, 8],
+			"children": [1, 2]
+		}
+	]
+}

@@ -12,7 +12,12 @@ public abstract class DynamicModelEffects {
         }
     };
 
-    // TODO: Bells
+    public static final DynamicModelEffects BELL = new DynamicModelEffects() {
+        @Override
+        public boolean ambientOcclusion() {
+            return EnhancedBlockEntities.CONFIG.bellAO;
+        }
+    };
 
     public boolean ambientOcclusion() {
         return true;

@@ -67,6 +67,10 @@ public class EBEOptionListWidget extends ElementListWidget<EBEOptionListWidget.B
         }
     }
 
+    public void addTitle(Text title) {
+        this.addEntry(new TitleEntry(title));
+    }
+
     public void addPair(EBEOption left, EBEOption right) {
         this.addEntry(new PairEntry(new EBEOptionEntry(left), new EBEOptionEntry(right), this));
     }
@@ -84,6 +88,32 @@ public class EBEOptionListWidget extends ElementListWidget<EBEOptionListWidget.B
     }
 
     public static abstract class BaseEntry extends ElementListWidget.Entry<EBEOptionListWidget.BaseEntry> {}
+
+    public static class TitleEntry extends BaseEntry {
+        private final Text title;
+
+        public TitleEntry(Text title) {
+            this.title = title;
+        }
+
+        @Override
+        public List<? extends Element> children() {
+            return Collections.emptyList();
+        }
+
+        @Override
+        public void render(MatrixStack matrices, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
+            TextRenderer tr = MinecraftClient.getInstance().textRenderer;
+            int tw = tr.getWidth(title);
+            drawCenteredText(matrices, tr, title, x + (entryWidth / 2), y + (entryHeight / 2) - 4, 0xFFFFFF);
+            RenderSystem.disableTexture();
+            int lw = (entryWidth / 2) - (6 + (tw / 2));
+            int side = 3;
+            drawTexture(matrices, x + side, y + 9, -100, 0, 0, lw - side, 1, 1, 1);
+            drawTexture(matrices, x + (entryWidth - lw), y + 9, -100, 0, 0, lw - side, 1, 1, 1);
+            RenderSystem.enableTexture();
+        }
+    }
 
     public static class PairEntry extends BaseEntry {
         public final EBEOptionEntry left;

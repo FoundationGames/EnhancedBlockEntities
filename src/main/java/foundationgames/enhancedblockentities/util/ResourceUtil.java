@@ -3,8 +3,10 @@ package foundationgames.enhancedblockentities.util;
 import foundationgames.enhancedblockentities.EnhancedBlockEntities;
 import net.devtech.arrp.api.RuntimeResourcePack;
 import net.devtech.arrp.json.blockstate.JState;
+import net.devtech.arrp.json.blockstate.JVariant;
 import net.devtech.arrp.json.models.JModel;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.Direction;
 
 public enum ResourceUtil {;
     private static RuntimeResourcePack PACK;
@@ -102,6 +104,20 @@ public enum ResourceUtil {;
                                 .put("facing=east", JState.model("block/"+wallSignName).y(90))
                 ), new Identifier(wallSignName)
         );
+    }
+
+    public static void addBellBlockState(RuntimeResourcePack pack) {
+        JVariant variant = JState.variant();
+        for (Direction dir : new Direction[] {Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST}) {
+            int rot = (int)dir.asRotation() + 90;
+            variant
+                    .put("attachment=double_wall,facing="+dir.getName(), JState.model("builtin:bell_between_walls").y(rot))
+                    .put("attachment=ceiling,facing="+dir.getName(), JState.model("builtin:bell_ceiling").y(rot + 90)) // adding 90 here and below to maintain Parity with vanilla's weird choice of rotations
+                    .put("attachment=floor,facing="+dir.getName(), JState.model("builtin:bell_floor").y(rot + 90))
+                    .put("attachment=single_wall,facing="+dir.getName(), JState.model("builtin:bell_wall").y(rot))
+            ;
+        }
+        pack.addBlockState(JState.state(variant), new Identifier("bell"));
     }
 
     public static void resetPack() {

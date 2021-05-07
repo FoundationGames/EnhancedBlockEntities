@@ -4,6 +4,7 @@ import foundationgames.enhancedblockentities.util.GuiUtil;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
+import net.minecraft.util.math.MathHelper;
 
 import java.util.List;
 
@@ -19,8 +20,8 @@ public final class EBEOption {
     public EBEOption(String key, List<String> values, int defaultValue, boolean hasValueComments) {
         this.key = key;
         this.values = values;
-        this.defaultValue = defaultValue;
-        this.selected = defaultValue;
+        this.defaultValue = MathHelper.clamp(defaultValue, 0, values.size());
+        this.selected = this.defaultValue;
         this.hasValueComments = hasValueComments;
 
         String comment = I18n.translate(String.format("option.ebe.%s.comment", key));

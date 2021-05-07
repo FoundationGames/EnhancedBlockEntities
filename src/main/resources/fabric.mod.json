@@ -9,7 +9,8 @@
     "FoundationGames"
   ],
   "contact": {
-    "homepage": "https://github.com/FoundationGames/EnhancedBlockEntities",
+    "homepage": "https://github.com/FoundationGames/EnhancedBlockEntities/blob/116_indev/README.md",
+    "issues": "https://github.com/FoundationGames/EnhancedBlockEntities/issues",
     "sources": "https://github.com/FoundationGames/EnhancedBlockEntities"
   },
 
@@ -20,6 +21,9 @@
   "entrypoints": {
     "client": [
       "foundationgames.enhancedblockentities.EnhancedBlockEntities"
+    ],
+    "modmenu": [
+      "foundationgames.enhancedblockentities.config.gui.EBEModMenuPlugin"
     ]
   },
   "mixins": [
@@ -30,5 +34,13 @@
     "fabricloader": ">=0.7.4",
     "fabric": "*",
     "minecraft": "1.16.x"
+  },
+
+  "custom": {
+    "modmenu": {
+      "links": {
+        "modmenu.discord": "https://discord.gg/7Aw3y4RtY9"
+      }
+    }
   }
 }

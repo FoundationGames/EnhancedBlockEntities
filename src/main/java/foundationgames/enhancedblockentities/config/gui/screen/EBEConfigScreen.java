@@ -23,8 +23,12 @@ public class EBEConfigScreen extends Screen {
 
     private static final ImmutableList<String> BOOLEAN_OPTIONS = ImmutableList.of("true", "false");
     private static final ImmutableList<String> ALLOWED_FORCED_DISABLED = ImmutableList.of("allowed", "forced", "disabled");
+    private static final ImmutableList<String> SIGN_TEXT_OPTIONS = ImmutableList.of("smart", "all", "most", "some", "few");
 
     private static final Text HOLD_SHIFT = new TranslatableText("text.ebe.shiftForDesc").formatted(Formatting.DARK_GRAY, Formatting.ITALIC);
+    private static final Text CHEST_OPTIONS_TITLE = new TranslatableText("text.ebe.chest_options");
+    private static final Text SIGN_OPTIONS_TITLE = new TranslatableText("text.ebe.sign_options");
+    private static final Text BELL_OPTIONS_TITLE = new TranslatableText("text.ebe.bell_options");
 
     public EBEConfigScreen(Screen screen) {
         super(new TranslatableText("screen.ebe.config"));
@@ -99,6 +103,7 @@ public class EBEConfigScreen extends Screen {
     public void addOptions() {
         Properties config = new Properties();
         EnhancedBlockEntities.CONFIG.writeTo(config);
+        options.addTitle(CHEST_OPTIONS_TITLE);
         options.add(
                 new EBEOption(EBEConfig.RENDER_ENHANCED_CHESTS_KEY, BOOLEAN_OPTIONS, BOOLEAN_OPTIONS.indexOf(config.getProperty(EBEConfig.RENDER_ENHANCED_CHESTS_KEY)), false)
         );
@@ -106,9 +111,18 @@ public class EBEConfigScreen extends Screen {
                 new EBEOption(EBEConfig.CHEST_AO_KEY, BOOLEAN_OPTIONS, BOOLEAN_OPTIONS.indexOf(config.getProperty(EBEConfig.CHEST_AO_KEY)), false),
                 new EBEOption(EBEConfig.CHRISTMAS_CHESTS_KEY, ALLOWED_FORCED_DISABLED, ALLOWED_FORCED_DISABLED.indexOf(config.getProperty(EBEConfig.CHRISTMAS_CHESTS_KEY)), true)
         );
+        options.addTitle(SIGN_OPTIONS_TITLE);
         options.add(
-                new EBEOption(EBEConfig.RENDER_ENHANCED_SIGNS_KEY, BOOLEAN_OPTIONS, BOOLEAN_OPTIONS.indexOf(config.getProperty(EBEConfig.RENDER_ENHANCED_SIGNS_KEY)), false),
-                new EBEOption(EBEConfig.SIGN_AO_KEY, BOOLEAN_OPTIONS, BOOLEAN_OPTIONS.indexOf(config.getProperty(EBEConfig.SIGN_AO_KEY)), false)
+                new EBEOption(EBEConfig.RENDER_ENHANCED_SIGNS_KEY, BOOLEAN_OPTIONS, BOOLEAN_OPTIONS.indexOf(config.getProperty(EBEConfig.RENDER_ENHANCED_SIGNS_KEY)), false)
+        );
+        options.addPair(
+                new EBEOption(EBEConfig.SIGN_AO_KEY, BOOLEAN_OPTIONS, BOOLEAN_OPTIONS.indexOf(config.getProperty(EBEConfig.SIGN_AO_KEY)), false),
+                new EBEOption(EBEConfig.SIGN_TEXT_RENDERING_KEY, SIGN_TEXT_OPTIONS, SIGN_TEXT_OPTIONS.indexOf(config.getProperty(EBEConfig.SIGN_TEXT_RENDERING_KEY)), true)
+        );
+        options.addTitle(BELL_OPTIONS_TITLE);
+        options.add(
+                new EBEOption(EBEConfig.RENDER_ENHANCED_BELLS_KEY, BOOLEAN_OPTIONS, BOOLEAN_OPTIONS.indexOf(config.getProperty(EBEConfig.RENDER_ENHANCED_BELLS_KEY)), false),
+                new EBEOption(EBEConfig.BELL_AO_KEY, BOOLEAN_OPTIONS, BOOLEAN_OPTIONS.indexOf(config.getProperty(EBEConfig.BELL_AO_KEY)), false)
         );
     }
 }

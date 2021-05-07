@@ -2,7 +2,9 @@ package foundationgames.enhancedblockentities;
 
 import foundationgames.enhancedblockentities.client.model.*;
 import foundationgames.enhancedblockentities.client.render.BlockEntityRenderCondition;
-import foundationgames.enhancedblockentities.client.render.BlockEntityRendererOverride;
+import foundationgames.enhancedblockentities.client.render.entity.BellBlockEntityRendererOverride;
+import foundationgames.enhancedblockentities.client.render.entity.ChestBlockEntityRendererOverride;
+import foundationgames.enhancedblockentities.client.render.entity.SignBlockEntityRendererOverride;
 import foundationgames.enhancedblockentities.util.DateUtil;
 import foundationgames.enhancedblockentities.util.ResourceUtil;
 import foundationgames.enhancedblockentities.util.duck.BakedModelManagerAccess;
@@ -60,6 +62,10 @@ public enum EBESetup {;
         ResourceUtil.addSignModels("entity/signs/dark_oak", "dark_oak_sign", "dark_oak_wall_sign", p);
         ResourceUtil.addSignModels("entity/signs/crimson", "crimson_sign", "crimson_wall_sign", p);
         ResourceUtil.addSignModels("entity/signs/warped", "warped_sign", "warped_wall_sign", p);
+    }
+
+    public static void setupRRPBells() {
+        ResourceUtil.addBellBlockState(ResourceUtil.getPack());
     }
 
     public static void setupResourceProviders() {
@@ -147,11 +153,56 @@ public enum EBESetup {;
                         DynamicModelEffects.CHEST
                 )
         ));
+
+        ModelLoadingRegistry.INSTANCE.registerResourceProvider(manager -> new DynamicModelProvider(
+                new Identifier("builtin", "bell_between_walls"),
+                () -> new DynamicUnbakedModel(
+                        new Identifier[] {
+                                ModelIdentifiers.BELL_BETWEEN_WALLS_WITH_BELL,
+                                ModelIdentifiers.BELL_BETWEEN_WALLS
+                        },
+                        ModelSelector.BELL,
+                        DynamicModelEffects.BELL
+                )
+        ));
+        ModelLoadingRegistry.INSTANCE.registerResourceProvider(manager -> new DynamicModelProvider(
+                new Identifier("builtin", "bell_ceiling"),
+                () -> new DynamicUnbakedModel(
+                        new Identifier[] {
+                                ModelIdentifiers.BELL_CEILING_WITH_BELL,
+                                ModelIdentifiers.BELL_CEILING
+                        },
+                        ModelSelector.BELL,
+                        DynamicModelEffects.BELL
+                )
+        ));
+        ModelLoadingRegistry.INSTANCE.registerResourceProvider(manager -> new DynamicModelProvider(
+                new Identifier("builtin", "bell_floor"),
+                () -> new DynamicUnbakedModel(
+                        new Identifier[] {
+                                ModelIdentifiers.BELL_FLOOR_WITH_BELL,
+                                ModelIdentifiers.BELL_FLOOR
+                        },
+                        ModelSelector.BELL,
+                        DynamicModelEffects.BELL
+                )
+        ));
+        ModelLoadingRegistry.INSTANCE.registerResourceProvider(manager -> new DynamicModelProvider(
+                new Identifier("builtin", "bell_wall"),
+                () -> new DynamicUnbakedModel(
+                        new Identifier[] {
+                                ModelIdentifiers.BELL_WALL_WITH_BELL,
+                                ModelIdentifiers.BELL_WALL
+                        },
+                        ModelSelector.BELL,
+                        DynamicModelEffects.BELL
+                )
+        ));
     }
 
     public static void setupChests() {
         EnhancedBlockEntityRegistry.register(Blocks.CHEST, BlockEntityType.CHEST, BlockEntityRenderCondition.CHEST,
-                BlockEntityRendererOverride.chest(() -> {
+                new ChestBlockEntityRendererOverride(() -> {
                     BakedModelManagerAccess manager = (BakedModelManagerAccess) MinecraftClient.getInstance().getBakedModelManager();
                     return new BakedModel[] {
                             manager.getModel(ModelIdentifiers.CHEST_CENTER_LID),
@@ -168,7 +219,7 @@ public enum EBESetup {;
                 })
         );
         EnhancedBlockEntityRegistry.register(Blocks.TRAPPED_CHEST, BlockEntityType.TRAPPED_CHEST, BlockEntityRenderCondition.CHEST,
-                BlockEntityRendererOverride.chest(() -> {
+                new ChestBlockEntityRendererOverride(() -> {
                     BakedModelManagerAccess manager = (BakedModelManagerAccess)MinecraftClient.getInstance().getBakedModelManager();
                     return new BakedModel[] {
                             manager.getModel(ModelIdentifiers.TRAPPED_CHEST_CENTER_LID),
@@ -181,13 +232,13 @@ public enum EBESetup {;
                 })
         );
         EnhancedBlockEntityRegistry.register(Blocks.ENDER_CHEST, BlockEntityType.ENDER_CHEST, BlockEntityRenderCondition.CHEST,
-                BlockEntityRendererOverride.chest(() -> {
+                new ChestBlockEntityRendererOverride(() -> {
                     BakedModelManagerAccess manager = (BakedModelManagerAccess)MinecraftClient.getInstance().getBakedModelManager();
                     return new BakedModel[] { manager.getModel(ModelIdentifiers.ENDER_CHEST_CENTER_LID) };
                 }, entity -> 0)
         );
         EnhancedBlockEntityRegistry.register(Blocks.ENDER_CHEST, BlockEntityType.ENDER_CHEST, BlockEntityRenderCondition.CHEST,
-                BlockEntityRendererOverride.chest(() -> {
+                new ChestBlockEntityRendererOverride(() -> {
                     BakedModelManagerAccess manager = (BakedModelManagerAccess)MinecraftClient.getInstance().getBakedModelManager();
                     return new BakedModel[] { manager.getModel(ModelIdentifiers.ENDER_CHEST_CENTER_LID) };
                 }, entity -> 0)
@@ -196,52 +247,58 @@ public enum EBESetup {;
 
     public static void setupSigns() {
         EnhancedBlockEntityRegistry.register(Blocks.OAK_SIGN, BlockEntityType.SIGN, BlockEntityRenderCondition.SIGN,
-                BlockEntityRendererOverride.sign()
+                new SignBlockEntityRendererOverride()
         );
         EnhancedBlockEntityRegistry.register(Blocks.OAK_WALL_SIGN, BlockEntityType.SIGN, BlockEntityRenderCondition.SIGN,
-                BlockEntityRendererOverride.sign()
+                new SignBlockEntityRendererOverride()
         );
         EnhancedBlockEntityRegistry.register(Blocks.BIRCH_SIGN, BlockEntityType.SIGN, BlockEntityRenderCondition.SIGN,
-                BlockEntityRendererOverride.sign()
+                new SignBlockEntityRendererOverride()
         );
         EnhancedBlockEntityRegistry.register(Blocks.BIRCH_WALL_SIGN, BlockEntityType.SIGN, BlockEntityRenderCondition.SIGN,
-                BlockEntityRendererOverride.sign()
+                new SignBlockEntityRendererOverride()
         );
         EnhancedBlockEntityRegistry.register(Blocks.SPRUCE_SIGN, BlockEntityType.SIGN, BlockEntityRenderCondition.SIGN,
-                BlockEntityRendererOverride.sign()
+                new SignBlockEntityRendererOverride()
         );
         EnhancedBlockEntityRegistry.register(Blocks.SPRUCE_WALL_SIGN, BlockEntityType.SIGN, BlockEntityRenderCondition.SIGN,
-                BlockEntityRendererOverride.sign()
+                new SignBlockEntityRendererOverride()
         );
         EnhancedBlockEntityRegistry.register(Blocks.JUNGLE_SIGN, BlockEntityType.SIGN, BlockEntityRenderCondition.SIGN,
-                BlockEntityRendererOverride.sign()
+                new SignBlockEntityRendererOverride()
         );
         EnhancedBlockEntityRegistry.register(Blocks.JUNGLE_WALL_SIGN, BlockEntityType.SIGN, BlockEntityRenderCondition.SIGN,
-                BlockEntityRendererOverride.sign()
+                new SignBlockEntityRendererOverride()
         );
         EnhancedBlockEntityRegistry.register(Blocks.ACACIA_SIGN, BlockEntityType.SIGN, BlockEntityRenderCondition.SIGN,
-                BlockEntityRendererOverride.sign()
+                new SignBlockEntityRendererOverride()
         );
         EnhancedBlockEntityRegistry.register(Blocks.ACACIA_WALL_SIGN, BlockEntityType.SIGN, BlockEntityRenderCondition.SIGN,
-                BlockEntityRendererOverride.sign()
+                new SignBlockEntityRendererOverride()
         );
         EnhancedBlockEntityRegistry.register(Blocks.DARK_OAK_SIGN, BlockEntityType.SIGN, BlockEntityRenderCondition.SIGN,
-                BlockEntityRendererOverride.sign()
+                new SignBlockEntityRendererOverride()
         );
         EnhancedBlockEntityRegistry.register(Blocks.DARK_OAK_WALL_SIGN, BlockEntityType.SIGN, BlockEntityRenderCondition.SIGN,
-                BlockEntityRendererOverride.sign()
+                new SignBlockEntityRendererOverride()
         );
         EnhancedBlockEntityRegistry.register(Blocks.CRIMSON_SIGN, BlockEntityType.SIGN, BlockEntityRenderCondition.SIGN,
-                BlockEntityRendererOverride.sign()
+                new SignBlockEntityRendererOverride()
         );
         EnhancedBlockEntityRegistry.register(Blocks.CRIMSON_WALL_SIGN, BlockEntityType.SIGN, BlockEntityRenderCondition.SIGN,
-                BlockEntityRendererOverride.sign()
+                new SignBlockEntityRendererOverride()
         );
         EnhancedBlockEntityRegistry.register(Blocks.WARPED_SIGN, BlockEntityType.SIGN, BlockEntityRenderCondition.SIGN,
-                BlockEntityRendererOverride.sign()
+                new SignBlockEntityRendererOverride()
         );
         EnhancedBlockEntityRegistry.register(Blocks.WARPED_WALL_SIGN, BlockEntityType.SIGN, BlockEntityRenderCondition.SIGN,
-                BlockEntityRendererOverride.sign()
+                new SignBlockEntityRendererOverride()
+        );
+    }
+
+    public static void setupBells() {
+        EnhancedBlockEntityRegistry.register(Blocks.BELL, BlockEntityType.BELL, BlockEntityRenderCondition.BELL,
+                new BellBlockEntityRendererOverride()
         );
     }
 }

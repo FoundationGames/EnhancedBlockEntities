@@ -34,7 +34,6 @@ public final class EnhancedBlockEntities implements ClientModInitializer {
     public static void reload() {
         load();
         MinecraftClient.getInstance().reloadResources();
-        //MinecraftClient.getInstance().worldRenderer.reload();
     }
 
     public static void load() {
@@ -51,6 +50,11 @@ public final class EnhancedBlockEntities implements ClientModInitializer {
         if(CONFIG.renderEnhancedSigns) {
             EBESetup.setupSigns();
             EBESetup.setupRRPSigns();
+        }
+
+        if(CONFIG.renderEnhancedBells) {
+            EBESetup.setupBells();
+            EBESetup.setupRRPBells();
         }
     }
 }
