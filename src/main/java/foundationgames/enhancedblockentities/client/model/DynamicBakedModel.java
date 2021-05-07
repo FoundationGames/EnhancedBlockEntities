@@ -22,10 +22,12 @@ import java.util.function.Supplier;
 public class DynamicBakedModel implements BakedModel, FabricBakedModel {
     private final BakedModel[] models;
     private final ModelSelector selector;
+    private final DynamicModelEffects effects;
 
-    public DynamicBakedModel(BakedModel[] models, ModelSelector selector) {
+    public DynamicBakedModel(BakedModel[] models, ModelSelector selector, DynamicModelEffects effects) {
         this.models = models;
         this.selector = selector;
+        this.effects = effects;
     }
 
     @Override
@@ -39,8 +41,7 @@ public class DynamicBakedModel implements BakedModel, FabricBakedModel {
         BakedModel model = models[selector.getModelIndex(view, state, blockPos, rng, context)];
         for (int i = 0; i <= 6; i++) {
             Direction dir = ModelHelper.faceFromIndex(i);
-            //System.out.println("DIRECTION: "+dir+"; QUADS: "+model.getQuads(state, dir, rng.get()));
-            for(BakedQuad quad : model.getQuads(state, dir, rng.get())) {
+            for (BakedQuad quad : model.getQuads(state, dir, rng.get())) {
                 emitter.fromVanilla(quad, null, dir);
                 emitter.emit();
             }
@@ -59,7 +60,7 @@ public class DynamicBakedModel implements BakedModel, FabricBakedModel {
 
     @Override
     public boolean useAmbientOcclusion() {
-        return false;
+        return effects.ambientOcclusion();
     }
 
     @Override

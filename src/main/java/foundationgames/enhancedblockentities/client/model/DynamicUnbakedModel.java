@@ -18,10 +18,12 @@ import java.util.function.Function;
 public class DynamicUnbakedModel implements UnbakedModel {
     private final Identifier[] models;
     private final ModelSelector selector;
+    private final DynamicModelEffects effects;
 
-    public DynamicUnbakedModel(Identifier[] models, ModelSelector selector) {
+    public DynamicUnbakedModel(Identifier[] models, ModelSelector selector, DynamicModelEffects effects) {
         this.models = models;
         this.selector = selector;
+        this.effects = effects;
     }
 
     @Override
@@ -40,6 +42,6 @@ public class DynamicUnbakedModel implements UnbakedModel {
         for (int i = 0; i < models.length; i++) {
             baked[i] = loader.getOrLoadModel(models[i]).bake(loader, textureGetter, rotationContainer, models[i]);
         }
-        return new DynamicBakedModel(baked, selector);
+        return new DynamicBakedModel(baked, selector, effects);
     }
 }

@@ -15,8 +15,15 @@ public final class EnhancedBlockEntityRegistry {
     public static final Map<BlockEntityType<?>, Pair<BlockEntityRenderCondition, BlockEntityRendererOverride>> ENTITIES = new HashMap<>();
     public static final Set<Block> BLOCKS = new HashSet<>();
 
+    private EnhancedBlockEntityRegistry() {}
+
     public static void register(Block block, BlockEntityType<?> type, BlockEntityRenderCondition condition, BlockEntityRendererOverride renderer) {
         ENTITIES.put(type, new Pair<>(condition, renderer));
         BLOCKS.add(block);
+    }
+
+    public static void clear() {
+        ENTITIES.clear();
+        BLOCKS.clear();
     }
 }

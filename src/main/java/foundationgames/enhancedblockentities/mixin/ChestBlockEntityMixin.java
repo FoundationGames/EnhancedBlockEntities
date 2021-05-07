@@ -1,5 +1,6 @@
 package foundationgames.enhancedblockentities.mixin;
 
+import foundationgames.enhancedblockentities.EnhancedBlockEntities;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.block.entity.ChestBlockEntity;
 import net.minecraft.block.entity.LootableContainerBlockEntity;
@@ -24,7 +25,7 @@ public abstract class ChestBlockEntityMixin extends LootableContainerBlockEntity
     @Inject(method = "tick", at = @At(
             value = "INVOKE", target = "Lnet/minecraft/block/entity/ChestBlockEntity;playSound(Lnet/minecraft/sound/SoundEvent;)V", shift = At.Shift.AFTER, ordinal = 0
     ))
-    public void listenForOpen(CallbackInfo ci) {
+    public void enhanced_bes$listenForOpen(CallbackInfo ci) {
         if(this.world.isClient()) {
             rebuildChunk();
         }
@@ -36,7 +37,7 @@ public abstract class ChestBlockEntityMixin extends LootableContainerBlockEntity
     ), slice = @Slice(
             from = @At(value = "INVOKE", target = "Lnet/minecraft/block/entity/ChestBlockEntity;playSound(Lnet/minecraft/sound/SoundEvent;)V", shift = At.Shift.AFTER, ordinal = 1)
     ))
-    public void listenForClose(CallbackInfo ci) {
+    public void enhanced_bes$listenForClose(CallbackInfo ci) {
         if(this.world.isClient()) {
             if(this.animationAngle <= 0) {
                 rebuildScheduler = 1;
@@ -45,7 +46,7 @@ public abstract class ChestBlockEntityMixin extends LootableContainerBlockEntity
     }
 
     @Inject(method = "tick", at = @At("HEAD"))
-    public void rebuildIfNeeded(CallbackInfo ci) {
+    public void enhanced_bes$rebuildIfNeeded(CallbackInfo ci) {
         if(rebuildScheduler > 0) {
             rebuildScheduler--;
             if(rebuildScheduler <= 0) rebuildChunk();
@@ -53,6 +54,8 @@ public abstract class ChestBlockEntityMixin extends LootableContainerBlockEntity
     }
 
     private void rebuildChunk() {
-        MinecraftClient.getInstance().worldRenderer.updateBlock(world, pos, getCachedState(), getCachedState(), 1);
+        if(EnhancedBlockEntities.CONFIG.renderEnhancedChests) {
+            MinecraftClient.getInstance().worldRenderer.updateBlock(world, pos, getCachedState(), getCachedState(), 1);
+        }
     }
 }

@@ -1,6 +1,0 @@
-{
-	"parent": "block/template_chest_center_lid",
-	"textures": {
-		"chest": "entity/chest/ender"
-	}
-}

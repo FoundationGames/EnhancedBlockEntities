@@ -1,0 +1,35 @@
+{
+    "ambientocclusion": true,
+	"texture_size": [64, 32],
+	"textures": {
+		"particle": "#sign"
+	},
+	"elements": [
+		{
+			"from": [7.3333, 0, 7.3333],
+			"to": [8.66663, 9.33333, 8.66663],
+			"rotation": {"angle": 45, "axis": "y", "origin": [8, 8, 8]},
+			"faces": {
+				"north": {"uv": [0.5, 8, 1, 15], "texture": "#sign"},
+				"east": {"uv": [0, 8, 0.5, 15], "texture": "#sign"},
+				"south": {"uv": [1.5, 8, 2, 15], "texture": "#sign"},
+				"west": {"uv": [1, 8, 1.5, 15], "texture": "#sign"},
+				"up": {"uv": [0.5, 7, 1, 8], "texture": "#sign"},
+				"down": {"uv": [1, 7, 1.5, 8], "texture": "#sign"}
+			}
+		},
+		{
+			"from": [0, 9.3333, 7.3333],
+			"to": [16, 17.3333, 8.66663],
+			"rotation": {"angle": 45, "axis": "y", "origin": [8, 8, 8]},
+			"faces": {
+				"north": {"uv": [0.5, 1, 6.5, 7], "texture": "#sign"},
+				"east": {"uv": [0, 1, 0.5, 7], "texture": "#sign"},
+				"south": {"uv": [7, 1, 13, 7], "texture": "#sign"},
+				"west": {"uv": [6.5, 1, 7, 7], "texture": "#sign"},
+				"up": {"uv": [0.5, 0, 6.5, 1], "texture": "#sign"},
+				"down": {"uv": [6.5, 0, 12.5, 1], "texture": "#sign"}
+			}
+		}
+	]
+}

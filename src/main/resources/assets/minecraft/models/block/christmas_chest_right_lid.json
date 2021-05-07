@@ -1,6 +1,0 @@
-{
-	"parent": "block/template_chest_right_lid",
-	"textures": {
-		"chest": "entity/chest/christmas_right"
-	}
-}
