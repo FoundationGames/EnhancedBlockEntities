@@ -56,7 +56,7 @@ public class ChestBlockEntityRendererOverride extends BlockEntityRendererOverrid
         ChestAnimationProgress chest = (ChestAnimationProgress)blockEntity;
 
         BlockState state = blockEntity.getCachedState();
-        if (state.get(ChestBlock.CHEST_TYPE) != ChestType.SINGLE) {
+        if (state.contains(ChestBlock.CHEST_TYPE) && state.get(ChestBlock.CHEST_TYPE) != ChestType.SINGLE) {
             BlockEntity neighbor = null;
             BlockPos pos = blockEntity.getPos();
             Direction facing = state.get(ChestBlock.FACING);
@@ -67,7 +67,6 @@ public class ChestBlockEntityRendererOverride extends BlockEntityRendererOverrid
                 case RIGHT:
                     neighbor = blockEntity.getWorld().getBlockEntity(pos.offset(facing.rotateYCounterclockwise()));
             }
-            //System.out.println(neighbor);
             if (neighbor instanceof ChestAnimationProgress) {
                 float nAnim = ((ChestAnimationProgress)neighbor).getAnimationProgress(tickDelta);
                 if (nAnim > chest.getAnimationProgress(tickDelta)) {
