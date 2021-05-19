@@ -29,6 +29,7 @@ public class EBEConfigScreen extends Screen {
     private static final Text CHEST_OPTIONS_TITLE = new TranslatableText("text.ebe.chest_options");
     private static final Text SIGN_OPTIONS_TITLE = new TranslatableText("text.ebe.sign_options");
     private static final Text BELL_OPTIONS_TITLE = new TranslatableText("text.ebe.bell_options");
+    private static final Text BED_OPTIONS_TITLE = new TranslatableText("text.ebe.bed_options");
 
     public EBEConfigScreen(Screen screen) {
         super(new TranslatableText("screen.ebe.config"));
@@ -105,10 +106,11 @@ public class EBEConfigScreen extends Screen {
         EnhancedBlockEntities.CONFIG.writeTo(config);
         options.addTitle(CHEST_OPTIONS_TITLE);
         options.add(
-                new EBEOption(EBEConfig.RENDER_ENHANCED_CHESTS_KEY, BOOLEAN_OPTIONS, BOOLEAN_OPTIONS.indexOf(config.getProperty(EBEConfig.RENDER_ENHANCED_CHESTS_KEY)), false)
+                new EBEOption(EBEConfig.RENDER_ENHANCED_CHESTS_KEY, BOOLEAN_OPTIONS, BOOLEAN_OPTIONS.indexOf(config.getProperty(EBEConfig.RENDER_ENHANCED_CHESTS_KEY)), false),
+                new EBEOption(EBEConfig.CHEST_AO_KEY, BOOLEAN_OPTIONS, BOOLEAN_OPTIONS.indexOf(config.getProperty(EBEConfig.CHEST_AO_KEY)), false)
         );
         options.addPair(
-                new EBEOption(EBEConfig.CHEST_AO_KEY, BOOLEAN_OPTIONS, BOOLEAN_OPTIONS.indexOf(config.getProperty(EBEConfig.CHEST_AO_KEY)), false),
+                new EBEOption(EBEConfig.EXPERIMENTAL_CHESTS_KEY, BOOLEAN_OPTIONS, BOOLEAN_OPTIONS.indexOf(config.getProperty(EBEConfig.EXPERIMENTAL_CHESTS_KEY)), false),
                 new EBEOption(EBEConfig.CHRISTMAS_CHESTS_KEY, ALLOWED_FORCED_DISABLED, ALLOWED_FORCED_DISABLED.indexOf(config.getProperty(EBEConfig.CHRISTMAS_CHESTS_KEY)), true)
         );
         options.addTitle(SIGN_OPTIONS_TITLE);
@@ -123,6 +125,11 @@ public class EBEConfigScreen extends Screen {
         options.add(
                 new EBEOption(EBEConfig.RENDER_ENHANCED_BELLS_KEY, BOOLEAN_OPTIONS, BOOLEAN_OPTIONS.indexOf(config.getProperty(EBEConfig.RENDER_ENHANCED_BELLS_KEY)), false),
                 new EBEOption(EBEConfig.BELL_AO_KEY, BOOLEAN_OPTIONS, BOOLEAN_OPTIONS.indexOf(config.getProperty(EBEConfig.BELL_AO_KEY)), false)
+        );
+        options.addTitle(BED_OPTIONS_TITLE);
+        options.add(
+                new EBEOption(EBEConfig.RENDER_ENHANCED_BEDS_KEY, BOOLEAN_OPTIONS, BOOLEAN_OPTIONS.indexOf(config.getProperty(EBEConfig.RENDER_ENHANCED_BEDS_KEY)), false),
+                new EBEOption(EBEConfig.BED_AO_KEY, BOOLEAN_OPTIONS, BOOLEAN_OPTIONS.indexOf(config.getProperty(EBEConfig.BED_AO_KEY)), false)
         );
     }
 }

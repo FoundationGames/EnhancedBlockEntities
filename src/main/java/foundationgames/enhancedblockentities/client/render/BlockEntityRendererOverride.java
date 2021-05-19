@@ -13,6 +13,11 @@ import net.minecraft.util.math.Direction;
 import java.util.Random;
 
 public abstract class BlockEntityRendererOverride {
+    public static final BlockEntityRendererOverride NO_OP = new BlockEntityRendererOverride() {
+        @Override
+        public void render(BlockEntity blockEntity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {}
+    };
+
     private static final Random dummy = new Random();
 
     public BlockEntityRendererOverride() {
