@@ -167,7 +167,7 @@ public enum ResourceUtil {;
     }
 
     public static void resetExperimentalPack() {
-        EXPERIMENTAL_PACK = RuntimeResourcePack.create("ebe:late_pack");
+        EXPERIMENTAL_PACK = RuntimeResourcePack.create("ebe:exp_resources");
     }
 
     public static RuntimeResourcePack getPack() {

@@ -3,8 +3,8 @@ package foundationgames.enhancedblockentities.mixin;
 import com.google.common.collect.ImmutableList;
 import foundationgames.enhancedblockentities.util.ResourceUtil;
 import foundationgames.enhancedblockentities.util.hacks.ExperimentalSetup;
-import foundationgames.enhancedblockentities.util.hacks.ResourceHacks;
 import net.minecraft.resource.ReloadableResourceManagerImpl;
+import net.minecraft.resource.ResourceManager;
 import net.minecraft.resource.ResourcePack;
 import net.minecraft.resource.ResourceReloadMonitor;
 import net.minecraft.util.Unit;
@@ -21,8 +21,10 @@ import java.util.concurrent.Executor;
 
 @Mixin(ReloadableResourceManagerImpl.class)
 public abstract class ReloadableResourceManagerImplMixin {
+    @Shadow public abstract void addPack(ResourcePack resourcePack);
+
     /**
-     * yes
+     * Loads resources at the Perfect Times because yes
      */
 
     @ModifyVariable(method = "beginMonitoredReload", at = @At("HEAD"), index = 4)
@@ -34,9 +36,18 @@ public abstract class ReloadableResourceManagerImplMixin {
             builder.add(old.get(i));
         }
 
-        ExperimentalSetup.setup(old);
-        builder.add(ResourceUtil.getExperimentalPack());
-
         return builder.build();
+    }
+
+    /**
+     * "What did {@code ResourceManager} ever do to you", they said <br/>
+     * "You should use it instead of a {@code List<ResourcePack>}", they said
+     */
+
+    @Inject(method = "beginMonitoredReload", at = @At(value = "RETURN", shift = At.Shift.BEFORE))
+    private void enhanced_bes$injectLateRRP(Executor prepareExecutor, Executor applyExecutor, CompletableFuture<Unit> initialStage, List<ResourcePack> packs, CallbackInfoReturnable<ResourceReloadMonitor> cir) {
+        ExperimentalSetup.cacheResources((ResourceManager) this);
+        ExperimentalSetup.setup();
+        this.addPack(ResourceUtil.getExperimentalPack());
     }
 }

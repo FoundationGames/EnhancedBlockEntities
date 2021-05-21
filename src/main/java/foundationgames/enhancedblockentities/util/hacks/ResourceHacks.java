@@ -2,6 +2,7 @@ package foundationgames.enhancedblockentities.util.hacks;
 
 import foundationgames.enhancedblockentities.EnhancedBlockEntities;
 import net.devtech.arrp.api.RuntimeResourcePack;
+import net.minecraft.resource.ResourceManager;
 import net.minecraft.resource.ResourcePack;
 import net.minecraft.resource.ResourceType;
 import net.minecraft.util.Identifier;
@@ -10,32 +11,37 @@ import org.jetbrains.annotations.Nullable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /*
                     SUFFER
  */
 
 public enum ResourceHacks {;
-    public static void addChestParticleTexture(String chestName, String chestTexture, List<ResourcePack> packs, RuntimeResourcePack pack) throws IOException {
-        InputStream image = ResourceHacks.openTopResource(packs, ResourceType.CLIENT_RESOURCES, new Identifier("textures/"+chestTexture+".png"));
-        if (image != null) {
-            pack.addResource(ResourceType.CLIENT_RESOURCES, new Identifier("textures/block/"+chestName+"_particle.png"), TextureHacks.cropImage(image, 42f/64, 33f/64, 58f/64, 49f/64));
-            image.close();
-        } else EnhancedBlockEntities.LOG.warn("Unable to generate a chest particle texture as no such texture exists in any loaded resources");
+    public static void addChestParticleTexture(String chestName, String chestTexture, ResourceManager manager, RuntimeResourcePack pack) throws IOException {
+        InputStream image;
+        try {
+            Identifier resourceId = new Identifier("textures/"+chestTexture+".png");
+            image = openAsset(manager, resourceId);
+        } catch (IOException e) {
+            EnhancedBlockEntities.LOG.warn("Unable to generate a chest particle texture as no such texture exists in any loaded resources");
+            return;
+        }
+        if (image == null) return;
+
+        pack.addAsset(new Identifier("textures/block/"+chestName+"_particle.png"), TextureHacks.cropImage(image, 42f/64, 33f/64, 58f/64, 49f/64));
+        image.close();
     }
 
-    /*
-        utterly horrific
-     */
     @Nullable
-    public static InputStream openTopResource(List<ResourcePack> packs, ResourceType type, Identifier resource) throws IOException {
-        ResourcePack pack;
+    public static InputStream openAsset(ResourceManager manager, Identifier resource) throws IOException {
+        List<ResourcePack> packs = manager.streamResourcePacks().collect(Collectors.toList());
         for (int i = packs.size(); i-- > 0;) {
-            pack = packs.get(i);
-            if (pack.contains(type, resource)) {
-                return pack.open(type, resource);
+            ResourcePack p = packs.get(i);
+            if (p.contains(ResourceType.CLIENT_RESOURCES, resource)) {
+                return p.open(ResourceType.CLIENT_RESOURCES, resource);
             }
         }
-        return null;
+        throw new IOException("Resource "+resource+" cannot be found in "+manager);
     }
 }
