@@ -17,6 +17,16 @@ repositories {
 	maven {
 		url = "https://maven.terraformersmc.com/"
 	}
+	maven {
+		name = "Auoeke's Maven"
+		url = "https://auoeke.jfrog.io/artifactory/maven"
+	}
+	maven {
+		name = "Jitpack"
+		url = "https://jitpack.io"
+	}
+
+
 }
 
 dependencies {
@@ -35,6 +45,8 @@ dependencies {
 	// Mod Menu because config screen access from another place
 	modImplementation "com.terraformersmc:modmenu:${project.modmenu_version}"
 
+	modImplementation 'com.github.alphaqu:DashLoader:1.4.6-dev'
+	implementation "net.gudenau.lib:unsafe:1.4.1"
 	// PSA: Some older mods, compiled on Loom 0.2.1, might have outdated Maven POMs.
 	// You may need to force-disable transitiveness on them.
 }

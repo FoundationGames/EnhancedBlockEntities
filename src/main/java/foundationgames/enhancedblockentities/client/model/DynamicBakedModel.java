@@ -30,6 +30,18 @@ public class DynamicBakedModel implements BakedModel, FabricBakedModel {
         this.effects = effects;
     }
 
+    public BakedModel[] getModels() {
+        return models;
+    }
+
+    public ModelSelector getSelector() {
+        return selector;
+    }
+
+    public DynamicModelEffects getEffects() {
+        return effects;
+    }
+
     @Override
     public boolean isVanillaAdapter() {
         return false;
