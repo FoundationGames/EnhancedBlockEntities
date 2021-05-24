@@ -41,6 +41,9 @@
       "links": {
         "modmenu.discord": "https://discord.gg/7Aw3y4RtY9"
       }
-    }
+    },
+    "dashloader:factory": [
+      "foundationgames.enhancedblockentities.dashloader.DynamicBakedModelFactory"
+    ]
   }
 }
