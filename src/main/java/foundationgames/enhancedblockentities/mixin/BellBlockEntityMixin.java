@@ -17,6 +17,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class BellBlockEntityMixin extends BlockEntity {
     @Shadow public int ringTicks;
 
+    @Shadow public boolean ringing;
+
     protected BellBlockEntityMixin(BlockEntityType<?> type) {
         super(type);
     }
@@ -32,7 +34,8 @@ public class BellBlockEntityMixin extends BlockEntity {
 
     @Inject(method = "onSyncedBlockEvent", at = @At("HEAD"))
     public void enhanced_bes$listenForRing(int type, int data, CallbackInfoReturnable<Boolean> cir) {
-        if (type == 1) {
+        // the !ringing prevents people from unnecessarily destroying your fps by spamming a bell in a complex, hard-to-rebuild chunk
+        if (type == 1 && !ringing) {
             rebuildChunk();
         }
     }

@@ -56,5 +56,10 @@ public final class EnhancedBlockEntities implements ClientModInitializer {
             EBESetup.setupBells();
             EBESetup.setupRRPBells();
         }
+
+        if(CONFIG.renderEnhancedBeds) {
+            EBESetup.setupBeds();
+            EBESetup.setupRRPBeds();
+        }
     }
 }

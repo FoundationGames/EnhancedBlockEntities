@@ -5,27 +5,35 @@ import net.devtech.arrp.api.RuntimeResourcePack;
 import net.devtech.arrp.json.blockstate.JState;
 import net.devtech.arrp.json.blockstate.JVariant;
 import net.devtech.arrp.json.models.JModel;
+import net.devtech.arrp.json.models.JTextures;
+import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Direction;
 
 public enum ResourceUtil {;
     private static RuntimeResourcePack PACK;
+    private static RuntimeResourcePack EXPERIMENTAL_PACK;
 
     public static final String CHEST_ITEM_MODEL_RESOURCE = "{\"parent\":\"block/chest_center\",\"overrides\":[{\"predicate\":{\"is_christmas\":1},\"model\": \"item/christmas_chest\"}]}";
 
     public static void addSingleChestModels(String texture, String chestName, RuntimeResourcePack pack) {
-        pack.addModel(JModel.model().parent("block/template_chest_center").textures(JModel.textures().var("chest", texture)), new Identifier("block/" + chestName + "_center"));
-        pack.addModel(JModel.model().parent("block/template_chest_center_lid").textures(JModel.textures().var("chest", texture)), new Identifier("block/" + chestName + "_center_lid"));
-        pack.addModel(JModel.model().parent("block/template_chest_center_trunk").textures(JModel.textures().var("chest", texture)), new Identifier("block/" + chestName + "_center_trunk"));
+        pack.addModel(JModel.model().parent("block/template_chest_center").textures(withChestParticle(JModel.textures().var("chest", texture), chestName)), new Identifier("block/" + chestName + "_center"));
+        pack.addModel(JModel.model().parent("block/template_chest_center_lid").textures(withChestParticle(JModel.textures().var("chest", texture), chestName)), new Identifier("block/" + chestName + "_center_lid"));
+        pack.addModel(JModel.model().parent("block/template_chest_center_trunk").textures(withChestParticle(JModel.textures().var("chest", texture), chestName)), new Identifier("block/" + chestName + "_center_trunk"));
     }
 
     public static void addDoubleChestModels(String leftTex, String rightTex, String chestName, RuntimeResourcePack pack) {
-        pack.addModel(JModel.model().parent("block/template_chest_left").textures(JModel.textures().var("chest", leftTex)), new Identifier("block/" + chestName + "_left"));
-        pack.addModel(JModel.model().parent("block/template_chest_left_lid").textures(JModel.textures().var("chest", leftTex)), new Identifier("block/" + chestName + "_left_lid"));
-        pack.addModel(JModel.model().parent("block/template_chest_left_trunk").textures(JModel.textures().var("chest", leftTex)), new Identifier("block/" + chestName + "_left_trunk"));
-        pack.addModel(JModel.model().parent("block/template_chest_right").textures(JModel.textures().var("chest", rightTex)), new Identifier("block/" + chestName + "_right"));
-        pack.addModel(JModel.model().parent("block/template_chest_right_lid").textures(JModel.textures().var("chest", rightTex)), new Identifier("block/" + chestName + "_right_lid"));
-        pack.addModel(JModel.model().parent("block/template_chest_right_trunk").textures(JModel.textures().var("chest", rightTex)), new Identifier("block/" + chestName + "_right_trunk"));
+        pack.addModel(JModel.model().parent("block/template_chest_left").textures(withChestParticle(JModel.textures().var("chest", leftTex), chestName)), new Identifier("block/" + chestName + "_left"));
+        pack.addModel(JModel.model().parent("block/template_chest_left_lid").textures(withChestParticle(JModel.textures().var("chest", leftTex), chestName)), new Identifier("block/" + chestName + "_left_lid"));
+        pack.addModel(JModel.model().parent("block/template_chest_left_trunk").textures(withChestParticle(JModel.textures().var("chest", leftTex), chestName)), new Identifier("block/" + chestName + "_left_trunk"));
+        pack.addModel(JModel.model().parent("block/template_chest_right").textures(withChestParticle(JModel.textures().var("chest", rightTex), chestName)), new Identifier("block/" + chestName + "_right"));
+        pack.addModel(JModel.model().parent("block/template_chest_right_lid").textures(withChestParticle(JModel.textures().var("chest", rightTex), chestName)), new Identifier("block/" + chestName + "_right_lid"));
+        pack.addModel(JModel.model().parent("block/template_chest_right_trunk").textures(withChestParticle(JModel.textures().var("chest", rightTex), chestName)), new Identifier("block/" + chestName + "_right_trunk"));
+    }
+
+    private static JTextures withChestParticle(JTextures textures, String chestName) {
+        if (EnhancedBlockEntities.CONFIG.experimentalChests) textures.var("particle", "block/"+chestName+"_particle");
+        return textures;
     }
 
     public static void addChestBlockStates(String chestName, RuntimeResourcePack pack) {
@@ -120,15 +128,58 @@ public enum ResourceUtil {;
         pack.addBlockState(JState.state(variant), new Identifier("bell"));
     }
 
+    public static void addBedModels(DyeColor bedColor, RuntimeResourcePack pack) {
+        String color = bedColor.getName();
+        pack.addModel(
+                JModel.model()
+                        .parent(bedAOSuffix("block/template_bed_head"))
+                        .textures(JModel.textures().var("bed", "entity/bed/" + color)),
+                new Identifier("block/" + color + "_bed_head")
+        );
+        pack.addModel(
+                JModel.model()
+                        .parent(bedAOSuffix("block/template_bed_foot"))
+                        .textures(JModel.textures().var("bed", "entity/bed/" + color)),
+                new Identifier("block/" + color + "_bed_foot")
+        );
+    }
+
+    public static void addBedBlockState(DyeColor bedColor, RuntimeResourcePack pack) {
+        String color = bedColor.getName();
+        JVariant variant = JState.variant();
+        for (Direction dir : new Direction[] {Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST}) {
+            int rot = (int)dir.asRotation() + 180;
+            variant
+                    .put("part=head,facing="+dir.getName(), JState.model("block/" + bedColor + "_bed_head").y(rot))
+                    .put("part=foot,facing="+dir.getName(), JState.model("block/" + bedColor + "_bed_foot").y(rot))
+            ;
+        }
+        pack.addBlockState(JState.state(variant), new Identifier(color + "_bed"));
+    }
+
+    private static String bedAOSuffix(String model) {
+        if (EnhancedBlockEntities.CONFIG.bedAO) model += "_ao";
+        return model;
+    }
+
     public static void resetPack() {
         PACK = RuntimeResourcePack.create("ebe:pack");
+    }
+
+    public static void resetExperimentalPack() {
+        EXPERIMENTAL_PACK = RuntimeResourcePack.create("ebe:exp_resources");
     }
 
     public static RuntimeResourcePack getPack() {
         return PACK;
     }
 
+    public static RuntimeResourcePack getExperimentalPack() {
+        return EXPERIMENTAL_PACK;
+    }
+
     static {
         resetPack();
+        resetExperimentalPack();
     }
 }
