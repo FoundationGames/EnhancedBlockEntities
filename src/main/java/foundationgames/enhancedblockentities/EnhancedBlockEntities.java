@@ -23,17 +23,16 @@ public final class EnhancedBlockEntities implements ClientModInitializer {
         EBESetup.setupResourceProviders();
         FabricModelPredicateProviderRegistry.register(Items.CHEST, new Identifier("is_christmas"), (stack, world, entity) -> DateUtil.isChristmas() ? 1 : 0);
 
-        /*
-         *  See ReloadableResourceManagerImplMixin for why this is commented out
-         */
-        //RRPCallback.EVENT.register(resources -> resources.add(ResourceUtil.getPack()));
-
         load();
     }
 
-    public static void reload() {
+    public static void reload(ReloadType type) {
         load();
-        MinecraftClient.getInstance().reloadResources();
+        if (type == ReloadType.WORLD) {
+            MinecraftClient.getInstance().worldRenderer.reload();
+        } else if (type == ReloadType.RESOURCES) {
+            MinecraftClient.getInstance().reloadResources();
+        }
     }
 
     public static void load() {

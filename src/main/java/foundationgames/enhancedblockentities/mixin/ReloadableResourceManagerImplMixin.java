@@ -23,10 +23,6 @@ import java.util.concurrent.Executor;
 public abstract class ReloadableResourceManagerImplMixin {
     @Shadow public abstract void addPack(ResourcePack resourcePack);
 
-    /**
-     * Loads resources at the Perfect Times because yes
-     */
-
     @ModifyVariable(method = "beginMonitoredReload", at = @At("HEAD"), index = 4)
     private List<ResourcePack> enhanced_bes$injectRRP(List<ResourcePack> old) {
         ImmutableList.Builder<ResourcePack> builder = ImmutableList.builder();
@@ -39,13 +35,8 @@ public abstract class ReloadableResourceManagerImplMixin {
         return builder.build();
     }
 
-    /**
-     * "What did {@code ResourceManager} ever do to you", they said <br/>
-     * "You should use it instead of a {@code List<ResourcePack>}", they said
-     */
-
     @Inject(method = "beginMonitoredReload", at = @At(value = "RETURN", shift = At.Shift.BEFORE))
-    private void enhanced_bes$injectLateRRP(Executor prepareExecutor, Executor applyExecutor, CompletableFuture<Unit> initialStage, List<ResourcePack> packs, CallbackInfoReturnable<ResourceReloadMonitor> cir) {
+    private void enhanced_bes$injectAndSetupExperimentalPack(Executor prepareExecutor, Executor applyExecutor, CompletableFuture<Unit> initialStage, List<ResourcePack> packs, CallbackInfoReturnable<ResourceReloadMonitor> cir) {
         ExperimentalSetup.cacheResources((ResourceManager) this);
         ExperimentalSetup.setup();
         this.addPack(ResourceUtil.getExperimentalPack());

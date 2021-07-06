@@ -1,5 +1,6 @@
 package foundationgames.enhancedblockentities.config.gui.option;
 
+import foundationgames.enhancedblockentities.ReloadType;
 import foundationgames.enhancedblockentities.util.GuiUtil;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.text.Text;
@@ -16,13 +17,15 @@ public final class EBEOption {
     public final boolean hasValueComments;
     public final List<Text> commentLines;
     private List<Text> valueCommentLines = null;
+    public final ReloadType reloadType;
 
-    public EBEOption(String key, List<String> values, int defaultValue, boolean hasValueComments) {
+    public EBEOption(String key, List<String> values, int defaultValue, boolean hasValueComments, ReloadType reloadType) {
         this.key = key;
         this.values = values;
         this.defaultValue = MathHelper.clamp(defaultValue, 0, values.size());
         this.selected = this.defaultValue;
         this.hasValueComments = hasValueComments;
+        this.reloadType = reloadType;
 
         String comment = I18n.translate(String.format("option.ebe.%s.comment", key));
         commentLines = GuiUtil.shorten(comment, 20);

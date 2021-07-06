@@ -11,12 +11,8 @@ version = project.mod_version
 group = project.maven_group
 
 repositories {
-	maven {
-		url = "https://raw.githubusercontent.com/Devan-Kerman/Devan-Repo/master/"
-	}
-	maven {
-		url = "https://maven.terraformersmc.com/"
-	}
+	maven { url = "https://storage.googleapis.com/devan-maven/" }
+	maven { url = "https://api.modrinth.com/maven" }
 }
 
 dependencies {
@@ -33,7 +29,7 @@ dependencies {
 	include "net.devtech:arrp:${project.arrp_version}"
 
 	// Mod Menu because config screen access from another place
-	modImplementation "com.terraformersmc:modmenu:${project.modmenu_version}"
+	modImplementation "maven.modrinth:modmenu:${project.modmenu_version}"
 
 	// PSA: Some older mods, compiled on Loom 0.2.1, might have outdated Maven POMs.
 	// You may need to force-disable transitiveness on them.
