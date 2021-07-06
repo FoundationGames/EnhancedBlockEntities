@@ -46,17 +46,17 @@ public class EBEConfigScreen extends Screen {
 
         this.options = new EBEOptionListWidget(this.client, this.width, this.height, 34, this.height - 35, 24);
         if (inWorld) {
-            this.options.method_31322(false);
+            this.options.setRenderBackground(false);
         }
         addOptions();
-        this.children.add(options);
+        this.addDrawableChild(options);
 
-        this.addButton(new ButtonWidget(bottomCenter + 104, this.height - 27, 100, 20, ScreenTexts.DONE, button -> {
+        this.addDrawableChild(new ButtonWidget(bottomCenter + 104, this.height - 27, 100, 20, ScreenTexts.DONE, button -> {
             applyChanges();
             onClose();
         }));
-        this.addButton(new ButtonWidget(bottomCenter, this.height - 27, 100, 20, new TranslatableText("text.ebe.apply"), button -> this.applyChanges()));
-        this.addButton(new ButtonWidget(bottomCenter - 104, this.height - 27, 100, 20, ScreenTexts.CANCEL, button -> this.onClose()));
+        this.addDrawableChild(new ButtonWidget(bottomCenter, this.height - 27, 100, 20, new TranslatableText("text.ebe.apply"), button -> this.applyChanges()));
+        this.addDrawableChild(new ButtonWidget(bottomCenter - 104, this.height - 27, 100, 20, ScreenTexts.CANCEL, button -> this.onClose()));
     }
 
     @Override
@@ -67,7 +67,7 @@ public class EBEConfigScreen extends Screen {
             this.fillGradient(matrices, 0, 0, width, height, 0x4F232323, 0x4F232323);
         }
 
-        this.options.render(matrices, mouseX, mouseY, delta);
+        //this.options.render(matrices, mouseX, mouseY, delta);
 
         drawCenteredText(matrices, this.textRenderer, this.title, (int)(this.width * 0.5), 8, 0xFFFFFF);
         drawCenteredText(matrices, this.textRenderer, HOLD_SHIFT, (int)(this.width * 0.5), 21, 0xFFFFFF);

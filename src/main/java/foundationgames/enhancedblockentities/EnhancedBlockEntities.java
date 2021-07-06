@@ -21,7 +21,7 @@ public final class EnhancedBlockEntities implements ClientModInitializer {
     public void onInitializeClient() {
         ModelIdentifiers.init();
         EBESetup.setupResourceProviders();
-        FabricModelPredicateProviderRegistry.register(Items.CHEST, new Identifier("is_christmas"), (stack, world, entity) -> DateUtil.isChristmas() ? 1 : 0);
+        FabricModelPredicateProviderRegistry.register(Items.CHEST, new Identifier("is_christmas"), (stack, world, entity, seed) -> DateUtil.isChristmas() ? 1 : 0);
 
         load();
     }

@@ -4,6 +4,7 @@ import com.google.common.base.Charsets;
 import com.google.common.collect.ImmutableList;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.fabricmc.fabric.impl.resource.loader.ModResourcePackUtil;
+import net.minecraft.SharedConstants;
 import net.minecraft.resource.AbstractFileResourcePack;
 import net.minecraft.resource.ResourcePack;
 import net.minecraft.resource.ResourceType;
@@ -22,7 +23,7 @@ import java.util.function.Predicate;
 public class ExperimentalResourcePack implements ResourcePack {
     private static final String PACK_DESC = "Experimental Resource Pack for Enhanced Block Entities";
 
-    public static final String PACK_META = String.format("{\"pack\":{\"pack_format\":%s,\"description\":\"%s\"}}", ModResourcePackUtil.PACK_FORMAT_VERSION, PACK_DESC);
+    public final String PACK_META = String.format("{\"pack\":{\"pack_format\":%s,\"description\":\"%s\"}}", ResourceType.CLIENT_RESOURCES.getPackVersion(SharedConstants.getGameVersion()), PACK_DESC);
 
     private final Map<Identifier, byte[]> resources = new Object2ObjectOpenHashMap<>();
     private final Set<String> namespaces = new HashSet<>();

@@ -10,9 +10,9 @@ import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.model.BakedModel;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.client.util.math.Vector3f;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3f;
 
 public class BellBlockEntityRendererOverride extends BlockEntityRendererOverride {
     private BakedModel bellModel = null;
@@ -39,8 +39,8 @@ public class BellBlockEntityRendererOverride extends BlockEntityRendererOverride
             }
             matrices.push();
             matrices.translate(8f/16, 12f/16, 8f/16);
-            matrices.multiply(Vector3f.POSITIVE_X.getRadialQuaternion(bellPitch));
-            matrices.multiply(Vector3f.POSITIVE_Z.getRadialQuaternion(bellRoll));
+            matrices.multiply(Vec3f.POSITIVE_X.getRadialQuaternion(bellPitch));
+            matrices.multiply(Vec3f.POSITIVE_Z.getRadialQuaternion(bellRoll));
             matrices.translate(-8f/16, -12f/16, -8f/16);
             renderBakedModel(vertexConsumers.getBuffer(RenderLayer.getSolid()), matrices, bellModel, light, overlay, Direction.NORTH);
 

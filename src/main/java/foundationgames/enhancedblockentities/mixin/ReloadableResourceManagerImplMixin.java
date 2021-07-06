@@ -6,7 +6,7 @@ import foundationgames.enhancedblockentities.util.hacks.ExperimentalSetup;
 import net.minecraft.resource.ReloadableResourceManagerImpl;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.resource.ResourcePack;
-import net.minecraft.resource.ResourceReloadMonitor;
+import net.minecraft.resource.ResourceReload;
 import net.minecraft.util.Unit;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -23,7 +23,7 @@ import java.util.concurrent.Executor;
 public abstract class ReloadableResourceManagerImplMixin {
     @Shadow public abstract void addPack(ResourcePack resourcePack);
 
-    @ModifyVariable(method = "beginMonitoredReload", at = @At("HEAD"), index = 4)
+    @ModifyVariable(method = "reload", at = @At("HEAD"), index = 4)
     private List<ResourcePack> enhanced_bes$injectRRP(List<ResourcePack> old) {
         ImmutableList.Builder<ResourcePack> builder = ImmutableList.builder();
         builder.add(old.get(0));
@@ -35,8 +35,8 @@ public abstract class ReloadableResourceManagerImplMixin {
         return builder.build();
     }
 
-    @Inject(method = "beginMonitoredReload", at = @At(value = "RETURN", shift = At.Shift.BEFORE))
-    private void enhanced_bes$injectAndSetupExperimentalPack(Executor prepareExecutor, Executor applyExecutor, CompletableFuture<Unit> initialStage, List<ResourcePack> packs, CallbackInfoReturnable<ResourceReloadMonitor> cir) {
+    @Inject(method = "reload", at = @At(value = "RETURN", shift = At.Shift.BEFORE))
+    private void enhanced_bes$injectAndSetupExperimentalPack(Executor prepareExecutor, Executor applyExecutor, CompletableFuture<Unit> initialStage, List<ResourcePack> packs, CallbackInfoReturnable<ResourceReload> cir) {
         ExperimentalSetup.cacheResources((ResourceManager) this);
         ExperimentalSetup.setup();
         this.addPack(ResourceUtil.getExperimentalPack());
