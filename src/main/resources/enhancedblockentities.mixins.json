@@ -13,15 +13,12 @@
     "ChestBlockEntityMixin",
     "ChestBlockEntityStateManagerMixin",
     "EnderChestBlockEntityMixin",
-    "MinecraftClientMixin",
+    "EnderChestBlockEntityStateManagerMixin",
     "ReloadableResourceManagerImplMixin",
     "SignBlockEntityRenderAccessor",
     "VideoOptionsScreenMixin"
   ],
   "injectors": {
     "defaultRequire": 1
-  },
-  "mixins": [
-
-  ]
+  }
 }

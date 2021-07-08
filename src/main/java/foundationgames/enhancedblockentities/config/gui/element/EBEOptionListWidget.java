@@ -172,7 +172,7 @@ public class EBEOptionListWidget extends ElementListWidget<EBEOptionListWidget.B
         public void render(MatrixStack matrices, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
             MinecraftClient minecraftClient = MinecraftClient.getInstance();
             TextRenderer textRenderer = minecraftClient.textRenderer;
-            minecraftClient.getTextureManager().bindTexture(ClickableWidget.GUI_ICONS_TEXTURE);
+            RenderSystem.setShaderTexture(0, ClickableWidget.WIDGETS_TEXTURE);
             RenderSystem.clearColor(1.0f, 1.0f, 1.0f, 1.0f);
             int vo = 1;
             if (hovered) {
