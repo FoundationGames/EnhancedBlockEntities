@@ -116,7 +116,7 @@ public class EBEOptionListWidget extends ElementListWidget<EBEOptionListWidget.B
         }
 
         @Override
-        public List<? extends Selectable> method_37025() {
+        public List<? extends Selectable> selectableChildren() {
             return Collections.emptyList();
         }
     }
@@ -156,7 +156,7 @@ public class EBEOptionListWidget extends ElementListWidget<EBEOptionListWidget.B
         public List<? extends Element> children() { return Collections.emptyList(); }
 
         @Override
-        public List<? extends Selectable> method_37025() {
+        public List<? extends Selectable> selectableChildren() {
             return Collections.emptyList();
         }
     }
@@ -205,7 +205,7 @@ public class EBEOptionListWidget extends ElementListWidget<EBEOptionListWidget.B
         }
 
         @Override
-        public List<? extends Selectable> method_37025() {
+        public List<? extends Selectable> selectableChildren() {
             return Collections.emptyList();
         }
     }
