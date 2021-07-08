@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(targets = "net/minecraft/block/entity/ChestBlockEntity$1")
 public class ChestBlockEntityStateManagerMixin {
-    @Inject(method = "onChestOpened", at = @At("HEAD"))
+    @Inject(method = "onChestOpened(Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/BlockState;)V", at = @At("HEAD"))
     private void ebe$listenForOpen(World world, BlockPos pos, BlockState state, CallbackInfo ci) {
         if(EnhancedBlockEntities.CONFIG.renderEnhancedChests) WorldUtil.scheduleRebuild(pos, state, 2);
     }
