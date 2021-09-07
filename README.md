@@ -11,6 +11,7 @@ EBE is a **100% client side** Minecraft mod for the **[Fabric](https://fabricmc.
 - Signs
 - Bells
 - Beds
+<br/><br/>
 Requires [Fabric API](https://modrinth.com/mod/fabric-api) <br/><br/>
 
 ## FAQ and Help
