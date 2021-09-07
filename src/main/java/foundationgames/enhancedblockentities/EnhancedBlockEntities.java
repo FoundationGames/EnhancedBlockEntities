@@ -1,10 +1,14 @@
 package foundationgames.enhancedblockentities;
 
 import foundationgames.enhancedblockentities.client.model.ModelIdentifiers;
+import foundationgames.enhancedblockentities.client.render.SignRenderManager;
 import foundationgames.enhancedblockentities.config.EBEConfig;
 import foundationgames.enhancedblockentities.util.DateUtil;
 import foundationgames.enhancedblockentities.util.ResourceUtil;
+import foundationgames.enhancedblockentities.util.WorldUtil;
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
 import net.fabricmc.fabric.api.object.builder.v1.client.model.FabricModelPredicateProviderRegistry;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.item.Items;
@@ -19,21 +23,23 @@ public final class EnhancedBlockEntities implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
+        ClientTickEvents.START_WORLD_TICK.register(WorldUtil::tick);
+        WorldRenderEvents.END.register(SignRenderManager::endFrame);
+
         ModelIdentifiers.init();
         EBESetup.setupResourceProviders();
-        FabricModelPredicateProviderRegistry.register(Items.CHEST, new Identifier("is_christmas"), (stack, world, entity) -> DateUtil.isChristmas() ? 1 : 0);
-
-        /*
-         *  See ReloadableResourceManagerImplMixin for why this is commented out
-         */
-        //RRPCallback.EVENT.register(resources -> resources.add(ResourceUtil.getPack()));
+        FabricModelPredicateProviderRegistry.register(Items.CHEST, new Identifier("is_christmas"), (stack, world, entity, seed) -> DateUtil.isChristmas() ? 1 : 0);
 
         load();
     }
 
-    public static void reload() {
+    public static void reload(ReloadType type) {
         load();
-        MinecraftClient.getInstance().reloadResources();
+        if (type == ReloadType.WORLD) {
+            MinecraftClient.getInstance().worldRenderer.reload();
+        } else if (type == ReloadType.RESOURCES) {
+            MinecraftClient.getInstance().reloadResources();
+        }
     }
 
     public static void load() {

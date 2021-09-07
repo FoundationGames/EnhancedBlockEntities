@@ -9,10 +9,13 @@
     "BakedModelManagerMixin",
     "BellBlockEntityMixin",
     "BlockEntityRenderDispatcherMixin",
+    "ChestBlockEntityAccessor",
     "ChestBlockEntityMixin",
+    "ChestBlockEntityStateManagerMixin",
     "EnderChestBlockEntityMixin",
-    "MinecraftClientMixin",
+    "EnderChestBlockEntityStateManagerMixin",
     "ReloadableResourceManagerImplMixin",
+    "SignBlockEntityRenderAccessor",
     "VideoOptionsScreenMixin"
   ],
   "injectors": {

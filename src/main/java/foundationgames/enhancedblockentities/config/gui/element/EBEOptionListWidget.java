@@ -6,7 +6,8 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.gui.Element;
-import net.minecraft.client.gui.widget.AbstractButtonWidget;
+import net.minecraft.client.gui.Selectable;
+import net.minecraft.client.gui.widget.ClickableWidget;
 import net.minecraft.client.gui.widget.ElementListWidget;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.client.util.math.MatrixStack;
@@ -113,6 +114,11 @@ public class EBEOptionListWidget extends ElementListWidget<EBEOptionListWidget.B
             drawTexture(matrices, x + (entryWidth - lw), y + 9, -100, 0, 0, lw - side, 1, 1, 1);
             RenderSystem.enableTexture();
         }
+
+        @Override
+        public List<? extends Selectable> selectableChildren() {
+            return Collections.emptyList();
+        }
     }
 
     public static class PairEntry extends BaseEntry {
@@ -148,6 +154,11 @@ public class EBEOptionListWidget extends ElementListWidget<EBEOptionListWidget.B
 
         @Override
         public List<? extends Element> children() { return Collections.emptyList(); }
+
+        @Override
+        public List<? extends Selectable> selectableChildren() {
+            return Collections.emptyList();
+        }
     }
 
     public static class EBEOptionEntry extends BaseEntry {
@@ -161,8 +172,8 @@ public class EBEOptionListWidget extends ElementListWidget<EBEOptionListWidget.B
         public void render(MatrixStack matrices, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
             MinecraftClient minecraftClient = MinecraftClient.getInstance();
             TextRenderer textRenderer = minecraftClient.textRenderer;
-            minecraftClient.getTextureManager().bindTexture(AbstractButtonWidget.WIDGETS_LOCATION);
-            RenderSystem.color4f(1.0f, 1.0f, 1.0f, 1.0f);
+            RenderSystem.setShaderTexture(0, ClickableWidget.WIDGETS_TEXTURE);
+            RenderSystem.clearColor(1.0f, 1.0f, 1.0f, 1.0f);
             int vo = 1;
             if (hovered) {
                 vo = 2;
@@ -190,6 +201,11 @@ public class EBEOptionListWidget extends ElementListWidget<EBEOptionListWidget.B
 
         @Override
         public List<? extends Element> children() {
+            return Collections.emptyList();
+        }
+
+        @Override
+        public List<? extends Selectable> selectableChildren() {
             return Collections.emptyList();
         }
     }

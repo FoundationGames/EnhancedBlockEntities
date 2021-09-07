@@ -1,9 +1,9 @@
 package foundationgames.enhancedblockentities.util.hacks;
 
 import foundationgames.enhancedblockentities.EnhancedBlockEntities;
+import foundationgames.enhancedblockentities.client.resource.ExperimentalResourcePack;
 import foundationgames.enhancedblockentities.config.EBEConfig;
 import foundationgames.enhancedblockentities.util.ResourceUtil;
-import net.devtech.arrp.api.RuntimeResourcePack;
 import net.minecraft.resource.ResourceManager;
 
 import java.io.IOException;
@@ -27,7 +27,7 @@ public enum ExperimentalSetup {;
     }
 
     public static void setupChests(ResourceManager manager) throws IOException {
-        RuntimeResourcePack p = ResourceUtil.getExperimentalPack();
+        ExperimentalResourcePack p = ResourceUtil.getExperimentalPack();
 
         ResourceHacks.addChestParticleTexture("chest", "entity/chest/normal", manager, p);
         ResourceHacks.addChestParticleTexture("trapped_chest", "entity/chest/trapped", manager, p);

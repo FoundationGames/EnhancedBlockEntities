@@ -1,6 +1,7 @@
 package foundationgames.enhancedblockentities.util;
 
 import foundationgames.enhancedblockentities.EnhancedBlockEntities;
+import foundationgames.enhancedblockentities.client.resource.ExperimentalResourcePack;
 import net.devtech.arrp.api.RuntimeResourcePack;
 import net.devtech.arrp.json.blockstate.JState;
 import net.devtech.arrp.json.blockstate.JVariant;
@@ -12,7 +13,7 @@ import net.minecraft.util.math.Direction;
 
 public enum ResourceUtil {;
     private static RuntimeResourcePack PACK;
-    private static RuntimeResourcePack EXPERIMENTAL_PACK;
+    private static ExperimentalResourcePack EXPERIMENTAL_PACK;
 
     public static final String CHEST_ITEM_MODEL_RESOURCE = "{\"parent\":\"block/chest_center\",\"overrides\":[{\"predicate\":{\"is_christmas\":1},\"model\": \"item/christmas_chest\"}]}";
 
@@ -167,14 +168,14 @@ public enum ResourceUtil {;
     }
 
     public static void resetExperimentalPack() {
-        EXPERIMENTAL_PACK = RuntimeResourcePack.create("ebe:exp_resources");
+        EXPERIMENTAL_PACK = new ExperimentalResourcePack();
     }
 
     public static RuntimeResourcePack getPack() {
         return PACK;
     }
 
-    public static RuntimeResourcePack getExperimentalPack() {
+    public static ExperimentalResourcePack getExperimentalPack() {
         return EXPERIMENTAL_PACK;
     }
 

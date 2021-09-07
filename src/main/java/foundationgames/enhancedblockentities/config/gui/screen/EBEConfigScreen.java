@@ -3,6 +3,7 @@ package foundationgames.enhancedblockentities.config.gui.screen;
 import com.google.common.collect.ImmutableList;
 import foundationgames.enhancedblockentities.EnhancedBlockEntities;
 import foundationgames.enhancedblockentities.config.EBEConfig;
+import foundationgames.enhancedblockentities.ReloadType;
 import foundationgames.enhancedblockentities.config.gui.element.EBEOptionListWidget;
 import foundationgames.enhancedblockentities.config.gui.option.EBEOption;
 import net.minecraft.client.gui.screen.Screen;
@@ -16,6 +17,7 @@ import net.minecraft.util.Formatting;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class EBEConfigScreen extends Screen {
     private EBEOptionListWidget options;
@@ -44,17 +46,17 @@ public class EBEConfigScreen extends Screen {
 
         this.options = new EBEOptionListWidget(this.client, this.width, this.height, 34, this.height - 35, 24);
         if (inWorld) {
-            this.options.method_31322(false);
+            this.options.setRenderBackground(false);
         }
         addOptions();
-        this.children.add(options);
+        this.addDrawableChild(options);
 
-        this.addButton(new ButtonWidget(bottomCenter + 104, this.height - 27, 100, 20, ScreenTexts.DONE, button -> {
+        this.addDrawableChild(new ButtonWidget(bottomCenter + 104, this.height - 27, 100, 20, ScreenTexts.DONE, button -> {
             applyChanges();
             onClose();
         }));
-        this.addButton(new ButtonWidget(bottomCenter, this.height - 27, 100, 20, new TranslatableText("text.ebe.apply"), button -> this.applyChanges()));
-        this.addButton(new ButtonWidget(bottomCenter - 104, this.height - 27, 100, 20, ScreenTexts.CANCEL, button -> this.onClose()));
+        this.addDrawableChild(new ButtonWidget(bottomCenter, this.height - 27, 100, 20, new TranslatableText("text.ebe.apply"), button -> this.applyChanges()));
+        this.addDrawableChild(new ButtonWidget(bottomCenter - 104, this.height - 27, 100, 20, ScreenTexts.CANCEL, button -> this.onClose()));
     }
 
     @Override
@@ -65,7 +67,7 @@ public class EBEConfigScreen extends Screen {
             this.fillGradient(matrices, 0, 0, width, height, 0x4F232323, 0x4F232323);
         }
 
-        this.options.render(matrices, mouseX, mouseY, delta);
+        //this.options.render(matrices, mouseX, mouseY, delta);
 
         drawCenteredText(matrices, this.textRenderer, this.title, (int)(this.width * 0.5), 8, 0xFFFFFF);
         drawCenteredText(matrices, this.textRenderer, HOLD_SHIFT, (int)(this.width * 0.5), 21, 0xFFFFFF);
@@ -95,10 +97,16 @@ public class EBEConfigScreen extends Screen {
     public void applyChanges() {
         EBEConfig config = EnhancedBlockEntities.CONFIG;
         Properties properties = new Properties();
-        options.forEach(option -> properties.setProperty(option.key, option.getValue()));
+        AtomicReference<ReloadType> type = new AtomicReference<>(ReloadType.NONE);
+        options.forEach(option -> {
+            if (!option.isDefault()) {
+                type.set(type.get().or(option.reloadType));
+            }
+            properties.setProperty(option.key, option.getValue());
+        });
         config.readFrom(properties);
         config.save();
-        EnhancedBlockEntities.reload();
+        EnhancedBlockEntities.reload(type.get());
     }
 
     public void addOptions() {
@@ -106,30 +114,30 @@ public class EBEConfigScreen extends Screen {
         EnhancedBlockEntities.CONFIG.writeTo(config);
         options.addTitle(CHEST_OPTIONS_TITLE);
         options.add(
-                new EBEOption(EBEConfig.RENDER_ENHANCED_CHESTS_KEY, BOOLEAN_OPTIONS, BOOLEAN_OPTIONS.indexOf(config.getProperty(EBEConfig.RENDER_ENHANCED_CHESTS_KEY)), false),
-                new EBEOption(EBEConfig.CHEST_AO_KEY, BOOLEAN_OPTIONS, BOOLEAN_OPTIONS.indexOf(config.getProperty(EBEConfig.CHEST_AO_KEY)), false)
+                new EBEOption(EBEConfig.RENDER_ENHANCED_CHESTS_KEY, BOOLEAN_OPTIONS, BOOLEAN_OPTIONS.indexOf(config.getProperty(EBEConfig.RENDER_ENHANCED_CHESTS_KEY)), false, ReloadType.RESOURCES),
+                new EBEOption(EBEConfig.CHEST_AO_KEY, BOOLEAN_OPTIONS, BOOLEAN_OPTIONS.indexOf(config.getProperty(EBEConfig.CHEST_AO_KEY)), false, ReloadType.RESOURCES)
         );
         options.addPair(
-                new EBEOption(EBEConfig.EXPERIMENTAL_CHESTS_KEY, BOOLEAN_OPTIONS, BOOLEAN_OPTIONS.indexOf(config.getProperty(EBEConfig.EXPERIMENTAL_CHESTS_KEY)), false),
-                new EBEOption(EBEConfig.CHRISTMAS_CHESTS_KEY, ALLOWED_FORCED_DISABLED, ALLOWED_FORCED_DISABLED.indexOf(config.getProperty(EBEConfig.CHRISTMAS_CHESTS_KEY)), true)
+                new EBEOption(EBEConfig.EXPERIMENTAL_CHESTS_KEY, BOOLEAN_OPTIONS, BOOLEAN_OPTIONS.indexOf(config.getProperty(EBEConfig.EXPERIMENTAL_CHESTS_KEY)), false, ReloadType.RESOURCES),
+                new EBEOption(EBEConfig.CHRISTMAS_CHESTS_KEY, ALLOWED_FORCED_DISABLED, ALLOWED_FORCED_DISABLED.indexOf(config.getProperty(EBEConfig.CHRISTMAS_CHESTS_KEY)), true, ReloadType.WORLD)
         );
         options.addTitle(SIGN_OPTIONS_TITLE);
         options.add(
-                new EBEOption(EBEConfig.RENDER_ENHANCED_SIGNS_KEY, BOOLEAN_OPTIONS, BOOLEAN_OPTIONS.indexOf(config.getProperty(EBEConfig.RENDER_ENHANCED_SIGNS_KEY)), false)
+                new EBEOption(EBEConfig.RENDER_ENHANCED_SIGNS_KEY, BOOLEAN_OPTIONS, BOOLEAN_OPTIONS.indexOf(config.getProperty(EBEConfig.RENDER_ENHANCED_SIGNS_KEY)), false, ReloadType.RESOURCES)
         );
         options.addPair(
-                new EBEOption(EBEConfig.SIGN_AO_KEY, BOOLEAN_OPTIONS, BOOLEAN_OPTIONS.indexOf(config.getProperty(EBEConfig.SIGN_AO_KEY)), false),
-                new EBEOption(EBEConfig.SIGN_TEXT_RENDERING_KEY, SIGN_TEXT_OPTIONS, SIGN_TEXT_OPTIONS.indexOf(config.getProperty(EBEConfig.SIGN_TEXT_RENDERING_KEY)), true)
+                new EBEOption(EBEConfig.SIGN_AO_KEY, BOOLEAN_OPTIONS, BOOLEAN_OPTIONS.indexOf(config.getProperty(EBEConfig.SIGN_AO_KEY)), false, ReloadType.RESOURCES),
+                new EBEOption(EBEConfig.SIGN_TEXT_RENDERING_KEY, SIGN_TEXT_OPTIONS, SIGN_TEXT_OPTIONS.indexOf(config.getProperty(EBEConfig.SIGN_TEXT_RENDERING_KEY)), true, ReloadType.NONE)
         );
         options.addTitle(BELL_OPTIONS_TITLE);
         options.add(
-                new EBEOption(EBEConfig.RENDER_ENHANCED_BELLS_KEY, BOOLEAN_OPTIONS, BOOLEAN_OPTIONS.indexOf(config.getProperty(EBEConfig.RENDER_ENHANCED_BELLS_KEY)), false),
-                new EBEOption(EBEConfig.BELL_AO_KEY, BOOLEAN_OPTIONS, BOOLEAN_OPTIONS.indexOf(config.getProperty(EBEConfig.BELL_AO_KEY)), false)
+                new EBEOption(EBEConfig.RENDER_ENHANCED_BELLS_KEY, BOOLEAN_OPTIONS, BOOLEAN_OPTIONS.indexOf(config.getProperty(EBEConfig.RENDER_ENHANCED_BELLS_KEY)), false, ReloadType.RESOURCES),
+                new EBEOption(EBEConfig.BELL_AO_KEY, BOOLEAN_OPTIONS, BOOLEAN_OPTIONS.indexOf(config.getProperty(EBEConfig.BELL_AO_KEY)), false, ReloadType.RESOURCES)
         );
         options.addTitle(BED_OPTIONS_TITLE);
         options.add(
-                new EBEOption(EBEConfig.RENDER_ENHANCED_BEDS_KEY, BOOLEAN_OPTIONS, BOOLEAN_OPTIONS.indexOf(config.getProperty(EBEConfig.RENDER_ENHANCED_BEDS_KEY)), false),
-                new EBEOption(EBEConfig.BED_AO_KEY, BOOLEAN_OPTIONS, BOOLEAN_OPTIONS.indexOf(config.getProperty(EBEConfig.BED_AO_KEY)), false)
+                new EBEOption(EBEConfig.RENDER_ENHANCED_BEDS_KEY, BOOLEAN_OPTIONS, BOOLEAN_OPTIONS.indexOf(config.getProperty(EBEConfig.RENDER_ENHANCED_BEDS_KEY)), false, ReloadType.RESOURCES),
+                new EBEOption(EBEConfig.BED_AO_KEY, BOOLEAN_OPTIONS, BOOLEAN_OPTIONS.indexOf(config.getProperty(EBEConfig.BED_AO_KEY)), false, ReloadType.RESOURCES)
         );
     }
 }
