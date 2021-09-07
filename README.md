@@ -2,7 +2,7 @@
 
 EBE is a **100% client side** Minecraft mod for the **[Fabric](https://fabricmc.net/use/)** mod loader which aims to increase the performance of block entity rendering, as well as offer customizability via resource packs. <br/><br/>
 **How does it work?** EBE Makes some block entities use baked block models rather than laggy entity models. <br/><br/>
-**Is it just an optimisation mod?** No, it also allows you to customise more block entities with resource packs and makes their lighting smoother. This mod also 
+**Is it just an optimisation mod?** No, it also allows you to customise more block entities with resource packs and makes their lighting smoother. This mod also allows for toggling christmas chests among other nice improvements.<br/><br/>
 **What about animations?** The best part about EBE is that you still get to keep animations, while gaining the performance boost of baked models! Most animated block entity models will only render when absolutely necessary. <br/><br/>
 **Can I use it with Sodium?** Yes you can, but it requires you to install the [Indium mod](https://modrinth.com/mod/indium) as well. <br/><br/>
 **What block entities does it support?**
