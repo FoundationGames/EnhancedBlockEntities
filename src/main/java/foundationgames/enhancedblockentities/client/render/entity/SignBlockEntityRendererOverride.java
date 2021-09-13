@@ -7,14 +7,10 @@ import net.minecraft.block.WallSignBlock;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.SignBlockEntity;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.texture.NativeImage;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.OrderedText;
 import net.minecraft.util.math.Vec3f;
-
-import java.util.List;
 
 public class SignBlockEntityRendererOverride extends BlockEntityRendererOverride {
     public SignBlockEntityRendererOverride() {}
@@ -41,7 +37,7 @@ public class SignBlockEntityRendererOverride extends BlockEntityRendererOverride
                 var list = tr.wrapLines(text, 90);
                 return list.isEmpty() ? OrderedText.EMPTY : list.get(0);
             });
-            int outlineColor = SignBlockEntityRenderAccessor.getColor(be);
+            int outlineColor = SignBlockEntityRenderAccessor.enhanced_bes$getColor(be);
             int textColor;
             boolean outline;
             int textLight;

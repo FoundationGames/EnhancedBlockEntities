@@ -6,7 +6,6 @@ import net.minecraft.block.ChestBlock;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.enums.ChestType;
 import net.minecraft.client.block.ChestAnimationProgress;
-import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.model.BakedModel;
 import net.minecraft.client.util.math.MatrixStack;
@@ -46,7 +45,7 @@ public class ChestBlockEntityRendererOverride extends BlockEntityRendererOverrid
             rot = 1f - (rot * rot * rot);
             matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(rot * 90));
             matrices.translate(0, -yPiv, -zPiv);
-            renderBakedModel(vertexConsumers.getBuffer(RenderLayer.getSolid()), matrices, models[modelSelector.apply(blockEntity)], light, overlay, dir);
+            renderBakedModel(vertexConsumers, blockEntity.getCachedState(), matrices, models[modelSelector.apply(blockEntity)], light, overlay);
 
             matrices.pop();
         }
@@ -61,11 +60,8 @@ public class ChestBlockEntityRendererOverride extends BlockEntityRendererOverrid
             BlockPos pos = blockEntity.getPos();
             Direction facing = state.get(ChestBlock.FACING);
             switch (state.get(ChestBlock.CHEST_TYPE)) {
-                case LEFT:
-                    neighbor = blockEntity.getWorld().getBlockEntity(pos.offset(facing.rotateYClockwise()));
-                    break;
-                case RIGHT:
-                    neighbor = blockEntity.getWorld().getBlockEntity(pos.offset(facing.rotateYCounterclockwise()));
+                case LEFT -> neighbor = blockEntity.getWorld().getBlockEntity(pos.offset(facing.rotateYClockwise()));
+                case RIGHT -> neighbor = blockEntity.getWorld().getBlockEntity(pos.offset(facing.rotateYCounterclockwise()));
             }
             if (neighbor instanceof ChestAnimationProgress) {
                 float nAnim = ((ChestAnimationProgress)neighbor).getAnimationProgress(tickDelta);

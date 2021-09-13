@@ -1,0 +1,32 @@
+{
+	"parent": "block/block",
+	"ambientocclusion": false,
+	"texture_size": [64, 64],
+	"textures": {
+		"particle": "#shulker"
+	},
+	"elements": [
+		{
+			"from": [0, 0, 0],
+			"to": [16, 8, 16],
+			"faces": {
+				"north": {"uv": [4, 11, 8, 13], "texture": "#shulker", "cullface": "north"},
+				"east": {"uv": [0, 11, 4, 13], "texture": "#shulker", "cullface": "east"},
+				"south": {"uv": [12, 11, 16, 13], "texture": "#shulker", "cullface": "south"},
+				"west": {"uv": [8, 11, 12, 13], "texture": "#shulker", "cullface": "west"},
+				"down": {"uv": [8, 7, 12, 11], "texture": "#shulker", "cullface": "down"}
+			}
+		},
+		{
+			"from": [0, 4, 0],
+			"to": [16, 16, 16],
+			"faces": {
+				"north": {"uv": [4, 4, 8, 7], "texture": "#shulker", "cullface": "north"},
+				"east": {"uv": [0, 4, 4, 7], "texture": "#shulker", "cullface": "east"},
+				"south": {"uv": [12, 4, 16, 7], "texture": "#shulker", "cullface": "south"},
+				"west": {"uv": [8, 4, 12, 7], "texture": "#shulker", "cullface": "west"},
+				"up": {"uv": [4, 0, 8, 4], "texture": "#shulker", "cullface": "up"}
+			}
+		}
+	]
+}

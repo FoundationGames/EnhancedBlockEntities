@@ -3,10 +3,7 @@ package foundationgames.enhancedblockentities.mixin;
 import com.google.common.collect.ImmutableList;
 import foundationgames.enhancedblockentities.util.ResourceUtil;
 import foundationgames.enhancedblockentities.util.hacks.ExperimentalSetup;
-import net.minecraft.resource.ReloadableResourceManagerImpl;
-import net.minecraft.resource.ResourceManager;
-import net.minecraft.resource.ResourcePack;
-import net.minecraft.resource.ResourceReload;
+import net.minecraft.resource.*;
 import net.minecraft.util.Unit;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -26,10 +23,11 @@ public abstract class ReloadableResourceManagerImplMixin {
     @ModifyVariable(method = "reload", at = @At("HEAD"), index = 4)
     private List<ResourcePack> enhanced_bes$injectRRP(List<ResourcePack> old) {
         ImmutableList.Builder<ResourcePack> builder = ImmutableList.builder();
-        builder.add(old.get(0));
-        builder.add(ResourceUtil.getPack());
-        for (int i = 1; i < old.size(); i++) {
-            builder.add(old.get(i));
+        for (ResourcePack pack : old) {
+            builder.add(pack);
+            if (pack instanceof DefaultResourcePack) {
+                builder.add(ResourceUtil.getPack());
+            }
         }
 
         return builder.build();

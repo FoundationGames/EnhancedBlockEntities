@@ -6,7 +6,6 @@ import foundationgames.enhancedblockentities.util.duck.BakedModelManagerAccess;
 import net.minecraft.block.entity.BellBlockEntity;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.model.BakedModel;
 import net.minecraft.client.util.math.MatrixStack;
@@ -20,8 +19,7 @@ public class BellBlockEntityRendererOverride extends BlockEntityRendererOverride
     @Override
     public void render(BlockEntity blockEntity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
         if (bellModel == null) bellModel = getBellModel();
-        if (blockEntity instanceof BellBlockEntity) {
-            BellBlockEntity self = (BellBlockEntity)blockEntity;
+        if (blockEntity instanceof BellBlockEntity self) {
             float ringTicks = (float)self.ringTicks + tickDelta;
             float bellPitch = 0.0F;
             float bellRoll = 0.0F;
@@ -42,7 +40,7 @@ public class BellBlockEntityRendererOverride extends BlockEntityRendererOverride
             matrices.multiply(Vec3f.POSITIVE_X.getRadialQuaternion(bellPitch));
             matrices.multiply(Vec3f.POSITIVE_Z.getRadialQuaternion(bellRoll));
             matrices.translate(-8f/16, -12f/16, -8f/16);
-            renderBakedModel(vertexConsumers.getBuffer(RenderLayer.getSolid()), matrices, bellModel, light, overlay, Direction.NORTH);
+            renderBakedModel(vertexConsumers, blockEntity.getCachedState(), matrices, bellModel, light, overlay);
 
             matrices.pop();
         }

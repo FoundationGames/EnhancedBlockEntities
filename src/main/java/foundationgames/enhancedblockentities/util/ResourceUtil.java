@@ -10,6 +10,7 @@ import net.devtech.arrp.json.models.JTextures;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Direction;
+import org.jetbrains.annotations.Nullable;
 
 public enum ResourceUtil {;
     private static RuntimeResourcePack PACK;
@@ -34,6 +35,16 @@ public enum ResourceUtil {;
 
     private static JTextures withChestParticle(JTextures textures, String chestName) {
         if (EnhancedBlockEntities.CONFIG.experimentalChests) textures.var("particle", "block/"+chestName+"_particle");
+        return textures;
+    }
+
+    private static JTextures withBedParticle(JTextures textures, String bedColor) {
+        if (EnhancedBlockEntities.CONFIG.experimentalBeds) textures.var("particle", "block/"+bedColor+"_bed_particle");
+        return textures;
+    }
+
+    private static JTextures withSignParticle(JTextures textures, String signName) {
+        if (EnhancedBlockEntities.CONFIG.experimentalSigns) textures.var("particle", "block/"+signName+"_particle");
         return textures;
     }
 
@@ -70,11 +81,11 @@ public enum ResourceUtil {;
     }
 
     public static void addSignModels(String texture, String signName, String wallSignName, RuntimeResourcePack pack) {
-        pack.addModel(JModel.model().parent(signAOSuffix("block/template_sign_0")).textures(JModel.textures().var("sign", texture)), new Identifier("block/" + signName + "_0"));
-        pack.addModel(JModel.model().parent(signAOSuffix("block/template_sign_22_5")).textures(JModel.textures().var("sign", texture)), new Identifier("block/" + signName + "_22_5"));
-        pack.addModel(JModel.model().parent(signAOSuffix("block/template_sign_45")).textures(JModel.textures().var("sign", texture)), new Identifier("block/" + signName + "_45"));
-        pack.addModel(JModel.model().parent(signAOSuffix("block/template_sign_67_5")).textures(JModel.textures().var("sign", texture)), new Identifier("block/" + signName + "_67_5"));
-        pack.addModel(JModel.model().parent(signAOSuffix("block/template_wall_sign")).textures(JModel.textures().var("sign", texture)), new Identifier("block/" + wallSignName));
+        pack.addModel(JModel.model().parent(signAOSuffix("block/template_sign_0")).textures(withSignParticle(JModel.textures().var("sign", texture), signName)), new Identifier("block/" + signName + "_0"));
+        pack.addModel(JModel.model().parent(signAOSuffix("block/template_sign_22_5")).textures(withSignParticle(JModel.textures().var("sign", texture), signName)), new Identifier("block/" + signName + "_22_5"));
+        pack.addModel(JModel.model().parent(signAOSuffix("block/template_sign_45")).textures(withSignParticle(JModel.textures().var("sign", texture), signName)), new Identifier("block/" + signName + "_45"));
+        pack.addModel(JModel.model().parent(signAOSuffix("block/template_sign_67_5")).textures(withSignParticle(JModel.textures().var("sign", texture), signName)), new Identifier("block/" + signName + "_67_5"));
+        pack.addModel(JModel.model().parent(signAOSuffix("block/template_wall_sign")).textures(withSignParticle(JModel.textures().var("sign", texture), signName)), new Identifier("block/" + wallSignName));
     }
 
     private static String signAOSuffix(String model) {
@@ -134,13 +145,13 @@ public enum ResourceUtil {;
         pack.addModel(
                 JModel.model()
                         .parent(bedAOSuffix("block/template_bed_head"))
-                        .textures(JModel.textures().var("bed", "entity/bed/" + color)),
+                        .textures(withBedParticle(JModel.textures().var("bed", "entity/bed/" + color), color)),
                 new Identifier("block/" + color + "_bed_head")
         );
         pack.addModel(
                 JModel.model()
                         .parent(bedAOSuffix("block/template_bed_foot"))
-                        .textures(JModel.textures().var("bed", "entity/bed/" + color)),
+                        .textures(withBedParticle(JModel.textures().var("bed", "entity/bed/" + color), color)),
                 new Identifier("block/" + color + "_bed_foot")
         );
     }
@@ -161,6 +172,27 @@ public enum ResourceUtil {;
     private static String bedAOSuffix(String model) {
         if (EnhancedBlockEntities.CONFIG.bedAO) model += "_ao";
         return model;
+    }
+
+    public static void addShulkerBoxModels(@Nullable DyeColor color, RuntimeResourcePack pack) {
+        var texture = color != null ? "entity/shulker/shulker_"+color.getName() : "entity/shulker/shulker";
+        var shulkerBoxStr = color != null ? color.getName()+"_shulker_box" : "shulker_box";
+        var particle = "block/"+shulkerBoxStr;
+        pack.addModel(JModel.model().parent("block/template_shulker_box").textures(JModel.textures().var("shulker", texture).var("particle", particle)), new Identifier("block/"+shulkerBoxStr));
+        pack.addModel(JModel.model().parent("block/template_shulker_box_bottom").textures(JModel.textures().var("shulker", texture).var("particle", particle)), new Identifier("block/"+shulkerBoxStr+"_bottom"));
+        pack.addModel(JModel.model().parent("block/template_shulker_box_lid").textures(JModel.textures().var("shulker", texture).var("particle", particle)), new Identifier("block/"+shulkerBoxStr+"_lid"));
+    }
+
+    public static void addShulkerBoxBlockStates(@Nullable DyeColor color, RuntimeResourcePack pack) {
+        var shulkerBoxStr = color != null ? color.getName()+"_shulker_box" : "shulker_box";
+        var variant = JState.variant()
+                .put("facing=up", JState.model("builtin:"+shulkerBoxStr))
+                .put("facing=down", JState.model("builtin:"+shulkerBoxStr).x(180));
+        for (Direction dir : new Direction[] {Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST}) {
+            int rot = (int)dir.asRotation() + 180;
+            variant.put("facing="+dir.getName(), JState.model("builtin:"+shulkerBoxStr).x(90).y(rot));
+        }
+        pack.addBlockState(JState.state(variant), new Identifier(shulkerBoxStr));
     }
 
     public static void resetPack() {

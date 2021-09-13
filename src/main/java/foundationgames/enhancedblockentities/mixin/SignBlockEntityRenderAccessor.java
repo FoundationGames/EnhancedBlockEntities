@@ -9,12 +9,12 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 @Mixin(SignBlockEntityRenderer.class)
 public interface SignBlockEntityRenderAccessor {
     @Invoker("getColor")
-    static int getColor(SignBlockEntity sign) {
+    static int enhanced_bes$getColor(SignBlockEntity sign) {
         throw new AssertionError("Mixin has severely broken, seek help");
     }
 
     @Accessor("RENDER_DISTANCE")
-    static int getRenderDistance() {
+    static int enhanced_bes$getRenderDistance() {
         throw new AssertionError("Mixin has severely broken, seek help");
     }
 }

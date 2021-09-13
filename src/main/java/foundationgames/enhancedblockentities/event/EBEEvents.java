@@ -12,6 +12,7 @@ public enum EBEEvents {;
             event.onReload(loader, manager, profiler);
         }
     });
+
     public interface Reload {
         void onReload(ModelLoader loader, ResourceManager manager, Profiler profiler);
     }

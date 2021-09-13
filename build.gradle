@@ -1,5 +1,5 @@
 plugins {
-	id 'fabric-loom' version '0.8-SNAPSHOT'
+	id 'fabric-loom' version '0.9-SNAPSHOT'
 	id 'maven-publish'
 }
 
@@ -13,6 +13,7 @@ group = project.maven_group
 repositories {
 	maven { url = "https://storage.googleapis.com/devan-maven/" }
 	maven { url = "https://api.modrinth.com/maven" }
+	maven { url = "https://maven.gegy.dev/" }
 }
 
 dependencies {
@@ -31,8 +32,10 @@ dependencies {
 	// Mod Menu because config screen access from another place
 	modImplementation "maven.modrinth:modmenu:${project.modmenu_version}"
 
-	// PSA: Some older mods, compiled on Loom 0.2.1, might have outdated Maven POMs.
-	// You may need to force-disable transitiveness on them.
+	// no more load time
+	modRuntime("supercoder79:databreaker:0.2.7") {
+		exclude module: "fabric-loader"
+	}
 }
 
 processResources {

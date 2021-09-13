@@ -5,17 +5,22 @@ import foundationgames.enhancedblockentities.client.render.BlockEntityRenderCond
 import foundationgames.enhancedblockentities.client.render.BlockEntityRendererOverride;
 import foundationgames.enhancedblockentities.client.render.entity.BellBlockEntityRendererOverride;
 import foundationgames.enhancedblockentities.client.render.entity.ChestBlockEntityRendererOverride;
+import foundationgames.enhancedblockentities.client.render.entity.ShulkerBoxBlockEntityRendererOverride;
 import foundationgames.enhancedblockentities.client.render.entity.SignBlockEntityRendererOverride;
 import foundationgames.enhancedblockentities.util.DateUtil;
+import foundationgames.enhancedblockentities.util.EBEUtil;
 import foundationgames.enhancedblockentities.util.ResourceUtil;
 import foundationgames.enhancedblockentities.util.duck.BakedModelManagerAccess;
 import net.devtech.arrp.api.RuntimeResourcePack;
 import net.devtech.arrp.json.models.JModel;
+import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.model.ModelLoadingRegistry;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.ShulkerBoxBlock;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.block.enums.ChestType;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.model.BakedModel;
 import net.minecraft.resource.ResourceType;
 import net.minecraft.state.property.Properties;
@@ -76,6 +81,17 @@ public enum EBESetup {;
         for (DyeColor color : DyeColor.values()) {
             ResourceUtil.addBedBlockState(color, p);
             ResourceUtil.addBedModels(color, p);
+        }
+    }
+
+    public static void setupRRPShulkerBoxes() {
+        RuntimeResourcePack p = ResourceUtil.getPack();
+
+        for (DyeColor color : EBEUtil.DEFAULTED_DYE_COLORS) {
+            var id = color != null ? color.getName()+"_shulker_box" : "shulker_box";
+            ResourceUtil.addShulkerBoxBlockStates(color, p);
+            ResourceUtil.addShulkerBoxModels(color, p);
+            p.addModel(JModel.model("block/"+id), new Identifier("item/"+id));
         }
     }
 
@@ -209,9 +225,25 @@ public enum EBESetup {;
                         DynamicModelEffects.BELL
                 )
         ));
+        for (DyeColor color : EBEUtil.DEFAULTED_DYE_COLORS) {
+            ModelLoadingRegistry.INSTANCE.registerResourceProvider(manager -> new DynamicModelProvider(
+                    new Identifier("builtin", color != null ? color.getName()+"_shulker_box" : "shulker_box"),
+                    () -> new DynamicUnbakedModel(
+                            new Identifier[] {
+                                    ModelIdentifiers.SHULKER_BOXES.get(color),
+                                    ModelIdentifiers.SHULKER_BOX_BOTTOMS.get(color)
+                            },
+                            ModelSelector.SHULKER_BOX,
+                            DynamicModelEffects.CHEST
+                    )
+            ));
+        }
     }
 
     public static void setupChests() {
+        BlockRenderLayerMap.INSTANCE.putBlock(Blocks.CHEST, RenderLayer.getCutoutMipped());
+        BlockRenderLayerMap.INSTANCE.putBlock(Blocks.TRAPPED_CHEST, RenderLayer.getCutoutMipped());
+        BlockRenderLayerMap.INSTANCE.putBlock(Blocks.ENDER_CHEST, RenderLayer.getCutoutMipped());
         EnhancedBlockEntityRegistry.register(Blocks.CHEST, BlockEntityType.CHEST, BlockEntityRenderCondition.CHEST,
                 new ChestBlockEntityRendererOverride(() -> {
                     BakedModelManagerAccess manager = (BakedModelManagerAccess) MinecraftClient.getInstance().getBakedModelManager();
@@ -241,12 +273,6 @@ public enum EBESetup {;
                     ChestType type = entity.getCachedState().get(Properties.CHEST_TYPE);
                     return type == ChestType.RIGHT ? 2 : type == ChestType.LEFT ? 1 : 0;
                 })
-        );
-        EnhancedBlockEntityRegistry.register(Blocks.ENDER_CHEST, BlockEntityType.ENDER_CHEST, BlockEntityRenderCondition.CHEST,
-                new ChestBlockEntityRendererOverride(() -> {
-                    BakedModelManagerAccess manager = (BakedModelManagerAccess)MinecraftClient.getInstance().getBakedModelManager();
-                    return new BakedModel[] { manager.getModel(ModelIdentifiers.ENDER_CHEST_CENTER_LID) };
-                }, entity -> 0)
         );
         EnhancedBlockEntityRegistry.register(Blocks.ENDER_CHEST, BlockEntityType.ENDER_CHEST, BlockEntityRenderCondition.CHEST,
                 new ChestBlockEntityRendererOverride(() -> {
@@ -330,5 +356,20 @@ public enum EBESetup {;
         EnhancedBlockEntityRegistry.register(Blocks.RED_BED, BlockEntityType.BED, BlockEntityRenderCondition.NEVER, BlockEntityRendererOverride.NO_OP);
         EnhancedBlockEntityRegistry.register(Blocks.WHITE_BED, BlockEntityType.BED, BlockEntityRenderCondition.NEVER, BlockEntityRendererOverride.NO_OP);
         EnhancedBlockEntityRegistry.register(Blocks.YELLOW_BED, BlockEntityType.BED, BlockEntityRenderCondition.NEVER, BlockEntityRendererOverride.NO_OP);
+    }
+
+    public static void setupShulkerBoxes() {
+        for (DyeColor color : EBEUtil.DEFAULTED_DYE_COLORS) {
+            var block = ShulkerBoxBlock.get(color);
+            BlockRenderLayerMap.INSTANCE.putBlock(block, RenderLayer.getCutoutMipped());
+            EnhancedBlockEntityRegistry.register(block, BlockEntityType.SHULKER_BOX, BlockEntityRenderCondition.SHULKER_BOX,
+                    new ShulkerBoxBlockEntityRendererOverride((map) -> {
+                        var models = (BakedModelManagerAccess) MinecraftClient.getInstance().getBakedModelManager();
+                        for (DyeColor dc : EBEUtil.DEFAULTED_DYE_COLORS) {
+                            map.put(dc, models.getModel(ModelIdentifiers.SHULKER_BOX_LIDS.get(dc)));
+                        }
+                    })
+            );
+        }
     }
 }

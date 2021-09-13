@@ -9,12 +9,10 @@
     "BakedModelManagerMixin",
     "BellBlockEntityMixin",
     "BlockEntityRenderDispatcherMixin",
-    "ChestBlockEntityAccessor",
     "ChestBlockEntityMixin",
-    "ChestBlockEntityStateManagerMixin",
     "EnderChestBlockEntityMixin",
-    "EnderChestBlockEntityStateManagerMixin",
     "ReloadableResourceManagerImplMixin",
+    "ShulkerBoxBlockEntityMixin",
     "SignBlockEntityRenderAccessor",
     "VideoOptionsScreenMixin"
   ],

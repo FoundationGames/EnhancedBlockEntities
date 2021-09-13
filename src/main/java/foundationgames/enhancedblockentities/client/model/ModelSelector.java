@@ -1,11 +1,9 @@
 package foundationgames.enhancedblockentities.client.model;
 
-import foundationgames.enhancedblockentities.client.render.entity.ChestBlockEntityRendererOverride;
 import foundationgames.enhancedblockentities.util.DateUtil;
+import foundationgames.enhancedblockentities.util.duck.ModelStateHolder;
 import net.fabricmc.fabric.api.renderer.v1.render.RenderContext;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BellBlockEntity;
-import net.minecraft.client.block.ChestAnimationProgress;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockRenderView;
 import org.jetbrains.annotations.Nullable;
@@ -14,34 +12,26 @@ import java.util.Random;
 import java.util.function.Supplier;
 
 public interface ModelSelector {
-    ModelSelector CHEST = (view, state, pos, rand, ctx) -> {
-        if(view.getBlockEntity(pos) instanceof ChestAnimationProgress) {
-            ChestAnimationProgress be = ChestBlockEntityRendererOverride.getAnimationProgress(view.getBlockEntity(pos), 0);
-            if(be.getAnimationProgress(1) > 0) {
-                return 1;
-            }
+    ModelSelector STATE_HOLDER_SELECTOR = (view, state, pos, rand, ctx) -> {
+        if(view.getBlockEntity(pos) instanceof ModelStateHolder stateHolder) {
+            return stateHolder.getModelState();
         }
         return 0;
     };
 
+    ModelSelector CHEST = STATE_HOLDER_SELECTOR;
+
     ModelSelector CHEST_WITH_CHRISTMAS = (view, state, pos, rand, ctx) -> {
         int os = DateUtil.isChristmas() ? 2 : 0;
-        if(view.getBlockEntity(pos) instanceof ChestAnimationProgress) {
-            ChestAnimationProgress be = ChestBlockEntityRendererOverride.getAnimationProgress(view.getBlockEntity(pos), 0);
-            if(be.getAnimationProgress(1) > 0) {
-                return 1 + os;
-            }
+        if(view.getBlockEntity(pos) instanceof ModelStateHolder stateHolder) {
+            return stateHolder.getModelState() + os;
         }
         return os;
     };
 
-    ModelSelector BELL = (view, state, pos, rand, ctx) -> {
-        if(view.getBlockEntity(pos) instanceof BellBlockEntity) {
-            BellBlockEntity be = (BellBlockEntity)view.getBlockEntity(pos);
-            if(be.ringing) return 1;
-        }
-        return 0;
-    };
+    ModelSelector BELL = STATE_HOLDER_SELECTOR;
+
+    ModelSelector SHULKER_BOX = STATE_HOLDER_SELECTOR;
 
     int getModelIndex(BlockRenderView view, BlockState state, BlockPos pos, Supplier<Random> rand, @Nullable RenderContext ctx);
 }
