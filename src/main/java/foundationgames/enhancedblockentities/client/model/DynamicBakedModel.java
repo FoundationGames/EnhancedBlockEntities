@@ -1,5 +1,7 @@
 package foundationgames.enhancedblockentities.client.model;
 
+import net.fabricmc.fabric.api.renderer.v1.RendererAccess;
+import net.fabricmc.fabric.api.renderer.v1.material.RenderMaterial;
 import net.fabricmc.fabric.api.renderer.v1.mesh.QuadEmitter;
 import net.fabricmc.fabric.api.renderer.v1.model.FabricBakedModel;
 import net.fabricmc.fabric.api.renderer.v1.model.ModelHelper;
@@ -16,7 +18,8 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.world.BlockRenderView;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
+import java.util.List;
+import java.util.Random;
 import java.util.function.Supplier;
 
 public class DynamicBakedModel implements BakedModel, FabricBakedModel {
@@ -39,10 +42,15 @@ public class DynamicBakedModel implements BakedModel, FabricBakedModel {
     public void emitBlockQuads(BlockRenderView view, BlockState state, BlockPos blockPos, Supplier<Random> rng, RenderContext context) {
         QuadEmitter emitter = context.getEmitter();
         BakedModel model = models[selector.getModelIndex(view, state, blockPos, rng, context)];
+        RenderMaterial mat = null;
+        var renderer = RendererAccess.INSTANCE.getRenderer();
+        if (renderer != null) {
+            mat = renderer.materialById(RenderMaterial.MATERIAL_STANDARD);
+        }
         for (int i = 0; i <= 6; i++) {
             Direction dir = ModelHelper.faceFromIndex(i);
             for (BakedQuad quad : model.getQuads(state, dir, rng.get())) {
-                emitter.fromVanilla(quad, null, dir);
+                emitter.fromVanilla(quad, mat, dir);
                 emitter.emit();
             }
         }

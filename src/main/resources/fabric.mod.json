@@ -17,7 +17,7 @@
   "license": "LGPLv3",
   "icon": "assets/enhancedblockentities/icon.png",
 
-  "environment": "*",
+  "environment": "client",
   "entrypoints": {
     "client": [
       "foundationgames.enhancedblockentities.EnhancedBlockEntities"

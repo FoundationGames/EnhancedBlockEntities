@@ -10,9 +10,17 @@ archivesBaseName = project.archives_base_name
 version = project.mod_version
 group = project.maven_group
 
+static String terraformers() {
+	def url = "https://maven.terraformersmc.com/"
+	def conn = new URL(url).openConnection()
+	conn.connect()
+	url = conn.getResponseCode() == 521 ? "https://raw.githubusercontent.com/TerraformersMC/Archive/main/releases" : url
+	return url
+}
+
 repositories {
+	maven { url = terraformers() }
 	maven { url = "https://storage.googleapis.com/devan-maven/" }
-	maven { url = "https://api.modrinth.com/maven" }
 	maven { url = "https://maven.gegy.dev/" }
 }
 
@@ -30,7 +38,7 @@ dependencies {
 	include "net.devtech:arrp:${project.arrp_version}"
 
 	// Mod Menu because config screen access from another place
-	modImplementation "maven.modrinth:modmenu:${project.modmenu_version}"
+	modApi "com.terraformersmc:modmenu:${project.modmenu_version}"
 
 	// no more load time
 	modRuntime("supercoder79:databreaker:0.2.7") {

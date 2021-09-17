@@ -19,8 +19,8 @@
 			}
 		},
 		{
-			"from": [15.9, 4, 0.1],
-			"to": [0.1, 15.9, 15.9],
+			"from": [15.95, 4, 0.05],
+			"to": [0.05, 15.95, 15.95],
 			"faces": {
 				"north": {"uv": [8, 4, 4, 7], "texture": "#shulker", "cullface": "north"},
 				"east": {"uv": [4, 4, 0, 7], "texture": "#shulker", "cullface": "east"},
