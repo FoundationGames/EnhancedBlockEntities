@@ -23,7 +23,7 @@ For stable releases, you can check out the [CurseForge](https://www.curseforge.c
 **A:** If you're having trouble setting up the mod or using it alongside other mods, I'd recommend you join our [Discord Server](https://discord.gg/7Aw3y4RtY9) and ask for help there. *If the issue is a BUG* please report it on our issue tracker ("Issues" tab at the top of the page)<br/><br/>
 
 **Q: Does this mod glitch the chest animation or turn chests invisible?**
-**A:** This bug has been completely eradicated in EBE versions 0.5 and above. If the issue still persists (it shouldn't), leave an issue on GitHub or join the [Discord Server](https://discord.gg/7Aw3y4RtY9).
+**A:** This bug has been completely eradicated in EBE versions 0.5 and above. If the issue still persists (it shouldn't), leave an issue on GitHub or join the [Discord Server](https://discord.gg/7Aw3y4RtY9). <br/><br/>
 
 **Q: My chests are still invisible!** <br/>
 **A:** You're likely using a Sodium version lower than 0.4, which doesn't support certain Fabric Rendering features by default. If you need to use a Sodium version lower than 0.4 with EBE, you should install [Indium](https://modrinth.com/mod/indium). <br/><br/>
