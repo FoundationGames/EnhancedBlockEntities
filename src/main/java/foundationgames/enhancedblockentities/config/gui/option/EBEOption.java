@@ -37,20 +37,14 @@ public final class EBEOption {
 
     public String getValueKey() {
         var definition = I18n.translate(String.format("option.ebe.%s.value", key));
+        var configValue = getValue();
+        var value = I18n.translate(String.format("option.ebe.%s.value.%s", key, configValue));
 
-        if(this.values.get(0).equals("true") && this.values.get(1).equals("false")){
-            if(getValue().equals("true")) {
-                return I18n.translate("options.on.composed", definition);
-            }
-            else {
-                return I18n.translate("options.off.composed", definition);
-            }
-        }
-        else {
-            var value = I18n.translate(String.format("option.ebe.%s.value.%s", key, getValue()));
-            return I18n.translate("options.generic_value", definition, value);
-        }
-
+        return switch (configValue) {
+            case "true" -> I18n.translate("options.on.composed", definition);
+            case "false" -> I18n.translate("options.off.composed", definition);
+            default -> I18n.translate("options.generic_value", definition, value);
+        };
     }
 
     public List<Text> getValueCommentLines() {
