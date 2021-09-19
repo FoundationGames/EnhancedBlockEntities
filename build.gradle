@@ -40,6 +40,10 @@ dependencies {
 	// Mod Menu because config screen access from another place
 	modApi "com.terraformersmc:modmenu:${project.modmenu_version}"
 
+	// UI library
+	modImplementation "dev.lambdaurora:spruceui:${project.spruceui_version}"
+	include "dev.lambdaurora:spruceui:${project.spruceui_version}"
+
 	// no more load time
 	modRuntime("supercoder79:databreaker:0.2.7") {
 		exclude module: "fabric-loader"
