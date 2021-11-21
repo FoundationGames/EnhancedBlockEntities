@@ -1,5 +1,5 @@
 plugins {
-	id 'fabric-loom' version '0.9-SNAPSHOT'
+	id 'fabric-loom' version '0.10-SNAPSHOT'
 	id 'maven-publish'
 }
 
@@ -41,9 +41,9 @@ dependencies {
 	modApi "com.terraformersmc:modmenu:${project.modmenu_version}"
 
 	// no more load time
-	modRuntime("supercoder79:databreaker:0.2.7") {
-		exclude module: "fabric-loader"
-	}
+	//modRuntime("supercoder79:databreaker:0.2.7") {
+	//	exclude module: "fabric-loader"
+	//}
 }
 
 processResources {
@@ -79,13 +79,7 @@ jar {
 publishing {
 	publications {
 		mavenJava(MavenPublication) {
-			// add all the jars that should be included when publishing to maven
-			artifact(remapJar) {
-				builtBy remapJar
-			}
-			artifact(sourcesJar) {
-				builtBy remapSourcesJar
-			}
+			from components.java
 		}
 	}
 

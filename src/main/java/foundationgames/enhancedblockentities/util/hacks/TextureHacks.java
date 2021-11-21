@@ -14,7 +14,7 @@ public enum TextureHacks {;
     public static byte[] cropImage(@Nullable InputStream image, float u0, float v0, float u1, float v1) throws IOException {
         byte[] r = new byte[0];
         if (image != null) {
-            NativeImage src = NativeImage.read(NativeImage.Format.ABGR, image);
+            NativeImage src = NativeImage.read(NativeImage.Format.RGBA, image);
             int w = src.getWidth();
             int h = src.getHeight();
             int x = (int)Math.floor(u0 * w);
@@ -24,7 +24,7 @@ public enum TextureHacks {;
             NativeImage prod = new NativeImage(src.getFormat(), sw, sh, false);
             for (int u = 0; u < sw; u++) {
                 for (int v = 0; v < sh; v++) {
-                    prod.setPixelColor(u, v, src.getPixelColor(x + u, y + v));
+                    prod.setColor(u, v, src.getColor(x + u, y + v));
                 }
             }
             src.close();
