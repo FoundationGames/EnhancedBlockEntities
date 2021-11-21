@@ -22,6 +22,7 @@ repositories {
 	maven { url = terraformers() }
 	maven { url = "https://storage.googleapis.com/devan-maven/" }
 	maven { url = "https://maven.gegy.dev/" }
+	maven { url = "https://jitpack.io" }
 }
 
 dependencies {
@@ -42,8 +43,9 @@ dependencies {
 
 	// no more load time
 	//modRuntime("supercoder79:databreaker:0.2.7") {
-	//	exclude module: "fabric-loader"
-	//}
+	modRuntimeOnly ("com.github.IMS212:DataBreaker:master-SNAPSHOT") {
+		exclude module: "fabric-loader"
+	}
 }
 
 processResources {
