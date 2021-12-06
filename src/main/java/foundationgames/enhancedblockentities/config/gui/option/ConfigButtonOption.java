@@ -20,7 +20,7 @@ public class ConfigButtonOption extends Option {
     @Override
     public ClickableWidget createButton(GameOptions options, int x, int y, int width) {
         return new ButtonWidget(x, y, width, 20, new TranslatableText("option.ebe.config"), b -> {
-            MinecraftClient.getInstance().openScreen(new EBEConfigScreen(parent));
+            MinecraftClient.getInstance().setScreen(new EBEConfigScreen(parent));
         });
     }
 }

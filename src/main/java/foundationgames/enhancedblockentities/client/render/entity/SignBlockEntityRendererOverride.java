@@ -55,9 +55,9 @@ public class SignBlockEntityRendererOverride extends BlockEntityRendererOverride
                 var orderedText = orderedTexts[i];
                 float t = (float)(-tr.getWidth(orderedText) / 2);
                 if (outline) {
-                    tr.drawWithOutline(orderedText, t, (float)((i * 10) - 20), textColor, outlineColor, matrices.peek().getModel(), vertexConsumers, textLight);
+                    tr.drawWithOutline(orderedText, t, (float)((i * 10) - 20), textColor, outlineColor, matrices.peek().getPositionMatrix(), vertexConsumers, textLight);
                 } else {
-                    tr.draw(orderedText, t, (float)((i * 10) - 20), textColor, false, matrices.peek().getModel(), vertexConsumers, false, 0, textLight);
+                    tr.draw(orderedText, t, (float)((i * 10) - 20), textColor, false, matrices.peek().getPositionMatrix(), vertexConsumers, false, 0, textLight);
                 }
             }
 

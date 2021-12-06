@@ -1,5 +1,5 @@
 plugins {
-	id 'fabric-loom' version '0.9-SNAPSHOT'
+	id 'fabric-loom' version '0.10-SNAPSHOT'
 	id 'maven-publish'
 }
 
@@ -22,6 +22,7 @@ repositories {
 	maven { url = terraformers() }
 	maven { url = "https://storage.googleapis.com/devan-maven/" }
 	maven { url = "https://maven.gegy.dev/" }
+	maven { url = "https://jitpack.io" }
 }
 
 dependencies {
@@ -41,7 +42,8 @@ dependencies {
 	modApi "com.terraformersmc:modmenu:${project.modmenu_version}"
 
 	// no more load time
-	modRuntime("supercoder79:databreaker:0.2.7") {
+	//modRuntime("supercoder79:databreaker:0.2.7") {
+	modRuntimeOnly ("com.github.IMS212:DataBreaker:master-SNAPSHOT") {
 		exclude module: "fabric-loader"
 	}
 }
@@ -79,13 +81,7 @@ jar {
 publishing {
 	publications {
 		mavenJava(MavenPublication) {
-			// add all the jars that should be included when publishing to maven
-			artifact(remapJar) {
-				builtBy remapJar
-			}
-			artifact(sourcesJar) {
-				builtBy remapSourcesJar
-			}
+			from components.java
 		}
 	}
 
