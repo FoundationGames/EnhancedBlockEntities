@@ -107,12 +107,10 @@ public class EBEOptionListWidget extends ElementListWidget<EBEOptionListWidget.B
             TextRenderer tr = MinecraftClient.getInstance().textRenderer;
             int tw = tr.getWidth(title);
             drawCenteredText(matrices, tr, title, x + (entryWidth / 2), y + (entryHeight / 2) - 4, 0xFFFFFF);
-            RenderSystem.disableTexture();
             int lw = (entryWidth / 2) - (6 + (tw / 2));
             int side = 3;
-            drawTexture(matrices, x + side, y + 9, -100, 0, 0, lw - side, 1, 1, 1);
-            drawTexture(matrices, x + (entryWidth - lw), y + 9, -100, 0, 0, lw - side, 1, 1, 1);
-            RenderSystem.enableTexture();
+            fill(matrices, x + side, y + 9, x + side + lw, y + 10, 0xFFFFFFFF);
+            fill(matrices, x + ((entryWidth - side) - lw), y + 9, x + (entryWidth - side), y + 10, 0xFFFFFFFF);
         }
 
         @Override
@@ -162,6 +160,10 @@ public class EBEOptionListWidget extends ElementListWidget<EBEOptionListWidget.B
     }
 
     public static class EBEOptionEntry extends BaseEntry {
+        private static final DrawableHelper drawable = new DrawableHelper() {
+            @Override protected void drawHorizontalLine(MatrixStack matrices, int x1, int x2, int y, int color) {}
+        };
+
         public final EBEOption option;
 
         public EBEOptionEntry(EBEOption option) {
@@ -182,11 +184,8 @@ public class EBEOptionListWidget extends ElementListWidget<EBEOptionListWidget.B
             RenderSystem.enableBlend();
             RenderSystem.defaultBlendFunc();
             RenderSystem.enableDepthTest();
-            DrawableHelper draw = new DrawableHelper() {
-                @Override protected void drawHorizontalLine(MatrixStack matrices, int x1, int x2, int y, int color) {}
-            };
-            draw.drawTexture(matrices, x, y, 0, 46 + vo, entryWidth / 2, 20);
-            draw.drawTexture(matrices, x + entryWidth / 2, y, 200 - entryWidth / 2, 46 + vo, entryWidth / 2, 20);
+            drawable.drawTexture(matrices, x, y, 0, 46 + vo, entryWidth / 2, 20);
+            drawable.drawTexture(matrices, x + entryWidth / 2, y, 200 - entryWidth / 2, 46 + vo, entryWidth / 2, 20);
             drawCenteredText(matrices, textRenderer, Text.of(I18n.translate(option.getValueKey())), x + entryWidth / 2, y + 12 / 2, option.isDefault() ? 0xFFFFFF : 0xffda5e);
         }
 

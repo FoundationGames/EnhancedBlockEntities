@@ -23,7 +23,6 @@ public final class EnhancedBlockEntities implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
-        ClientTickEvents.START_WORLD_TICK.register(WorldUtil::tick);
         WorldRenderEvents.END.register(SignRenderManager::endFrame);
 
         ModelIdentifiers.init();
