@@ -15,7 +15,7 @@ These may include:
 
 ## Downloading the mod
 
-For stable releases, you can check out the [CurseForge](https://www.curseforge.com/minecraft/mc-mods/enhanced-block-entities) or [Modrinth](https://modrinth.com/mod/OVuFYfre) page. If you want the newest bleeding edge build, you can use GitHub Actions (or alternatively, you can build yourself). This mod requires [Fabric API](https://modrinth.com/mod/fabric-api) <br/><br/>
+For stable releases, you can check out the [CurseForge](https://www.curseforge.com/minecraft/mc-mods/enhanced-block-entities) or [Modrinth](https://modrinth.com/mod/OVuFYfre) page. If you want the newest bleeding edge build, you can build it yourself. This mod requires [Fabric API](https://modrinth.com/mod/fabric-api) <br/><br/>
 
 ## FAQ and Help
 
