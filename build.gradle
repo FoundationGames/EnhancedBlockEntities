@@ -22,6 +22,7 @@ repositories {
 	maven { url = terraformers() }
 	maven { url = "https://storage.googleapis.com/devan-maven/" }
 	maven { url = "https://maven.gegy.dev/" }
+	maven { url = "https://quantumfusion.dev/maven/" }
 }
 
 dependencies {
@@ -39,6 +40,10 @@ dependencies {
 
 	// Mod Menu because config screen access from another place
 	modApi "com.terraformersmc:modmenu:${project.modmenu_version}"
+
+	// Compat Mods
+	modCompileOnly "dev.quantumfusion.dashloader:dashloader-core:$project.dashloader_core_version"
+	modCompileOnly "dev.quantumfusion.dashloader:dashloader-definitions:$project.dashloader_definitions_version"
 
 	// no more load time
 	modRuntime("supercoder79:databreaker:0.2.8") {

@@ -2,7 +2,6 @@
   "schemaVersion": 1,
   "id": "enhancedblockentities",
   "version": "${version}",
-
   "name": "Enhanced Block Entities",
   "description": "Optimize and customize block entity rendering with a more modern approach.",
   "authors": [
@@ -13,10 +12,8 @@
     "issues": "https://github.com/FoundationGames/EnhancedBlockEntities/issues",
     "sources": "https://github.com/FoundationGames/EnhancedBlockEntities"
   },
-
   "license": "LGPLv3",
   "icon": "assets/enhancedblockentities/icon.png",
-
   "environment": "client",
   "entrypoints": {
     "client": [
@@ -29,14 +26,15 @@
   "mixins": [
     "enhancedblockentities.mixins.json"
   ],
-
   "depends": {
     "fabricloader": ">=0.7.4",
     "fabric": "*",
     "minecraft": "1.18.x"
   },
-
   "custom": {
+    "dashloader:dashobject": [
+      "foundationgames.enhancedblockentities.compat.dashloader.DashDynamicBakedModel"
+    ],
     "modmenu": {
       "links": {
         "modmenu.discord": "https://discord.gg/7Aw3y4RtY9"
