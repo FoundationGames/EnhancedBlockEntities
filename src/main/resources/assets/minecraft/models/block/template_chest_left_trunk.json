@@ -15,7 +15,7 @@
 				"south": {"uv": [3.5, 8.25, 7.25, 10.75], "rotation": 180, "texture": "#chest"},
 				"west": {"uv": [7.25, 8.25, 10.75, 10.75], "rotation": 180, "texture": "#chest"},
 				"up": {"uv": [11, 4.75, 7.25, 8.25], "texture": "#chest"},
-				"down": {"uv": [7.25, 4.75, 3.5, 8.25], "texture": "#chest"}
+				"down": {"uv": [7.25, 4.75, 3.5, 8.25], "texture": "#chest", "cullface": "down"}
 			}
 		}
 	]
