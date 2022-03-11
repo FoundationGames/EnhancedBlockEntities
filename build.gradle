@@ -1,5 +1,5 @@
 plugins {
-	id 'fabric-loom' version '0.10-SNAPSHOT'
+	id 'fabric-loom' version '0.11-SNAPSHOT'
 	id 'maven-publish'
 }
 
@@ -21,7 +21,7 @@ static String terraformers() {
 repositories {
 	maven { url = terraformers() }
 	maven { url = "https://storage.googleapis.com/devan-maven/" }
-	maven { url = "https://maven.gegy.dev/" }
+	maven { url = "https://api.modrinth.com/maven/" }
 }
 
 dependencies {
@@ -40,10 +40,8 @@ dependencies {
 	// Mod Menu because config screen access from another place
 	modApi "com.terraformersmc:modmenu:${project.modmenu_version}"
 
-	// no more load time
-	modRuntime("supercoder79:databreaker:0.2.8") {
-		exclude module: "fabric-loader"
-	}
+	// a bit less load time
+	modLocalRuntime "maven.modrinth:lazydfu:0.1.2"
 }
 
 processResources {
