@@ -27,7 +27,7 @@ import net.minecraft.state.property.Properties;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
 
-public enum EBESetup {;
+public class EBESetup {
     public static void setupRRPChests() {
         RuntimeResourcePack p = ResourceUtil.getPack();
 
