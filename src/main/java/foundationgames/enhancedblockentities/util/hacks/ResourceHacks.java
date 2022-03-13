@@ -7,7 +7,7 @@ import net.minecraft.util.Identifier;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class ResourceHacks {
+public enum ResourceHacks {;
     private static void cropAndPutTexture(Identifier source, Identifier result, ResourceManager manager, ExperimentalResourcePack pack, float u0, float v0, float u1, float v1) throws IOException {
         InputStream image;
         try {
