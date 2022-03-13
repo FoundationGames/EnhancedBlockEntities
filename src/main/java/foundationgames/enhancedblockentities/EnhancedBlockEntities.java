@@ -5,9 +5,9 @@ import foundationgames.enhancedblockentities.client.render.SignRenderManager;
 import foundationgames.enhancedblockentities.config.EBEConfig;
 import foundationgames.enhancedblockentities.util.DateUtil;
 import foundationgames.enhancedblockentities.util.ResourceUtil;
-import foundationgames.enhancedblockentities.util.hacks.ExperimentalSetup;
-import net.devtech.arrp.api.RRPCallback;
+import foundationgames.enhancedblockentities.util.WorldUtil;
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
 import net.fabricmc.fabric.api.object.builder.v1.client.model.FabricModelPredicateProviderRegistry;
 import net.minecraft.client.MinecraftClient;
@@ -30,7 +30,6 @@ public final class EnhancedBlockEntities implements ClientModInitializer {
         FabricModelPredicateProviderRegistry.register(Items.CHEST, new Identifier("is_christmas"), (stack, world, entity, seed) -> DateUtil.isChristmas() ? 1 : 0);
 
         load();
-        addPacks();
     }
 
     public static void reload(ReloadType type) {
@@ -72,15 +71,5 @@ public final class EnhancedBlockEntities implements ClientModInitializer {
             EBESetup.setupShulkerBoxes();
             EBESetup.setupRRPShulkerBoxes();
         }
-    }
-
-    public static void addPacks() {
-        RRPCallback.AFTER_VANILLA.register(packs -> {
-            packs.add(ResourceUtil.getPack());
-
-            ExperimentalSetup.cacheResources(MinecraftClient.getInstance().getResourceManager());
-            ExperimentalSetup.setup();
-            packs.add(ResourceUtil.getExperimentalPack());
-        });
     }
 }

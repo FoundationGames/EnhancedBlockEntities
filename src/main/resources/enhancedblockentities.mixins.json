@@ -11,6 +11,7 @@
     "BlockEntityRenderDispatcherMixin",
     "ChestBlockEntityMixin",
     "EnderChestBlockEntityMixin",
+    "ReloadableResourceManagerImplMixin",
     "ShulkerBoxBlockEntityMixin",
     "SignBlockEntityRenderAccessor",
     "VideoOptionsScreenMixin",
