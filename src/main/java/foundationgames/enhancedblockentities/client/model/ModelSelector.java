@@ -16,7 +16,7 @@ import java.util.function.Supplier;
 public abstract class ModelSelector {
     private static final List<ModelSelector> REGISTRY = new ArrayList<>();
 
-    ModelSelector STATE_HOLDER_SELECTOR = new ModelSelector() {
+    public static final ModelSelector STATE_HOLDER_SELECTOR = new ModelSelector() {
         @Override
         public int getModelIndex(BlockRenderView view, BlockState state, BlockPos pos, Supplier<Random> rand, @Nullable RenderContext ctx) {
             if(view.getBlockEntity(pos) instanceof ModelStateHolder stateHolder) {
@@ -26,9 +26,9 @@ public abstract class ModelSelector {
         }
     };
 
-    ModelSelector CHEST = STATE_HOLDER_SELECTOR;
+    public static final ModelSelector CHEST = STATE_HOLDER_SELECTOR;
 
-    ModelSelector CHEST_WITH_CHRISTMAS = new ModelSelector() {
+    public static final ModelSelector CHEST_WITH_CHRISTMAS = new ModelSelector() {
         @Override
         public int getModelIndex(BlockRenderView view, BlockState state, BlockPos pos, Supplier<Random> rand, @Nullable RenderContext ctx) {
             int os = DateUtil.isChristmas() ? 2 : 0;
@@ -39,9 +39,9 @@ public abstract class ModelSelector {
         }
     };
 
-    ModelSelector BELL = STATE_HOLDER_SELECTOR;
+    public static final ModelSelector BELL = STATE_HOLDER_SELECTOR;
 
-    ModelSelector SHULKER_BOX = STATE_HOLDER_SELECTOR;
+    public static final ModelSelector SHULKER_BOX = STATE_HOLDER_SELECTOR;
 
     public abstract int getModelIndex(BlockRenderView view, BlockState state, BlockPos pos, Supplier<Random> rand, @Nullable RenderContext ctx);
 
