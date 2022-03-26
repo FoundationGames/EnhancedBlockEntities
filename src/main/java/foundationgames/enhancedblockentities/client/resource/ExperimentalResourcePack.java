@@ -3,7 +3,6 @@ package foundationgames.enhancedblockentities.client.resource;
 import com.google.common.base.Charsets;
 import com.google.common.collect.ImmutableList;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
-import net.fabricmc.fabric.impl.resource.loader.ModResourcePackUtil;
 import net.minecraft.SharedConstants;
 import net.minecraft.resource.AbstractFileResourcePack;
 import net.minecraft.resource.ResourcePack;
