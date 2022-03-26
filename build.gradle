@@ -23,6 +23,7 @@ repositories {
 	maven { url = "https://storage.googleapis.com/devan-maven/" }
 	maven { url = "https://api.modrinth.com/maven/" }
 	maven { url = "https://maven.gegy.dev/" }
+	maven { url = "https://quantumfusion.dev/maven/" }
 }
 
 dependencies {
@@ -40,6 +41,10 @@ dependencies {
 
 	// Mod Menu because config screen access from another place
 	modApi "com.terraformersmc:modmenu:${project.modmenu_version}"
+
+	// Dashloader (compatibility)
+	modCompileOnly "dev.quantumfusion.dashloader:dashloader-core:$project.dashloader_core_version"
+	modCompileOnly "dev.quantumfusion.dashloader:dashloader-definitions:$project.dashloader_definitions_version"
 
 	// a bit less load time
 	modLocalRuntime "maven.modrinth:lazydfu:0.1.2"

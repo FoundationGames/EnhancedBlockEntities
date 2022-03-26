@@ -37,6 +37,9 @@
   },
 
   "custom": {
+    "dashloader:dashobject": [
+      "foundationgames.enhancedblockentities.compat.dashloader.DashDynamicBakedModel"
+    ],
     "modmenu": {
       "links": {
         "modmenu.discord": "https://discord.gg/7Aw3y4RtY9"
