@@ -54,10 +54,10 @@ public class EBEConfigScreen extends Screen {
 
         this.addDrawableChild(new ButtonWidget(bottomCenter + 104, this.height - 27, 100, 20, ScreenTexts.DONE, button -> {
             applyChanges();
-            onClose();
+            close();
         }));
         this.addDrawableChild(new ButtonWidget(bottomCenter, this.height - 27, 100, 20, new TranslatableText("text.ebe.apply"), button -> this.applyChanges()));
-        this.addDrawableChild(new ButtonWidget(bottomCenter - 104, this.height - 27, 100, 20, ScreenTexts.CANCEL, button -> this.onClose()));
+        this.addDrawableChild(new ButtonWidget(bottomCenter - 104, this.height - 27, 100, 20, ScreenTexts.CANCEL, button -> this.close()));
     }
 
     @Override
@@ -89,7 +89,7 @@ public class EBEConfigScreen extends Screen {
     }
 
     @Override
-    public void onClose() {
+    public void close() {
         this.client.setScreen(parent);
     }
 
