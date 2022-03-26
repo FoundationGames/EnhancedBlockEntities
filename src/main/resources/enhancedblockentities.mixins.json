@@ -2,7 +2,7 @@
   "required": true,
   "minVersion": "0.8",
   "package": "foundationgames.enhancedblockentities.mixin",
-  "compatibilityLevel": "JAVA_16",
+  "compatibilityLevel": "JAVA_17",
   "plugin": "foundationgames.enhancedblockentities.mixin.EBEMixinPlugin",
   "client": [
     "AbstractBlockStateMixin",
@@ -11,7 +11,7 @@
     "BlockEntityRenderDispatcherMixin",
     "ChestBlockEntityMixin",
     "EnderChestBlockEntityMixin",
-    "ReloadableResourceManagerImplMixin",
+    "LifecycledResourceManagerImplMixin",
     "ShulkerBoxBlockEntityMixin",
     "SignBlockEntityRenderAccessor",
     "VideoOptionsScreenMixin",
