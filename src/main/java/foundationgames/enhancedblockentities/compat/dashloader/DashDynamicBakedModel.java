@@ -19,13 +19,13 @@ import net.minecraft.client.render.model.BakedModel;
 @DashDependencies({DashBasicBakedModel.class, DashBuiltinBakedModel.class, DashMultipartBakedModel.class})
 public class DashDynamicBakedModel implements DashModel {
     public final int[] models;
-    public final Selector selector;
-    public final DynamicModelEffect effects;
+    public final int selectorId;
+    public final int effectsId;
 
-    public DashDynamicBakedModel(int[] models, Selector selector, DynamicModelEffect effects) {
+    public DashDynamicBakedModel(int[] models, int selectorId, int effectsId) {
         this.models = models;
-        this.selector = selector;
-        this.effects = effects;
+        this.selectorId = selectorId;
+        this.effectsId = effectsId;
     }
 
     public DashDynamicBakedModel(DynamicBakedModel model, RegistryWriter writer) {
@@ -36,8 +36,8 @@ public class DashDynamicBakedModel implements DashModel {
         }
 
         this.models = dModels;
-        this.selector = Selector.fromSelector(model.getSelector());
-        this.effects = DynamicModelEffect.fromEffect(model.getEffects());
+        this.selectorId = model.getSelector().id;
+        this.effectsId = model.getEffects().id;
     }
 
     @Override
@@ -47,71 +47,6 @@ public class DashDynamicBakedModel implements DashModel {
             out[i] = reader.get(models[i]);
         }
 
-        return new DynamicBakedModel(out, selector.getSelector(), effects.getModelEffect());
-    }
-
-
-    @Data
-    public enum Selector {
-        STATE_HOLDER_SELECTOR,
-        CHEST,
-        CHEST_WITH_CHRISTMAS,
-        BELL,
-        SHULKER_BOX;
-
-        public static Selector fromSelector(ModelSelector selector) {
-            if (ModelSelector.STATE_HOLDER_SELECTOR.equals(selector)) {
-                return STATE_HOLDER_SELECTOR;
-            } else if (ModelSelector.CHEST.equals(selector)) {
-                return CHEST;
-            } else if (ModelSelector.CHEST_WITH_CHRISTMAS.equals(selector)) {
-                return CHEST_WITH_CHRISTMAS;
-            } else if (ModelSelector.BELL.equals(selector)) {
-                return BELL;
-            } else if (ModelSelector.SHULKER_BOX.equals(selector)) {
-                return SHULKER_BOX;
-            }
-            throw new IllegalArgumentException();
-        }
-
-        public ModelSelector getSelector() {
-            return switch (this) {
-                case STATE_HOLDER_SELECTOR -> ModelSelector.STATE_HOLDER_SELECTOR;
-                case CHEST -> ModelSelector.CHEST;
-                case CHEST_WITH_CHRISTMAS -> ModelSelector.CHEST_WITH_CHRISTMAS;
-                case BELL -> ModelSelector.BELL;
-                case SHULKER_BOX -> ModelSelector.SHULKER_BOX;
-            };
-        }
-    }
-
-    @Data
-    public enum DynamicModelEffect {
-        DEFAULT,
-        CHEST,
-        BELL,
-        SHULKER_BOX;
-
-        public static DynamicModelEffect fromEffect(DynamicModelEffects selector) {
-            if (DynamicModelEffects.DEFAULT.equals(selector)) {
-                return DEFAULT;
-            } else if (DynamicModelEffects.CHEST.equals(selector)) {
-                return CHEST;
-            } else if (DynamicModelEffects.BELL.equals(selector)) {
-                return BELL;
-            } else if (DynamicModelEffects.SHULKER_BOX.equals(selector)) {
-                return SHULKER_BOX;
-            }
-            throw new IllegalArgumentException();
-        }
-
-        public DynamicModelEffects getModelEffect() {
-            return switch (this) {
-                case DEFAULT -> DynamicModelEffects.DEFAULT;
-                case CHEST -> DynamicModelEffects.CHEST;
-                case BELL -> DynamicModelEffects.BELL;
-                case SHULKER_BOX -> DynamicModelEffects.SHULKER_BOX;
-            };
-        }
+        return new DynamicBakedModel(out, ModelSelector.fromId(selectorId), DynamicModelEffects.fromId(effectsId));
     }
 }
