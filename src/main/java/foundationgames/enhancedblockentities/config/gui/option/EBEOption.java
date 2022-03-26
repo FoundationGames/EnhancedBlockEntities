@@ -3,20 +3,24 @@ package foundationgames.enhancedblockentities.config.gui.option;
 import foundationgames.enhancedblockentities.ReloadType;
 import foundationgames.enhancedblockentities.util.GuiUtil;
 import net.minecraft.client.resource.language.I18n;
+import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.math.MathHelper;
 
 import java.util.List;
 
 public final class EBEOption {
+    private static final Text NEWLINE = Text.of("\n");
+
     public final String key;
     private final List<String> values;
     private final int defaultValue;
     private int selected;
     public final boolean hasValueComments;
-    public final List<Text> commentLines;
-    private List<Text> valueCommentLines = null;
+    public final Text comment;
+    private MutableText tooltip = null;
+    private Text text = null;
     public final ReloadType reloadType;
 
     public EBEOption(String key, List<String> values, int defaultValue, boolean hasValueComments, ReloadType reloadType) {
@@ -27,8 +31,8 @@ public final class EBEOption {
         this.hasValueComments = hasValueComments;
         this.reloadType = reloadType;
 
-        String comment = I18n.translate(String.format("option.ebe.%s.comment", key));
-        commentLines = GuiUtil.shorten(comment, 20);
+        String commentKey = I18n.translate(String.format("option.ebe.%s.comment", key));
+        comment = GuiUtil.shorten(commentKey, 20);
     }
 
     public String getValue() {
@@ -39,17 +43,24 @@ public final class EBEOption {
         return String.format("option.ebe.%s.value.%s", key, getValue());
     }
 
-    public List<Text> getValueCommentLines() {
-        if (valueCommentLines == null) {
-            valueCommentLines = GuiUtil.shorten(I18n.translate(String.format("option.ebe.%s.valueComment.%s", key, getValue())), 20, Formatting.YELLOW);
+    public Text getText() {
+        if (text == null) text = new TranslatableText(getValueKey()).styled(style -> style.withColor(isDefault() ? 0xFFFFFF : 0xFFDA5E));
+        return text;
+    }
+
+    public MutableText getTooltip() {
+        if (tooltip == null) {
+            if (hasValueComments) tooltip = new TranslatableText(String.format("option.ebe.%s.valueComment.%s", key, getValue())).append(NEWLINE).append(comment.copy());
+            else tooltip = comment.copy();
         }
-        return valueCommentLines;
+        return tooltip;
     }
 
     public void next() {
         selected++;
         if (selected >= values.size()) selected = 0;
-        valueCommentLines = null;
+        tooltip = null;
+        text = null;
     }
 
     public boolean isDefault() {

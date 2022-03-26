@@ -62,7 +62,7 @@
     "screen.ebe.config": "Block Entity Settings",
 
     "text.ebe.apply": "Apply",
-    "text.ebe.shiftForDesc": "Hold SHIFT for descriptions",
+    "text.ebe.descriptions": "Hover over options for descriptions",
     "text.ebe.chest_options": "Chest Options",
     "text.ebe.sign_options": "Sign Options",
     "text.ebe.bell_options": "Bell Options",

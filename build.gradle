@@ -22,6 +22,7 @@ repositories {
 	maven { url = terraformers() }
 	maven { url = "https://storage.googleapis.com/devan-maven/" }
 	maven { url = "https://api.modrinth.com/maven/" }
+	maven { url = "https://maven.gegy.dev/" }
 }
 
 dependencies {
@@ -42,6 +43,10 @@ dependencies {
 
 	// a bit less load time
 	modLocalRuntime "maven.modrinth:lazydfu:0.1.2"
+
+	// UI library
+	modImplementation "dev.lambdaurora:spruceui:${project.spruceui_version}"
+	include "dev.lambdaurora:spruceui:${project.spruceui_version}"
 }
 
 processResources {
