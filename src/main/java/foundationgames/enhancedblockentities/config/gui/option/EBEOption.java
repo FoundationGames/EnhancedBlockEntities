@@ -12,23 +12,29 @@ import java.util.List;
 
 public final class EBEOption {
     private static final Text NEWLINE = Text.of("\n");
+    private static final String OPTION_VALUE = "options.generic_value";
+    private static final String DIVIDER = "text.ebe.option_value_division";
 
     public final String key;
-    private final List<String> values;
-    private final int defaultValue;
-    private int selected;
     public final boolean hasValueComments;
     public final Text comment;
+    public final ReloadType reloadType;
+    public final TextPalette palette;
+
+    private final List<String> values;
+    private final int defaultValue;
+
+    private int selected;
     private MutableText tooltip = null;
     private Text text = null;
-    public final ReloadType reloadType;
 
-    public EBEOption(String key, List<String> values, int defaultValue, boolean hasValueComments, ReloadType reloadType) {
+    public EBEOption(String key, List<String> values, int defaultValue, boolean hasValueComments, TextPalette palette, ReloadType reloadType) {
         this.key = key;
         this.values = values;
         this.defaultValue = MathHelper.clamp(defaultValue, 0, values.size());
         this.selected = this.defaultValue;
         this.hasValueComments = hasValueComments;
+        this.palette = palette;
         this.reloadType = reloadType;
 
         String commentKey = I18n.translate(String.format("option.ebe.%s.comment", key));
@@ -39,12 +45,19 @@ public final class EBEOption {
         return values.get(selected);
     }
 
+    public String getOptionKey() {
+        return String.format("option.ebe.%s", key);
+    }
+
     public String getValueKey() {
-        return String.format("option.ebe.%s.value.%s", key, getValue());
+        return String.format("value.ebe.%s", getValue());
     }
 
     public Text getText() {
-        if (text == null) text = new TranslatableText(getValueKey()).styled(style -> style.withColor(isDefault() ? 0xFFFFFF : 0xFFDA5E));
+        var option = new TranslatableText(this.getOptionKey()).styled(style -> style.withColor(isDefault() ? 0xFFFFFF : 0xFFDA5E));
+        var value = new TranslatableText(this.getValueKey()).styled(style -> style.withColor(this.palette.getColor((float)this.selected / this.values.size())));
+
+        if (text == null) text = option.append(new TranslatableText(DIVIDER).append(value));
         return text;
     }
 

@@ -14,6 +14,7 @@ import foundationgames.enhancedblockentities.EnhancedBlockEntities;
 import foundationgames.enhancedblockentities.config.EBEConfig;
 import foundationgames.enhancedblockentities.ReloadType;
 import foundationgames.enhancedblockentities.config.gui.option.EBEOption;
+import foundationgames.enhancedblockentities.config.gui.option.TextPalette;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ScreenTexts;
 import net.minecraft.client.util.math.MatrixStack;
@@ -112,59 +113,59 @@ public class EBEConfigScreen extends SpruceScreen {
 
         optionsWidget.addSingleOptionEntry(new SpruceSeparatorOption(CHEST_OPTIONS_TITLE, true, null));
         optionsWidget.addSingleOptionEntry(option(
-                new EBEOption(EBEConfig.RENDER_ENHANCED_CHESTS_KEY, BOOLEAN_OPTIONS, BOOLEAN_OPTIONS.indexOf(config.getProperty(EBEConfig.RENDER_ENHANCED_CHESTS_KEY)), false, ReloadType.RESOURCES)
+                new EBEOption(EBEConfig.RENDER_ENHANCED_CHESTS_KEY, BOOLEAN_OPTIONS, BOOLEAN_OPTIONS.indexOf(config.getProperty(EBEConfig.RENDER_ENHANCED_CHESTS_KEY)), false, TextPalette.ON_OFF, ReloadType.RESOURCES)
         ));
         optionsWidget.addSingleOptionEntry(option(
-                new EBEOption(EBEConfig.CHEST_AO_KEY, BOOLEAN_OPTIONS, BOOLEAN_OPTIONS.indexOf(config.getProperty(EBEConfig.CHEST_AO_KEY)), false, ReloadType.RESOURCES)
+                new EBEOption(EBEConfig.CHEST_AO_KEY, BOOLEAN_OPTIONS, BOOLEAN_OPTIONS.indexOf(config.getProperty(EBEConfig.CHEST_AO_KEY)), false, TextPalette.ON_OFF, ReloadType.RESOURCES)
         ));
         optionsWidget.addOptionEntry(option(
-                new EBEOption(EBEConfig.EXPERIMENTAL_CHESTS_KEY, BOOLEAN_OPTIONS, BOOLEAN_OPTIONS.indexOf(config.getProperty(EBEConfig.EXPERIMENTAL_CHESTS_KEY)), false, ReloadType.RESOURCES)
+                new EBEOption(EBEConfig.EXPERIMENTAL_CHESTS_KEY, BOOLEAN_OPTIONS, BOOLEAN_OPTIONS.indexOf(config.getProperty(EBEConfig.EXPERIMENTAL_CHESTS_KEY)), false, TextPalette.ON_OFF, ReloadType.RESOURCES)
         ), option(
-                new EBEOption(EBEConfig.CHRISTMAS_CHESTS_KEY, ALLOWED_FORCED_DISABLED, ALLOWED_FORCED_DISABLED.indexOf(config.getProperty(EBEConfig.CHRISTMAS_CHESTS_KEY)), true, ReloadType.WORLD)
+                new EBEOption(EBEConfig.CHRISTMAS_CHESTS_KEY, ALLOWED_FORCED_DISABLED, ALLOWED_FORCED_DISABLED.indexOf(config.getProperty(EBEConfig.CHRISTMAS_CHESTS_KEY)), true, TextPalette.rainbow(0.35f), ReloadType.WORLD)
         ));
 
         optionsWidget.addSingleOptionEntry(new SpruceSeparatorOption(SIGN_OPTIONS_TITLE, true, null));
         optionsWidget.addSingleOptionEntry(option(
-                new EBEOption(EBEConfig.RENDER_ENHANCED_SIGNS_KEY, BOOLEAN_OPTIONS, BOOLEAN_OPTIONS.indexOf(config.getProperty(EBEConfig.RENDER_ENHANCED_SIGNS_KEY)), false, ReloadType.RESOURCES)
+                new EBEOption(EBEConfig.RENDER_ENHANCED_SIGNS_KEY, BOOLEAN_OPTIONS, BOOLEAN_OPTIONS.indexOf(config.getProperty(EBEConfig.RENDER_ENHANCED_SIGNS_KEY)), false, TextPalette.ON_OFF, ReloadType.RESOURCES)
         ));
         optionsWidget.addSingleOptionEntry(option(
-                new EBEOption(EBEConfig.SIGN_TEXT_RENDERING_KEY, SIGN_TEXT_OPTIONS, SIGN_TEXT_OPTIONS.indexOf(config.getProperty(EBEConfig.SIGN_TEXT_RENDERING_KEY)), true, ReloadType.NONE)
+                new EBEOption(EBEConfig.SIGN_TEXT_RENDERING_KEY, SIGN_TEXT_OPTIONS, SIGN_TEXT_OPTIONS.indexOf(config.getProperty(EBEConfig.SIGN_TEXT_RENDERING_KEY)), true, TextPalette.rainbow(0.45f), ReloadType.NONE)
         ));
         optionsWidget.addOptionEntry(option(
-                new EBEOption(EBEConfig.EXPERIMENTAL_SIGNS_KEY, BOOLEAN_OPTIONS, BOOLEAN_OPTIONS.indexOf(config.getProperty(EBEConfig.EXPERIMENTAL_SIGNS_KEY)), false, ReloadType.RESOURCES)
+                new EBEOption(EBEConfig.EXPERIMENTAL_SIGNS_KEY, BOOLEAN_OPTIONS, BOOLEAN_OPTIONS.indexOf(config.getProperty(EBEConfig.EXPERIMENTAL_SIGNS_KEY)), false, TextPalette.ON_OFF, ReloadType.RESOURCES)
         ), option(
-                new EBEOption(EBEConfig.SIGN_AO_KEY, BOOLEAN_OPTIONS, BOOLEAN_OPTIONS.indexOf(config.getProperty(EBEConfig.SIGN_AO_KEY)), false, ReloadType.RESOURCES)
+                new EBEOption(EBEConfig.SIGN_AO_KEY, BOOLEAN_OPTIONS, BOOLEAN_OPTIONS.indexOf(config.getProperty(EBEConfig.SIGN_AO_KEY)), false, TextPalette.ON_OFF, ReloadType.RESOURCES)
         ));
 
         optionsWidget.addSingleOptionEntry(new SpruceSeparatorOption(BELL_OPTIONS_TITLE, true, null));
         optionsWidget.addSingleOptionEntry(option(
-                new EBEOption(EBEConfig.RENDER_ENHANCED_BELLS_KEY, BOOLEAN_OPTIONS, BOOLEAN_OPTIONS.indexOf(config.getProperty(EBEConfig.RENDER_ENHANCED_BELLS_KEY)), false, ReloadType.RESOURCES)
+                new EBEOption(EBEConfig.RENDER_ENHANCED_BELLS_KEY, BOOLEAN_OPTIONS, BOOLEAN_OPTIONS.indexOf(config.getProperty(EBEConfig.RENDER_ENHANCED_BELLS_KEY)), false, TextPalette.ON_OFF, ReloadType.RESOURCES)
         ));
         optionsWidget.addSingleOptionEntry(option(
-                new EBEOption(EBEConfig.BELL_AO_KEY, BOOLEAN_OPTIONS, BOOLEAN_OPTIONS.indexOf(config.getProperty(EBEConfig.BELL_AO_KEY)), false, ReloadType.RESOURCES)
+                new EBEOption(EBEConfig.BELL_AO_KEY, BOOLEAN_OPTIONS, BOOLEAN_OPTIONS.indexOf(config.getProperty(EBEConfig.BELL_AO_KEY)), false, TextPalette.ON_OFF, ReloadType.RESOURCES)
         ));
 
         optionsWidget.addSingleOptionEntry(new SpruceSeparatorOption(BED_OPTIONS_TITLE, true, null));
         optionsWidget.addSingleOptionEntry(option(
-                new EBEOption(EBEConfig.RENDER_ENHANCED_BEDS_KEY, BOOLEAN_OPTIONS, BOOLEAN_OPTIONS.indexOf(config.getProperty(EBEConfig.RENDER_ENHANCED_BEDS_KEY)), false, ReloadType.RESOURCES)
+                new EBEOption(EBEConfig.RENDER_ENHANCED_BEDS_KEY, BOOLEAN_OPTIONS, BOOLEAN_OPTIONS.indexOf(config.getProperty(EBEConfig.RENDER_ENHANCED_BEDS_KEY)), false, TextPalette.ON_OFF, ReloadType.RESOURCES)
         ));
         optionsWidget.addOptionEntry(option(
-                new EBEOption(EBEConfig.EXPERIMENTAL_BEDS_KEY, BOOLEAN_OPTIONS, BOOLEAN_OPTIONS.indexOf(config.getProperty(EBEConfig.EXPERIMENTAL_BEDS_KEY)), false, ReloadType.RESOURCES)
+                new EBEOption(EBEConfig.EXPERIMENTAL_BEDS_KEY, BOOLEAN_OPTIONS, BOOLEAN_OPTIONS.indexOf(config.getProperty(EBEConfig.EXPERIMENTAL_BEDS_KEY)), false, TextPalette.ON_OFF, ReloadType.RESOURCES)
         ), option(
-                new EBEOption(EBEConfig.BED_AO_KEY, BOOLEAN_OPTIONS, BOOLEAN_OPTIONS.indexOf(config.getProperty(EBEConfig.BED_AO_KEY)), false, ReloadType.RESOURCES)
+                new EBEOption(EBEConfig.BED_AO_KEY, BOOLEAN_OPTIONS, BOOLEAN_OPTIONS.indexOf(config.getProperty(EBEConfig.BED_AO_KEY)), false, TextPalette.ON_OFF, ReloadType.RESOURCES)
         ));
 
         optionsWidget.addSingleOptionEntry(new SpruceSeparatorOption(SHULKER_BOX_OPTIONS_TITLE, true, null));
         optionsWidget.addSingleOptionEntry(option(
-                new EBEOption(EBEConfig.RENDER_ENHANCED_SHULKER_BOXES_KEY, BOOLEAN_OPTIONS, BOOLEAN_OPTIONS.indexOf(config.getProperty(EBEConfig.RENDER_ENHANCED_SHULKER_BOXES_KEY)), false, ReloadType.RESOURCES)
+                new EBEOption(EBEConfig.RENDER_ENHANCED_SHULKER_BOXES_KEY, BOOLEAN_OPTIONS, BOOLEAN_OPTIONS.indexOf(config.getProperty(EBEConfig.RENDER_ENHANCED_SHULKER_BOXES_KEY)), false, TextPalette.ON_OFF, ReloadType.RESOURCES)
         ));
         optionsWidget.addSingleOptionEntry(option(
-                new EBEOption(EBEConfig.SHULKER_BOX_AO_KEY, BOOLEAN_OPTIONS, BOOLEAN_OPTIONS.indexOf(config.getProperty(EBEConfig.SHULKER_BOX_AO_KEY)), false, ReloadType.RESOURCES)
+                new EBEOption(EBEConfig.SHULKER_BOX_AO_KEY, BOOLEAN_OPTIONS, BOOLEAN_OPTIONS.indexOf(config.getProperty(EBEConfig.SHULKER_BOX_AO_KEY)), false, TextPalette.ON_OFF, ReloadType.RESOURCES)
         ));
     }
 
     private SpruceOption option(EBEOption option) {
         options.add(option);
-        return new SpruceCyclingOption(option.getValueKey(), i -> option.next(), o -> option.getText(), option.getTooltip());
+        return new SpruceCyclingOption(option.getOptionKey(), i -> option.next(), o -> option.getText(), option.getTooltip());
     }
 }
