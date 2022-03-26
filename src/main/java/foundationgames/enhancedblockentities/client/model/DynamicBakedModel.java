@@ -41,7 +41,7 @@ public class DynamicBakedModel implements BakedModel, FabricBakedModel {
     @Override
     public void emitBlockQuads(BlockRenderView view, BlockState state, BlockPos blockPos, Supplier<Random> rng, RenderContext context) {
         QuadEmitter emitter = context.getEmitter();
-        BakedModel model = models[selector.getModelIndex(view, state, blockPos, rng, context)];
+        BakedModel model = models[getSelector().getModelIndex(view, state, blockPos, rng, context)];
         RenderMaterial mat = null;
         var renderer = RendererAccess.INSTANCE.getRenderer();
         if (renderer != null) {
@@ -68,7 +68,7 @@ public class DynamicBakedModel implements BakedModel, FabricBakedModel {
 
     @Override
     public boolean useAmbientOcclusion() {
-        return effects.ambientOcclusion();
+        return getEffects().ambientOcclusion();
     }
 
     @Override
@@ -99,5 +99,17 @@ public class DynamicBakedModel implements BakedModel, FabricBakedModel {
     @Override
     public ModelOverrideList getOverrides() {
         return null;
+    }
+
+    public BakedModel[] getModels() {
+        return models;
+    }
+
+    public ModelSelector getSelector() {
+        return selector;
+    }
+
+    public DynamicModelEffects getEffects() {
+        return effects;
     }
 }
