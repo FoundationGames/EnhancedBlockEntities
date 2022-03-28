@@ -11,4 +11,6 @@ public enum EBEUtil {;
         DEFAULTED_DYE_COLORS = new DyeColor[dColors.length + 1];
         System.arraycopy(dColors, 0, DEFAULTED_DYE_COLORS, 0, dColors.length);
     }
+
+
 }

@@ -2,7 +2,12 @@ package foundationgames.enhancedblockentities.client.model;
 
 import foundationgames.enhancedblockentities.EnhancedBlockEntities;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public abstract class DynamicModelEffects {
+    private static final List<DynamicModelEffects> REGISTRY = new ArrayList<>();
+
     public static final DynamicModelEffects DEFAULT = new DynamicModelEffects() {};
 
     public static final DynamicModelEffects CHEST = new DynamicModelEffects() {
@@ -26,7 +31,18 @@ public abstract class DynamicModelEffects {
         }
     };
 
+    public final int id;
+
+    public DynamicModelEffects() {
+        this.id = REGISTRY.size();
+        REGISTRY.add(this);
+    }
+
     public boolean ambientOcclusion() {
         return true;
+    }
+
+    public static DynamicModelEffects fromId(int id) {
+        return REGISTRY.get(id);
     }
 }

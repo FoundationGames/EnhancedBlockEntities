@@ -1,31 +1,26 @@
 package foundationgames.enhancedblockentities.util;
 
-import com.google.common.collect.ImmutableList;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public enum GuiUtil {;
-    public static List<Text> shorten(String text, int maxLength, Formatting ... formats) {
+    public static Text shorten(String text, final int maxLength, Formatting ... formats) {
         String[] words = text.split(" ");
         StringBuilder line = new StringBuilder();
-        int lineLength = 0;
-        List<Text> lines = new ArrayList<>();
-        for (String word : words) {
+        StringBuilder result = new StringBuilder();
+        for (int i = 0; i < words.length; i++) {
+            var word = words[i];
             line.append(word).append(" ");
-            lineLength += (word.length() + 1);
-            if (lineLength > maxLength) {
-                lines.add(new LiteralText(line.toString()).formatted(formats));
+            if (line.length() > maxLength) {
+                if (i < words.length - 1) {
+                    line.append("\n");
+                }
+                result.append(line);
                 line = new StringBuilder();
-                lineLength = 0;
             }
         }
-        if (lineLength > 0) {
-            lines.add(new LiteralText(line.toString()).formatted(formats));
-        }
-        return ImmutableList.copyOf(lines);
+        if (line.length() > 0) result.append(line);
+        return new LiteralText(result.toString()).formatted(formats);
     }
 }
