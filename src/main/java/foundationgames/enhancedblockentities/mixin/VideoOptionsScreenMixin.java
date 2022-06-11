@@ -23,8 +23,8 @@ public abstract class VideoOptionsScreenMixin extends Screen {
             ),
             index = 0
     )
-    private SimpleOption[] enhanced_bes$addEBEOptionButton(SimpleOption[] old) {
-        var options = new SimpleOption[old.length + 1];
+    private SimpleOption<?>[] enhanced_bes$addEBEOptionButton(SimpleOption<?>[] old) {
+        var options = new SimpleOption<?>[old.length + 1];
         System.arraycopy(old, 0, options, 0, old.length);
         options[options.length - 1] = ConfigButtonOption.getOption(this);
         return options;

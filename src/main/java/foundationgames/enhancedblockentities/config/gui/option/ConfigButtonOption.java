@@ -14,12 +14,12 @@ import java.util.Optional;
 import java.util.function.Function;
 
 public class ConfigButtonOption {
-    public static SimpleOption getOption(Screen parent) {
-        return new SimpleOption(
+    public static SimpleOption<?> getOption(Screen parent) {
+        return new SimpleOption<>(
             "option.ebe.config",
             SimpleOption.emptyTooltip(),
             (title, object) -> title,
-            new ConfigButtonCallbacks(parent),
+            new ConfigButtonCallbacks<>(parent),
             Optional.empty(),
             value -> {
             }
