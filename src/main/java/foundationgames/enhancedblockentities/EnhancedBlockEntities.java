@@ -9,7 +9,7 @@ import foundationgames.enhancedblockentities.util.WorldUtil;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
-import net.fabricmc.fabric.api.object.builder.v1.client.model.FabricModelPredicateProviderRegistry;
+import net.minecraft.client.item.ModelPredicateProviderRegistry;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.item.Items;
 import net.minecraft.util.Identifier;
@@ -27,7 +27,7 @@ public final class EnhancedBlockEntities implements ClientModInitializer {
 
         ModelIdentifiers.init();
         EBESetup.setupResourceProviders();
-        FabricModelPredicateProviderRegistry.register(Items.CHEST, new Identifier("is_christmas"), (stack, world, entity, seed) -> DateUtil.isChristmas() ? 1 : 0);
+        ModelPredicateProviderRegistry.register(Items.CHEST, new Identifier("is_christmas"), (stack, world, entity, seed) -> DateUtil.isChristmas() ? 1 : 0);
 
         load();
     }

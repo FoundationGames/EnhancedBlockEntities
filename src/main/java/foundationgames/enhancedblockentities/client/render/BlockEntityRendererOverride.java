@@ -10,8 +10,7 @@ import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.model.BakedModel;
 import net.minecraft.client.render.model.BakedQuad;
 import net.minecraft.client.util.math.MatrixStack;
-
-import java.util.Random;
+import net.minecraft.util.math.random.Random;
 
 public abstract class BlockEntityRendererOverride {
     public static final BlockEntityRendererOverride NO_OP = new BlockEntityRendererOverride() {
@@ -19,7 +18,7 @@ public abstract class BlockEntityRendererOverride {
         public void render(BlockEntity blockEntity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {}
     };
 
-    private static final Random dummy = new Random();
+    private static final Random dummy = Random.create();
 
     public BlockEntityRendererOverride() {
         EBEEvents.RELOAD_MODELS.register((loader, manager, profiler) -> this.onModelsReload());

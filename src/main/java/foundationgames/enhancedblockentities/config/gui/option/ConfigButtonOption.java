@@ -1,26 +1,47 @@
 package foundationgames.enhancedblockentities.config.gui.option;
 
+import com.mojang.serialization.Codec;
 import foundationgames.enhancedblockentities.config.gui.screen.EBEConfigScreen;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.ClickableWidget;
 import net.minecraft.client.option.GameOptions;
-import net.minecraft.client.option.Option;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.client.option.SimpleOption;
+import net.minecraft.text.Text;
 
-public class ConfigButtonOption extends Option {
-    private final Screen parent;
+import java.util.Optional;
+import java.util.function.Function;
 
-    public ConfigButtonOption(Screen parent) {
-        super("option.ebe.config");
-        this.parent = parent;
+public class ConfigButtonOption {
+    public static SimpleOption getOption(Screen parent) {
+        return new SimpleOption(
+            "option.ebe.config",
+            SimpleOption.emptyTooltip(),
+            (title, object) -> title,
+            new ConfigButtonCallbacks(parent),
+            Optional.empty(),
+            value -> {
+            }
+        );
     }
 
-    @Override
-    public ClickableWidget createButton(GameOptions options, int x, int y, int width) {
-        return new ButtonWidget(x, y, width, 20, new TranslatableText("option.ebe.config"), b -> {
-            MinecraftClient.getInstance().setScreen(new EBEConfigScreen(parent));
-        });
+    private record ConfigButtonCallbacks<T>(Screen parent) implements SimpleOption.Callbacks<T> {
+        @Override
+        public Function<SimpleOption<T>, ClickableWidget> getButtonCreator(SimpleOption.TooltipFactory<T> tooltipFactory, GameOptions gameOptions, int x, int y, int width) {
+            return (option) -> new ButtonWidget(x, y, width, 20, Text.translatable("option.ebe.config"), b -> {
+                MinecraftClient.getInstance().setScreen(new EBEConfigScreen(parent));
+            });
+        }
+
+        @Override
+        public Optional<T> validate(T value) {
+            return Optional.empty();
+        }
+
+        @Override
+        public Codec<T> codec() {
+            return null;
+        }
     }
 }
