@@ -20,6 +20,6 @@ public enum GuiUtil {;
             }
         }
         if (line.length() > 0) result.append(line);
-        return Text.of(result.toString()).copy().formatted(formats);
+        return Text.literal(result.toString()).formatted(formats);
     }
 }
