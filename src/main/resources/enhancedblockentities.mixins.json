@@ -9,11 +9,13 @@
     "BakedModelManagerMixin",
     "BellBlockEntityMixin",
     "BlockEntityRenderDispatcherMixin",
+    "BuiltinModelItemRendererMixin",
     "ChestBlockEntityMixin",
     "EnderChestBlockEntityMixin",
     "LifecycledResourceManagerImplMixin",
     "ShulkerBoxBlockEntityMixin",
     "SignBlockEntityRenderAccessor",
+    "SignEditScreenMixin",
     "VideoOptionsScreenMixin",
     "WorldRendererMixin"
   ],

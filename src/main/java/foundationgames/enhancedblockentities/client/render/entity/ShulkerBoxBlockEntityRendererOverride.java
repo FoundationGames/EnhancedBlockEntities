@@ -1,6 +1,7 @@
 package foundationgames.enhancedblockentities.client.render.entity;
 
 import foundationgames.enhancedblockentities.client.render.BlockEntityRendererOverride;
+import foundationgames.enhancedblockentities.util.EBEUtil;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ShulkerBoxBlock;
 import net.minecraft.block.entity.BlockEntity;
@@ -46,7 +47,7 @@ public class ShulkerBoxBlockEntityRendererOverride extends BlockEntityRendererOv
 
             var lidModel = models.get(entity.getColor());
             if (lidModel != null) {
-                renderBakedModel(vertexConsumers, blockEntity.getCachedState(), matrices, lidModel, light, overlay);
+                EBEUtil.renderBakedModel(vertexConsumers, blockEntity.getCachedState(), matrices, lidModel, light, overlay);
             }
 
             matrices.pop();

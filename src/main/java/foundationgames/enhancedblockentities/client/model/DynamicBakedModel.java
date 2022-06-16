@@ -43,10 +43,12 @@ public class DynamicBakedModel implements BakedModel, FabricBakedModel {
         QuadEmitter emitter = context.getEmitter();
         BakedModel model = models[getSelector().getModelIndex(view, state, blockPos, rng, context)];
         RenderMaterial mat = null;
+
         var renderer = RendererAccess.INSTANCE.getRenderer();
         if (renderer != null) {
             mat = renderer.materialById(RenderMaterial.MATERIAL_STANDARD);
         }
+
         for (int i = 0; i <= 6; i++) {
             Direction dir = ModelHelper.faceFromIndex(i);
             for (BakedQuad quad : model.getQuads(state, dir, rng.get())) {

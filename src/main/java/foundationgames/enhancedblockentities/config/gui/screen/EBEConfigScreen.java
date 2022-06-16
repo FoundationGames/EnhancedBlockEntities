@@ -76,7 +76,7 @@ public class EBEConfigScreen extends SpruceScreen {
     @Override
     public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
         if (this.client.world != null) {
-            this.fillGradient(matrices, 0, 0, width, height, 0x4F232323, 0x4F232323);
+            this.fillGradient(matrices, 0, 0, width, height, 0x4F141414, 0x4F141414);
             RenderUtil.renderBackgroundTexture(0, 0, this.width, 34, 0);
             RenderUtil.renderBackgroundTexture(0, this.height - 35, this.width, 35, 0);
         }

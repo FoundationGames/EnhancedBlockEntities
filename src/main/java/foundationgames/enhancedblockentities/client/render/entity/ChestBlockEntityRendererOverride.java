@@ -1,6 +1,7 @@
 package foundationgames.enhancedblockentities.client.render.entity;
 
 import foundationgames.enhancedblockentities.client.render.BlockEntityRendererOverride;
+import foundationgames.enhancedblockentities.util.EBEUtil;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ChestBlock;
 import net.minecraft.block.entity.BlockEntity;
@@ -45,7 +46,7 @@ public class ChestBlockEntityRendererOverride extends BlockEntityRendererOverrid
             rot = 1f - (rot * rot * rot);
             matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(rot * 90));
             matrices.translate(0, -yPiv, -zPiv);
-            renderBakedModel(vertexConsumers, blockEntity.getCachedState(), matrices, models[modelSelector.apply(blockEntity)], light, overlay);
+            EBEUtil.renderBakedModel(vertexConsumers, blockEntity.getCachedState(), matrices, models[modelSelector.apply(blockEntity)], light, overlay);
 
             matrices.pop();
         }
