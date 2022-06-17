@@ -17,8 +17,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public final class EnhancedBlockEntities implements ClientModInitializer {
+    public static final String ID = "enhancedblockentities";
     public static final Logger LOG = LogManager.getLogger("Enhanced Block Entities");
-
     public static final EBEConfig CONFIG = new EBEConfig();
 
     @Override

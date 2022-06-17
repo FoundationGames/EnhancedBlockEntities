@@ -50,6 +50,8 @@
     "option.ebe.experimental_beds.comment": "Enables very experimental rendering features for beds, such as specially generated particle textures which work with resource packs.",
     "option.ebe.experimental_signs": "Experimental Signs",
     "option.ebe.experimental_signs.comment": "Enables very experimental rendering features for signs, such as specially generated particle textures which work with resource packs.",
+    "option.ebe.dump": "Dump Example Resources",
+    "option.ebe.dump.comment": "Dumps the mod's default resources to .minecraft/enhanced_bes_dump/ to be used as an example by resource pack makers.",
 
     "screen.ebe.config": "Block Entity Settings",
 
@@ -60,5 +62,6 @@
     "text.ebe.bell_options": "Bell Options",
     "text.ebe.bed_options": "Bed Options",
     "text.ebe.shulker_box_options": "Shulker Box Options",
+    "text.ebe.advanced": "Advanced",
     "text.ebe.option_value_division": ": "
 }

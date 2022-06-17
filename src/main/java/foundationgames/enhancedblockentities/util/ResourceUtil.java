@@ -2,16 +2,26 @@ package foundationgames.enhancedblockentities.util;
 
 import foundationgames.enhancedblockentities.EnhancedBlockEntities;
 import foundationgames.enhancedblockentities.client.resource.ExperimentalResourcePack;
-import net.devtech.arrp.api.RRPCallback;
 import net.devtech.arrp.api.RuntimeResourcePack;
 import net.devtech.arrp.json.blockstate.JState;
 import net.devtech.arrp.json.blockstate.JVariant;
 import net.devtech.arrp.json.models.JModel;
 import net.devtech.arrp.json.models.JTextures;
+import net.fabricmc.fabric.api.resource.ModResourcePack;
+import net.fabricmc.fabric.api.resource.ResourcePackActivationType;
+import net.fabricmc.fabric.impl.resource.loader.ModNioResourcePack;
+import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.resource.ResourcePack;
+import net.minecraft.resource.ResourceType;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Direction;
 import org.jetbrains.annotations.Nullable;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Optional;
 
 public enum ResourceUtil {;
     private static RuntimeResourcePack PACK;
@@ -210,6 +220,34 @@ public enum ResourceUtil {;
 
     public static ExperimentalResourcePack getExperimentalPack() {
         return EXPERIMENTAL_PACK;
+    }
+
+    public static Optional<ModResourcePack> getModResourcePack() {
+        return FabricLoader.getInstance().getModContainer(EnhancedBlockEntities.ID)
+                .map(mod -> ModNioResourcePack.create("ebe_dump_pack", mod, null, ResourceType.CLIENT_RESOURCES, ResourcePackActivationType.NORMAL));
+    }
+
+    public static void dumpResourcePack(ResourcePack pack, Path dest) {
+        var dumpPath = dest.resolve("assets/minecraft");
+        for (var res : pack.findResources(ResourceType.CLIENT_RESOURCES, "minecraft", "", 32767, s -> true)) {
+            try {
+                var file = dumpPath.resolve(res.getPath());
+                if (!Files.exists(file)) {
+                    Files.createDirectories(file.getParent());
+                    Files.createFile(file);
+                }
+                try (var out = Files.newOutputStream(file)) {
+                    try (var in = pack.open(ResourceType.CLIENT_RESOURCES, res)) {
+                        out.write(in.readAllBytes());
+                    }
+                }
+            } catch (IOException ignored) {}
+        }
+    }
+
+    public static void dumpAllPacks(Path dest) {
+        getPack().dumpDirect(dest);
+        getModResourcePack().ifPresent(pack -> dumpResourcePack(pack, dest));
     }
 
     static {

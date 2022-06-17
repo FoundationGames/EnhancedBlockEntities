@@ -1,7 +1,7 @@
 package foundationgames.enhancedblockentities.util;
 
-import foundationgames.enhancedblockentities.client.render.BlockEntityRendererOverride;
 import net.fabricmc.fabric.api.renderer.v1.model.ModelHelper;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.render.RenderLayers;
 import net.minecraft.client.render.VertexConsumer;
@@ -11,6 +11,9 @@ import net.minecraft.client.render.model.BakedQuad;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.math.random.Random;
+
+import java.io.IOException;
+import java.nio.file.Files;
 
 public enum EBEUtil {;
     private static final Random dummy = Random.create();
@@ -31,5 +34,17 @@ public enum EBEUtil {;
                 vertices.quad(matrices.peek(), q, 1, 1, 1, light, overlay);
             }
         }
+    }
+
+    public static final String DUMP_FOLDER_NAME = "enhanced_bes_dump";
+
+    public static void dumpResources() throws IOException {
+        var path = FabricLoader.getInstance().getGameDir().resolve(DUMP_FOLDER_NAME);
+
+        if (!Files.exists(path)) {
+            Files.createDirectory(path);
+        }
+
+        ResourceUtil.dumpAllPacks(path);
     }
 }

@@ -15,12 +15,16 @@ import foundationgames.enhancedblockentities.config.EBEConfig;
 import foundationgames.enhancedblockentities.ReloadType;
 import foundationgames.enhancedblockentities.config.gui.option.EBEOption;
 import foundationgames.enhancedblockentities.config.gui.option.TextPalette;
+import foundationgames.enhancedblockentities.util.EBEUtil;
+import foundationgames.enhancedblockentities.util.GuiUtil;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.resource.language.I18n;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.screen.ScreenTexts;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -41,6 +45,10 @@ public class EBEConfigScreen extends SpruceScreen {
     private static final String BELL_OPTIONS_TITLE = "text.ebe.bell_options";
     private static final String BED_OPTIONS_TITLE = "text.ebe.bed_options";
     private static final String SHULKER_BOX_OPTIONS_TITLE = "text.ebe.shulker_box_options";
+    private static final String ADVANCED_TITLE = "text.ebe.advanced";
+
+    private static final Text DUMP_LABEL = new TranslatableText("option.ebe.dump");
+    private final Text dumpTooltip = GuiUtil.shorten(I18n.translate("option.ebe.dump.comment"), 20);
 
     public EBEConfigScreen(Screen screen) {
         super(Text.translatable("screen.ebe.config"));
@@ -161,6 +169,15 @@ public class EBEConfigScreen extends SpruceScreen {
         optionsWidget.addSingleOptionEntry(option(
                 new EBEOption(EBEConfig.SHULKER_BOX_AO_KEY, BOOLEAN_OPTIONS, BOOLEAN_OPTIONS.indexOf(config.getProperty(EBEConfig.SHULKER_BOX_AO_KEY)), false, TextPalette.ON_OFF, ReloadType.RESOURCES)
         ));
+
+        optionsWidget.addSingleOptionEntry(new SpruceSeparatorOption(ADVANCED_TITLE, true, null));
+        optionsWidget.addSingleOptionEntry(new SpruceCyclingOption("option.ebe.dump", i -> {
+            try {
+                EBEUtil.dumpResources();
+            } catch (IOException e) {
+                EnhancedBlockEntities.LOG.error(e);
+            }
+        }, o -> DUMP_LABEL, dumpTooltip));
     }
 
     private SpruceOption option(EBEOption option) {
