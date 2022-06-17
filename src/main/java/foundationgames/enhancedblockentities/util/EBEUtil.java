@@ -10,13 +10,13 @@ import net.minecraft.client.render.model.BakedModel;
 import net.minecraft.client.render.model.BakedQuad;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.DyeColor;
+import net.minecraft.util.math.random.Random;
 
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.Random;
 
 public enum EBEUtil {;
-    private static final Random dummy = new Random();
+    private static final Random dummy = Random.create();
 
     // Contains all dye colors, and null
     public static final DyeColor[] DEFAULTED_DYE_COLORS;

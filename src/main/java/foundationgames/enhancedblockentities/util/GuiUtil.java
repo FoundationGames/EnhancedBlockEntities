@@ -1,6 +1,5 @@
 package foundationgames.enhancedblockentities.util;
 
-import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 
@@ -21,6 +20,6 @@ public enum GuiUtil {;
             }
         }
         if (line.length() > 0) result.append(line);
-        return new LiteralText(result.toString()).formatted(formats);
+        return Text.literal(result.toString()).formatted(formats);
     }
 }
