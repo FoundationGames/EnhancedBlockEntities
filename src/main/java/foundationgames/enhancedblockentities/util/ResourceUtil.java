@@ -229,7 +229,7 @@ public enum ResourceUtil {;
 
     public static void dumpResourcePack(ResourcePack pack, Path dest) {
         var dumpPath = dest.resolve("assets/minecraft");
-        for (var res : pack.findResources(ResourceType.CLIENT_RESOURCES, "minecraft", "", 32767, s -> true)) {
+        for (var res : pack.findResources(ResourceType.CLIENT_RESOURCES, "minecraft", "", s -> true)) {
             try {
                 var file = dumpPath.resolve(res.getPath());
                 if (!Files.exists(file)) {

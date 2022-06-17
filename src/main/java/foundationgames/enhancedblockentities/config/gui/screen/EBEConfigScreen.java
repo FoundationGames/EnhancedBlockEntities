@@ -47,7 +47,7 @@ public class EBEConfigScreen extends SpruceScreen {
     private static final String SHULKER_BOX_OPTIONS_TITLE = "text.ebe.shulker_box_options";
     private static final String ADVANCED_TITLE = "text.ebe.advanced";
 
-    private static final Text DUMP_LABEL = new TranslatableText("option.ebe.dump");
+    private static final Text DUMP_LABEL = Text.translatable("option.ebe.dump");
     private final Text dumpTooltip = GuiUtil.shorten(I18n.translate("option.ebe.dump.comment"), 20);
 
     public EBEConfigScreen(Screen screen) {
