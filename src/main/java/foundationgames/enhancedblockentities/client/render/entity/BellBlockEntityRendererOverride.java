@@ -2,6 +2,7 @@ package foundationgames.enhancedblockentities.client.render.entity;
 
 import foundationgames.enhancedblockentities.client.model.ModelIdentifiers;
 import foundationgames.enhancedblockentities.client.render.BlockEntityRendererOverride;
+import foundationgames.enhancedblockentities.util.EBEUtil;
 import foundationgames.enhancedblockentities.util.duck.BakedModelManagerAccess;
 import net.minecraft.block.entity.BellBlockEntity;
 import net.minecraft.block.entity.BlockEntity;
@@ -40,7 +41,7 @@ public class BellBlockEntityRendererOverride extends BlockEntityRendererOverride
             matrices.multiply(Vec3f.POSITIVE_X.getRadialQuaternion(bellPitch));
             matrices.multiply(Vec3f.POSITIVE_Z.getRadialQuaternion(bellRoll));
             matrices.translate(-8f/16, -12f/16, -8f/16);
-            renderBakedModel(vertexConsumers, blockEntity.getCachedState(), matrices, bellModel, light, overlay);
+            EBEUtil.renderBakedModel(vertexConsumers, blockEntity.getCachedState(), matrices, bellModel, light, overlay);
 
             matrices.pop();
         }
