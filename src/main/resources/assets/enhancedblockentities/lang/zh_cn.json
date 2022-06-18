@@ -50,6 +50,8 @@
     "option.ebe.experimental_beds.comment": "为床启用非常实验性的渲染功能，例如与资源包一起使用时特殊生成的粒子纹理。",
     "option.ebe.experimental_signs": "实验性告示牌",
     "option.ebe.experimental_signs.comment": "为告示牌启用非常实验性的渲染功能，例如与资源包一起使用时特殊生成的粒子纹理。",
+    "option.ebe.dump": "导出示例资源",
+    "option.ebe.dump.comment": "导出本模组的默认资源到.minecraft/enhanced_bes_dump/用于资源包制作者当做一个示例。",
 
     "screen.ebe.config": "方块实体设置",
 
