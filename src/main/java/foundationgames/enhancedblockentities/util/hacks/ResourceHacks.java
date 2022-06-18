@@ -6,13 +6,14 @@ import net.minecraft.util.Identifier;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.NoSuchElementException;
 
 public enum ResourceHacks {;
     private static void cropAndPutTexture(Identifier source, Identifier result, ResourceManager manager, ExperimentalResourcePack pack, float u0, float v0, float u1, float v1) throws IOException {
         InputStream image;
         try {
-            image = manager.getResource(source).getInputStream();
-        } catch (IOException e) {
+            image = manager.getResource(source).orElseThrow().getInputStream();
+        } catch (IOException | NoSuchElementException e) {
             return;
         }
         if (image == null) return;

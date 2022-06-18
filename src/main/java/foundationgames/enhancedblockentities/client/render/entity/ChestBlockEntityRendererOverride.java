@@ -5,8 +5,8 @@ import foundationgames.enhancedblockentities.util.EBEUtil;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ChestBlock;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.LidOpenable;
 import net.minecraft.block.enums.ChestType;
-import net.minecraft.client.block.ChestAnimationProgress;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.model.BakedModel;
 import net.minecraft.client.util.math.MatrixStack;
@@ -30,10 +30,10 @@ public class ChestBlockEntityRendererOverride extends BlockEntityRendererOverrid
     @Override
     public void render(BlockEntity blockEntity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
         if (models == null) models = modelGetter.get();
-        if (blockEntity instanceof ChestAnimationProgress) {
+        if (blockEntity instanceof LidOpenable) {
             matrices.push();
 
-            ChestAnimationProgress chest = getAnimationProgress(blockEntity, tickDelta);
+            LidOpenable chest = getAnimationProgress(blockEntity, tickDelta);
             matrices.translate(0.5f, 0, 0.5f);
             Direction dir = blockEntity.getCachedState().get(ChestBlock.FACING);
             matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(180 - dir.asRotation()));
@@ -52,8 +52,8 @@ public class ChestBlockEntityRendererOverride extends BlockEntityRendererOverrid
         }
     }
 
-    public static ChestAnimationProgress getAnimationProgress(BlockEntity blockEntity, float tickDelta) {
-        ChestAnimationProgress chest = (ChestAnimationProgress)blockEntity;
+    public static LidOpenable getAnimationProgress(BlockEntity blockEntity, float tickDelta) {
+        LidOpenable chest = (LidOpenable)blockEntity;
 
         BlockState state = blockEntity.getCachedState();
         if (state.contains(ChestBlock.CHEST_TYPE) && state.get(ChestBlock.CHEST_TYPE) != ChestType.SINGLE) {
@@ -64,10 +64,10 @@ public class ChestBlockEntityRendererOverride extends BlockEntityRendererOverrid
                 case LEFT -> neighbor = blockEntity.getWorld().getBlockEntity(pos.offset(facing.rotateYClockwise()));
                 case RIGHT -> neighbor = blockEntity.getWorld().getBlockEntity(pos.offset(facing.rotateYCounterclockwise()));
             }
-            if (neighbor instanceof ChestAnimationProgress) {
-                float nAnim = ((ChestAnimationProgress)neighbor).getAnimationProgress(tickDelta);
+            if (neighbor instanceof LidOpenable) {
+                float nAnim = ((LidOpenable)neighbor).getAnimationProgress(tickDelta);
                 if (nAnim > chest.getAnimationProgress(tickDelta)) {
-                    chest = ((ChestAnimationProgress)neighbor);
+                    chest = ((LidOpenable)neighbor);
                 }
             }
         }

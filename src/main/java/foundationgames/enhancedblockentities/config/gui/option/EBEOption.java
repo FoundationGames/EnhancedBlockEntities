@@ -5,7 +5,6 @@ import foundationgames.enhancedblockentities.util.GuiUtil;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.math.MathHelper;
 
 import java.util.List;
@@ -54,17 +53,17 @@ public final class EBEOption {
     }
 
     public Text getText() {
-        var option = new TranslatableText(this.getOptionKey()).styled(style -> style.withColor(isDefault() ? 0xFFFFFF : 0xFFDA5E));
-        var value = new TranslatableText(this.getValueKey()).styled(style -> style.withColor(this.palette.getColor((float)this.selected / this.values.size())));
+        var option = Text.translatable(this.getOptionKey()).styled(style -> style.withColor(isDefault() ? 0xFFFFFF : 0xFFDA5E));
+        var value = Text.translatable(this.getValueKey()).styled(style -> style.withColor(this.palette.getColor((float)this.selected / this.values.size())));
 
-        if (text == null) text = option.append(new TranslatableText(DIVIDER).append(value));
+        if (text == null) text = option.append(Text.translatable(DIVIDER).append(value));
         return text;
     }
 
     public MutableText getTooltip() {
         if (tooltip == null) {
-            if (hasValueComments) tooltip = new TranslatableText(String.format("option.ebe.%s.valueComment.%s", key, getValue())).append(NEWLINE).append(comment.copy());
-            else tooltip = comment.copy();
+            if (hasValueComments) tooltip = Text.translatable(String.format("option.ebe.%s.valueComment.%s", key, getValue())).append(NEWLINE).append(comment.copyContentOnly());
+            else tooltip = comment.copyContentOnly();
         }
         return tooltip;
     }

@@ -51,15 +51,14 @@ public class ExperimentalResourcePack implements ResourcePack {
     }
 
     @Override
-    public Collection<Identifier> findResources(ResourceType type, String namespace, String prefix, int maxDepth, Predicate<String> pathFilter) {
+    public Collection<Identifier> findResources(ResourceType type, String namespace, String prefix, Predicate<Identifier> pathFilter) {
         if (type == ResourceType.CLIENT_RESOURCES) {
             ImmutableList.Builder<Identifier> r = ImmutableList.builder();
             resources.keySet().forEach(id -> {
                 if (
                         id.getNamespace().equals(namespace) &&
                         id.getPath().startsWith(prefix) &&
-                        pathFilter.test(id.getPath()) &&
-                        (id.getPath().split("[/\\\\]").length <= maxDepth)
+                        pathFilter.test(Identifier.tryParse(id.getPath()))
                 ) {
                     r.add(id);
                 }

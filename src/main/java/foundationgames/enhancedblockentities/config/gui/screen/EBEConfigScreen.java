@@ -18,11 +18,10 @@ import foundationgames.enhancedblockentities.config.gui.option.TextPalette;
 import foundationgames.enhancedblockentities.util.EBEUtil;
 import foundationgames.enhancedblockentities.util.GuiUtil;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.screen.ScreenTexts;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.screen.ScreenTexts;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 
 import java.io.IOException;
@@ -40,7 +39,7 @@ public class EBEConfigScreen extends SpruceScreen {
     private static final ImmutableList<String> ALLOWED_FORCED_DISABLED = ImmutableList.of("allowed", "forced", "disabled");
     private static final ImmutableList<String> SIGN_TEXT_OPTIONS = ImmutableList.of("smart", "all", "most", "some", "few");
 
-    private static final Text HOLD_SHIFT = new TranslatableText("text.ebe.descriptions").formatted(Formatting.DARK_GRAY, Formatting.ITALIC);
+    private static final Text HOLD_SHIFT = Text.translatable("text.ebe.descriptions").formatted(Formatting.DARK_GRAY, Formatting.ITALIC);
     private static final String CHEST_OPTIONS_TITLE = "text.ebe.chest_options";
     private static final String SIGN_OPTIONS_TITLE = "text.ebe.sign_options";
     private static final String BELL_OPTIONS_TITLE = "text.ebe.bell_options";
@@ -48,11 +47,11 @@ public class EBEConfigScreen extends SpruceScreen {
     private static final String SHULKER_BOX_OPTIONS_TITLE = "text.ebe.shulker_box_options";
     private static final String ADVANCED_TITLE = "text.ebe.advanced";
 
-    private static final Text DUMP_LABEL = new TranslatableText("option.ebe.dump");
+    private static final Text DUMP_LABEL = Text.translatable("option.ebe.dump");
     private final Text dumpTooltip = GuiUtil.shorten(I18n.translate("option.ebe.dump.comment"), 20);
 
     public EBEConfigScreen(Screen screen) {
-        super(new TranslatableText("screen.ebe.config"));
+        super(Text.translatable("screen.ebe.config"));
         parent = screen;
     }
 
@@ -69,7 +68,7 @@ public class EBEConfigScreen extends SpruceScreen {
         this.addDrawableChild(optionsWidget);
 
         this.addDrawableChild(new SpruceButtonWidget(Position.of(bottomCenter - 104, this.height - 27), 100, 20, ScreenTexts.CANCEL, button -> this.close()));
-        this.addDrawableChild(new SpruceButtonWidget(Position.of(bottomCenter, this.height - 27), 100, 20, new TranslatableText("text.ebe.apply"), button -> this.applyChanges()));
+        this.addDrawableChild(new SpruceButtonWidget(Position.of(bottomCenter, this.height - 27), 100, 20, Text.translatable("text.ebe.apply"), button -> this.applyChanges()));
         this.addDrawableChild(new SpruceButtonWidget(Position.of(bottomCenter + 104, this.height - 27), 100, 20, ScreenTexts.DONE, button -> {
             applyChanges();
             close();

@@ -11,8 +11,6 @@ import net.minecraft.client.render.model.BakedModel;
 import net.minecraft.client.render.model.BakedQuad;
 import net.minecraft.client.util.math.MatrixStack;
 
-import java.util.Random;
-
 public abstract class BlockEntityRendererOverride {
     public static final BlockEntityRendererOverride NO_OP = new BlockEntityRendererOverride() {
         @Override
