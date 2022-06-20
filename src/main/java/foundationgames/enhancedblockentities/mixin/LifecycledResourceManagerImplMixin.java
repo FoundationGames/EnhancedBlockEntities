@@ -1,5 +1,6 @@
 package foundationgames.enhancedblockentities.mixin;
 
+import foundationgames.enhancedblockentities.util.EBEUtil;
 import foundationgames.enhancedblockentities.util.ResourceUtil;
 import foundationgames.enhancedblockentities.util.hacks.ExperimentalSetup;
 import net.fabricmc.fabric.api.resource.ModResourcePack;
@@ -34,7 +35,7 @@ public abstract class LifecycledResourceManagerImplMixin {
         int idx = 0;
         if (packs.size() > 0) do {
             idx++;
-        } while (idx < packs.size() && !(packs.get(idx - 1) instanceof DefaultResourcePack));
+        } while (idx < packs.size() && !EBEUtil.isVanillaResourcePack(packs.get(idx - 1)));
         packs.add(idx, ResourceUtil.getPack());
 
         return packs;
