@@ -1,6 +1,7 @@
 package foundationgames.enhancedblockentities.mixin;
 
 import foundationgames.enhancedblockentities.EnhancedBlockEntities;
+import foundationgames.enhancedblockentities.client.render.entity.ChestBlockEntityRendererOverride;
 import foundationgames.enhancedblockentities.util.duck.ModelStateHolder;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -24,7 +25,8 @@ public abstract class ChestBlockEntityMixin extends BlockEntity implements Model
 
     @Inject(method = "clientTick", at = @At(value = "TAIL"))
     private static void enhanced_bes$listenForOpenClose(World world, BlockPos pos, BlockState state, ChestBlockEntity blockEntity, CallbackInfo ci) {
-        int mState = blockEntity.getAnimationProgress(0) > 0 ? 1 : 0;
+        int mState = ChestBlockEntityRendererOverride.getAnimationProgress(blockEntity, 0)
+                .getAnimationProgress(0) > 0 ? 1 : 0;
         if (EnhancedBlockEntities.CONFIG.renderEnhancedChests && ((ModelStateHolder)blockEntity).getModelState() != mState) {
             ((ModelStateHolder)blockEntity).setModelState(mState, world, pos);
         }

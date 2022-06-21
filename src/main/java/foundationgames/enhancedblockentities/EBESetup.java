@@ -58,6 +58,7 @@ public enum EBESetup {;
         ResourceUtil.addSignBlockStates("jungle_sign", "jungle_wall_sign", p);
         ResourceUtil.addSignBlockStates("acacia_sign", "acacia_wall_sign", p);
         ResourceUtil.addSignBlockStates("dark_oak_sign", "dark_oak_wall_sign", p);
+        ResourceUtil.addSignBlockStates("mangrove_sign", "mangrove_wall_sign", p);
         ResourceUtil.addSignBlockStates("crimson_sign", "crimson_wall_sign", p);
         ResourceUtil.addSignBlockStates("warped_sign", "warped_wall_sign", p);
 
@@ -67,6 +68,7 @@ public enum EBESetup {;
         ResourceUtil.addSignModels("entity/signs/jungle", "jungle_sign", "jungle_wall_sign", p);
         ResourceUtil.addSignModels("entity/signs/acacia", "acacia_sign", "acacia_wall_sign", p);
         ResourceUtil.addSignModels("entity/signs/dark_oak", "dark_oak_sign", "dark_oak_wall_sign", p);
+        ResourceUtil.addSignModels("entity/signs/mangrove", "mangrove_sign", "mangrove_wall_sign", p);
         ResourceUtil.addSignModels("entity/signs/crimson", "crimson_sign", "crimson_wall_sign", p);
         ResourceUtil.addSignModels("entity/signs/warped", "warped_sign", "warped_wall_sign", p);
     }
@@ -317,6 +319,12 @@ public enum EBESetup {;
                 new SignBlockEntityRendererOverride()
         );
         EnhancedBlockEntityRegistry.register(Blocks.DARK_OAK_WALL_SIGN, BlockEntityType.SIGN, BlockEntityRenderCondition.SIGN,
+                new SignBlockEntityRendererOverride()
+        );
+        EnhancedBlockEntityRegistry.register(Blocks.MANGROVE_SIGN, BlockEntityType.SIGN, BlockEntityRenderCondition.SIGN,
+                new SignBlockEntityRendererOverride()
+        );
+        EnhancedBlockEntityRegistry.register(Blocks.MANGROVE_WALL_SIGN, BlockEntityType.SIGN, BlockEntityRenderCondition.SIGN,
                 new SignBlockEntityRendererOverride()
         );
         EnhancedBlockEntityRegistry.register(Blocks.CRIMSON_SIGN, BlockEntityType.SIGN, BlockEntityRenderCondition.SIGN,
