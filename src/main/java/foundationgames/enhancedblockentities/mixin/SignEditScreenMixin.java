@@ -38,8 +38,10 @@ public class SignEditScreenMixin {
             BlockState state = this.sign.getCachedState();
             if (state.contains(Properties.HORIZONTAL_FACING)) {
                 state = state.with(Properties.HORIZONTAL_FACING, Direction.NORTH);
-            } else {
+            } else if (state.contains(Properties.ROTATION)) {
                 state = state.with(Properties.ROTATION, 0);
+            } else {
+                return;
             }
 
             var signModel = models.getModel(state);
