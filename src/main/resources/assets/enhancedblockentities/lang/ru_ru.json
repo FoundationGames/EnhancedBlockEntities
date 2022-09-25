@@ -50,6 +50,8 @@
     "option.ebe.experimental_beds.comment": "Активирует крайне экспериментальные функции рендеринга для кроватей, такие как специально сгенерированные текстуры частиц, работающие с пакетами ресурсов.",
     "option.ebe.experimental_signs": "Экспериментальные",
     "option.ebe.experimental_signs.comment": "Активирует крайне экспериментальные функции рендеринга для табличек, такие как специально сгенерированные текстуры частиц, работающие с пакетами ресурсов.",
+    "option.ebe.dump": "Выгрузить пример ресурсов",
+    "option.ebe.dump.comment": "Выгружает базовые ресурсы мода в .minecraft/enhanced_bes_dump для их использования создателями наборов ресурсов в качестве образца.",
 
     "screen.ebe.config": "Настройки блоков-сущностей",
 
@@ -60,5 +62,8 @@
     "text.ebe.bell_options": "Настройки колоколов",
     "text.ebe.bed_options": "Настройки кроватей",
     "text.ebe.shulker_box_options": "Настройки шалкеровых ящиков",
-    "text.ebe.option_value_division": ": "
+    "text.ebe.option_value_division": ": ",
+
+    "modmenu.summaryTranslation.enhancedblockentities": "Современный подход к оптимизации и персонализации блоков-сущностей.",
+    "modmenu.descriptionTranslation.enhancedblockentities": "Клиентский мод для Fabric, предназначенный для повышения производительности при отрисовке блоков-сущностей и расширения возможностей их персонализации при помощи наборов ресурсов."
 }
