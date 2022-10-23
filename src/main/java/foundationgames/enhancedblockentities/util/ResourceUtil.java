@@ -7,21 +7,20 @@ import net.devtech.arrp.json.blockstate.JState;
 import net.devtech.arrp.json.blockstate.JVariant;
 import net.devtech.arrp.json.models.JModel;
 import net.devtech.arrp.json.models.JTextures;
-import net.fabricmc.fabric.api.resource.ModResourcePack;
-import net.fabricmc.fabric.api.resource.ResourcePackActivationType;
-import net.fabricmc.fabric.impl.resource.loader.ModNioResourcePack;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.resource.ResourcePack;
-import net.minecraft.resource.ResourceType;
+import net.fabricmc.loader.api.ModContainer;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Direction;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
+import java.nio.file.CopyOption;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Optional;
+import java.nio.file.StandardCopyOption;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public enum ResourceUtil {;
     private static RuntimeResourcePack PACK;
@@ -222,32 +221,27 @@ public enum ResourceUtil {;
         return EXPERIMENTAL_PACK;
     }
 
-    public static Optional<ModResourcePack> getModResourcePack() {
-        return FabricLoader.getInstance().getModContainer(EnhancedBlockEntities.ID)
-                .map(mod -> ModNioResourcePack.create("ebe_dump_pack", mod, null, ResourceType.CLIENT_RESOURCES, ResourcePackActivationType.NORMAL));
-    }
+    public static void dumpModAssets(Path dest) throws IOException {
+        var roots = FabricLoader.getInstance().getModContainer(EnhancedBlockEntities.ID)
+                .map(ModContainer::getRootPaths).orElse(List.of());
 
-    public static void dumpResourcePack(ResourcePack pack, Path dest) {
-        var dumpPath = dest.resolve("assets/minecraft");
-        for (var res : pack.findResources(ResourceType.CLIENT_RESOURCES, "minecraft", "", s -> true)) {
-            try {
-                var file = dumpPath.resolve(res.getPath());
-                if (!Files.exists(file)) {
-                    Files.createDirectories(file.getParent());
-                    Files.createFile(file);
-                }
-                try (var out = Files.newOutputStream(file)) {
-                    try (var in = pack.open(ResourceType.CLIENT_RESOURCES, res)) {
-                        out.write(in.readAllBytes());
+        for (var root : roots) {
+            var sourceAssets = Files.walk(root.resolve("assets"));
+            for (var asset : sourceAssets.collect(Collectors.toSet())) {
+                if (!Files.isDirectory(asset)) {
+                    var out = dest.resolve(root.relativize(asset));
+                    if (!Files.exists(out.getParent())) {
+                        Files.createDirectories(out.getParent());
                     }
+                    Files.copy(asset, out, Files.exists(out) ? new CopyOption[] {StandardCopyOption.REPLACE_EXISTING} : new CopyOption[] {});
                 }
-            } catch (IOException ignored) {}
+            }
         }
     }
 
-    public static void dumpAllPacks(Path dest) {
+    public static void dumpAllPacks(Path dest) throws IOException {
         getPack().dumpDirect(dest);
-        getModResourcePack().ifPresent(pack -> dumpResourcePack(pack, dest));
+        dumpModAssets(dest);
     }
 
     static {
