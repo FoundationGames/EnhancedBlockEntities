@@ -1,7 +1,6 @@
 package foundationgames.enhancedblockentities.config.gui.screen;
 
 import com.google.common.collect.ImmutableList;
-import com.mojang.blaze3d.systems.RenderSystem;
 import dev.lambdaurora.spruceui.Position;
 import dev.lambdaurora.spruceui.background.DirtTexturedBackground;
 import dev.lambdaurora.spruceui.option.SpruceCyclingOption;
@@ -18,10 +17,7 @@ import foundationgames.enhancedblockentities.config.gui.option.EBEOption;
 import foundationgames.enhancedblockentities.config.gui.option.TextPalette;
 import foundationgames.enhancedblockentities.util.EBEUtil;
 import foundationgames.enhancedblockentities.util.GuiUtil;
-import net.minecraft.client.gui.RotatingCubeMapRenderer;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.screen.TitleScreen;
-import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.screen.ScreenTexts;
@@ -52,9 +48,7 @@ public class EBEConfigScreen extends SpruceScreen {
     private static final String ADVANCED_TITLE = "text.ebe.advanced";
 
     private static final Text DUMP_LABEL = Text.translatable("option.ebe.dump");
-
     private final Text dumpTooltip = GuiUtil.shorten(I18n.translate("option.ebe.dump.comment"), 20);
-    private final RotatingCubeMapRenderer background = new RotatingCubeMapRenderer(TitleScreen.PANORAMA_CUBE_MAP);
 
     public EBEConfigScreen(Screen screen) {
         super(Text.translatable("screen.ebe.config"));
@@ -65,10 +59,11 @@ public class EBEConfigScreen extends SpruceScreen {
     protected void init() {
         super.init();
         int bottomCenter = this.width / 2 - 50;
+        boolean inWorld = this.client.world != null;
 
         this.optionsWidget = new SpruceOptionListWidget(Position.of(0, 34), this.width, this.height - 69);
         this.options.clear();
-        this.optionsWidget.setBackground(new DirtTexturedBackground(32, 32, 32, 0));
+        this.optionsWidget.setBackground(new DirtTexturedBackground(32, 32, 32, inWorld ? 0 : 255));
         addOptions();
         this.addDrawableChild(optionsWidget);
 
@@ -82,18 +77,16 @@ public class EBEConfigScreen extends SpruceScreen {
 
     @Override
     public void renderBackground(MatrixStack matrices) {
+        if (this.client.world == null) super.renderBackground(matrices);
     }
 
     @Override
     public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-        if (this.client.world == null) {
-            this.background.render(delta, 1);
-            RenderSystem.setShader(GameRenderer::getPositionTexShader);
+        if (this.client.world != null) {
+            this.fillGradient(matrices, 0, 0, width, height, 0x4F141414, 0x4F141414);
+            RenderUtil.renderBackgroundTexture(0, 0, this.width, 34, 0);
+            RenderUtil.renderBackgroundTexture(0, this.height - 35, this.width, 35, 0);
         }
-
-        this.fillGradient(matrices, 0, 0, width, height, 0x4F141414, 0x4F141414);
-        RenderUtil.renderBackgroundTexture(0, 0, this.width, 34, 0);
-        RenderUtil.renderBackgroundTexture(0, this.height - 35, this.width, 35, 0);
 
         super.render(matrices, mouseX, mouseY, delta);
 
