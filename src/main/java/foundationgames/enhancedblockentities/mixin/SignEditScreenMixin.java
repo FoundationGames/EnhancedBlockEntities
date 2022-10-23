@@ -1,6 +1,7 @@
 package foundationgames.enhancedblockentities.mixin;
 
 import foundationgames.enhancedblockentities.EnhancedBlockEntities;
+import foundationgames.enhancedblockentities.EnhancedBlockEntityRegistry;
 import foundationgames.enhancedblockentities.util.EBEUtil;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.SignBlockEntity;
@@ -28,17 +29,19 @@ public class SignEditScreenMixin {
     @Inject(method = "render", at = @At("HEAD"))
     private void enhanced_bes$renderBakedModelSign(MatrixStack matrices, int mouseX, int mouseY, float delta, CallbackInfo ci) {
         boolean enhanceSigns = EnhancedBlockEntities.CONFIG.renderEnhancedSigns;
+
+        var state = this.sign.getCachedState();
+        if (!EnhancedBlockEntityRegistry.BLOCKS.contains(state.getBlock())) return;
+
         this.model.root.visible = !enhanceSigns;
 
         if (enhanceSigns) {
             var self = (SignEditScreen)(Object)this;
             var models = MinecraftClient.getInstance().getBakedModelManager().getBlockModels();
             var buffers = MinecraftClient.getInstance().getBufferBuilders().getEntityVertexConsumers();
-
-            BlockState state = this.sign.getCachedState();
             if (state.contains(Properties.HORIZONTAL_FACING)) {
                 state = state.with(Properties.HORIZONTAL_FACING, Direction.NORTH);
-            } else {
+            } else if (state.contains(Properties.ROTATION)) {
                 state = state.with(Properties.ROTATION, 0);
             }
 

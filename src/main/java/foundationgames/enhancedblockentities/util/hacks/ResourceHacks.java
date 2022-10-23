@@ -18,7 +18,7 @@ public enum ResourceHacks {;
         }
         if (image == null) return;
 
-        pack.put(result, TextureHacks.cropImage(image, u0, v0, u1, v1));
+        TextureHacks.cropImage(image, u0, v0, u1, v1).ifPresent(imgBytes -> pack.put(result, imgBytes));
         image.close();
     }
 
