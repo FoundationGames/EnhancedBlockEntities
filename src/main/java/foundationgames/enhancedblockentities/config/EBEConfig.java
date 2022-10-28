@@ -82,7 +82,7 @@ public class EBEConfig {
         }
         this.chestAO = ConvUtil.defaultedBool(properties.getProperty(CHEST_AO_KEY), false);
         this.signAO = ConvUtil.defaultedBool(properties.getProperty(SIGN_AO_KEY), false);
-        this.bellAO = ConvUtil.defaultedBool(properties.getProperty(BELL_AO_KEY), true);
+        this.bellAO = ConvUtil.defaultedBool(properties.getProperty(BELL_AO_KEY), false);
         this.bedAO = ConvUtil.defaultedBool(properties.getProperty(BED_AO_KEY), false);
         this.shulkerBoxAO = ConvUtil.defaultedBool(properties.getProperty(SHULKER_BOX_AO_KEY), false);
         this.experimentalChests = ConvUtil.defaultedBool(properties.getProperty(EXPERIMENTAL_CHESTS_KEY), true);
