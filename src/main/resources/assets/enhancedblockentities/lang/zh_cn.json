@@ -1,5 +1,5 @@
 {
-    "option.ebe.config": "方块实体...",
+    "option.ebe.config": "方块实体……",
 
     "value.ebe.true": "开",
     "value.ebe.false": "关",
@@ -62,5 +62,6 @@
     "text.ebe.bell_options": "钟",
     "text.ebe.bed_options": "床",
     "text.ebe.shulker_box_options": "潜影盒",
+    "text.ebe.advanced": "高级",
     "text.ebe.option_value_division": "："
 }
