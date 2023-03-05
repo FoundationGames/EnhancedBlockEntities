@@ -88,7 +88,7 @@ public class EBEConfigScreen extends SpruceScreen {
     public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
         if (this.client.world == null) {
             this.background.render(delta, 1);
-            RenderSystem.setShader(GameRenderer::getPositionTexShader);
+            RenderSystem.setShader(GameRenderer::getPositionTexProgram);
         }
 
         this.fillGradient(matrices, 0, 0, width, height, 0x4F141414, 0x4F141414);
@@ -178,6 +178,9 @@ public class EBEConfigScreen extends SpruceScreen {
         ));
 
         optionsWidget.addSingleOptionEntry(new SpruceSeparatorOption(ADVANCED_TITLE, true, null));
+        optionsWidget.addSingleOptionEntry(option(
+                new EBEOption(EBEConfig.FORCE_RESOURCE_PACK_COMPAT_KEY, BOOLEAN_OPTIONS, BOOLEAN_OPTIONS.indexOf(config.getProperty(EBEConfig.FORCE_RESOURCE_PACK_COMPAT_KEY)), false, TextPalette.ON_OFF, ReloadType.RESOURCES)
+        ));
         optionsWidget.addSingleOptionEntry(new SpruceCyclingOption("option.ebe.dump", i -> {
             try {
                 EBEUtil.dumpResources();

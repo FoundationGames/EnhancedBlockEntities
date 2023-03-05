@@ -4,10 +4,9 @@ import foundationgames.enhancedblockentities.client.model.ModelIdentifiers;
 import foundationgames.enhancedblockentities.client.render.SignRenderManager;
 import foundationgames.enhancedblockentities.config.EBEConfig;
 import foundationgames.enhancedblockentities.util.DateUtil;
+import foundationgames.enhancedblockentities.util.EBEUtil;
 import foundationgames.enhancedblockentities.util.ResourceUtil;
-import foundationgames.enhancedblockentities.util.WorldUtil;
 import net.fabricmc.api.ClientModInitializer;
-import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
 import net.minecraft.client.item.ModelPredicateProviderRegistry;
 import net.minecraft.client.MinecraftClient;
@@ -18,6 +17,7 @@ import org.apache.logging.log4j.Logger;
 
 public final class EnhancedBlockEntities implements ClientModInitializer {
     public static final String ID = "enhancedblockentities";
+    public static final String NAMESPACE = "ebe";
     public static final Logger LOG = LogManager.getLogger("Enhanced Block Entities");
     public static final EBEConfig CONFIG = new EBEConfig();
 
@@ -27,7 +27,7 @@ public final class EnhancedBlockEntities implements ClientModInitializer {
 
         ModelIdentifiers.init();
         EBESetup.setupResourceProviders();
-        ModelPredicateProviderRegistry.register(Items.CHEST, new Identifier("is_christmas"), (stack, world, entity, seed) -> DateUtil.isChristmas() ? 1 : 0);
+        ModelPredicateProviderRegistry.register(EBEUtil.id("is_christmas"), (stack, world, entity, seed) -> DateUtil.isChristmas() ? 1 : 0);
 
         load();
     }
@@ -45,7 +45,8 @@ public final class EnhancedBlockEntities implements ClientModInitializer {
         CONFIG.load();
 
         EnhancedBlockEntityRegistry.clear();
-        ResourceUtil.resetPack();
+        ResourceUtil.resetBasePack();
+        ResourceUtil.resetTopLevelPack();
 
         if(CONFIG.renderEnhancedChests) {
             EBESetup.setupChests();

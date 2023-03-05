@@ -12,7 +12,7 @@ import net.minecraft.client.render.model.BakedModel;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.Vec3f;
+import net.minecraft.util.math.RotationAxis;
 
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -36,7 +36,7 @@ public class ChestBlockEntityRendererOverride extends BlockEntityRendererOverrid
             LidOpenable chest = getAnimationProgress(blockEntity, tickDelta);
             matrices.translate(0.5f, 0, 0.5f);
             Direction dir = blockEntity.getCachedState().get(ChestBlock.FACING);
-            matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(180 - dir.asRotation()));
+            matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(180 - dir.asRotation()));
             matrices.translate(-0.5f, 0, -0.5f);
             float yPiv = 9f / 16;
             float zPiv = 15f / 16;
@@ -44,7 +44,7 @@ public class ChestBlockEntityRendererOverride extends BlockEntityRendererOverrid
             float rot = chest.getAnimationProgress(tickDelta);
             rot = 1f - rot;
             rot = 1f - (rot * rot * rot);
-            matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(rot * 90));
+            matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(rot * 90));
             matrices.translate(0, -yPiv, -zPiv);
             EBEUtil.renderBakedModel(vertexConsumers, blockEntity.getCachedState(), matrices, models[modelSelector.apply(blockEntity)], light, overlay);
 

@@ -25,6 +25,7 @@ public class EBEConfig {
     public static final String EXPERIMENTAL_CHESTS_KEY = "experimental_chests";
     public static final String EXPERIMENTAL_BEDS_KEY = "experimental_beds";
     public static final String EXPERIMENTAL_SIGNS_KEY = "experimental_signs";
+    public static final String FORCE_RESOURCE_PACK_COMPAT_KEY = "force_resource_pack_compat";
 
     public boolean renderEnhancedChests = true;
     public boolean renderEnhancedSigns = true;
@@ -41,6 +42,7 @@ public class EBEConfig {
     public boolean experimentalChests = true;
     public boolean experimentalBeds = true;
     public boolean experimentalSigns = true;
+    public boolean forceResourcePackCompat = false;
 
     public void writeTo(Properties properties) {
         properties.setProperty(RENDER_ENHANCED_CHESTS_KEY, Boolean.toString(renderEnhancedChests));
@@ -58,6 +60,7 @@ public class EBEConfig {
         properties.setProperty(EXPERIMENTAL_CHESTS_KEY, Boolean.toString(experimentalChests));
         properties.setProperty(EXPERIMENTAL_BEDS_KEY, Boolean.toString(experimentalBeds));
         properties.setProperty(EXPERIMENTAL_SIGNS_KEY, Boolean.toString(experimentalSigns));
+        properties.setProperty(FORCE_RESOURCE_PACK_COMPAT_KEY, Boolean.toString(forceResourcePackCompat));
     }
 
     public void readFrom(Properties properties) {
@@ -88,6 +91,7 @@ public class EBEConfig {
         this.experimentalChests = ConvUtil.defaultedBool(properties.getProperty(EXPERIMENTAL_CHESTS_KEY), true);
         this.experimentalBeds = ConvUtil.defaultedBool(properties.getProperty(EXPERIMENTAL_BEDS_KEY), true);
         this.experimentalSigns = ConvUtil.defaultedBool(properties.getProperty(EXPERIMENTAL_SIGNS_KEY), true);
+        this.forceResourcePackCompat = ConvUtil.defaultedBool(properties.getProperty(FORCE_RESOURCE_PACK_COMPAT_KEY), false);
     }
 
     public void save() {

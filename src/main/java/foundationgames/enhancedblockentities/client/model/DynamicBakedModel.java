@@ -90,7 +90,7 @@ public class DynamicBakedModel implements BakedModel, FabricBakedModel {
 
     @Override
     public Sprite getParticleSprite() {
-        return models[0].getParticleSprite();
+        return models[getSelector().getParticleModelIndex()].getParticleSprite();
     }
 
     @Override

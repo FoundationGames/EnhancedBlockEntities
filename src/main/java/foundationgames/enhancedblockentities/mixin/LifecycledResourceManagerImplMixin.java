@@ -25,24 +25,24 @@ public abstract class LifecycledResourceManagerImplMixin {
     @Shadow @Final          private Map<String, NamespaceResourceManager> subManagers;
 
     @ModifyVariable(method = "<init>", at = @At(value = "INVOKE_ASSIGN", target = "Ljava/util/List;copyOf(Ljava/util/Collection;)Ljava/util/List;", shift = At.Shift.BEFORE), ordinal = 0)
-    private List<ResourcePack> enhanced_bes$injectRRP(List<ResourcePack> old) {
+    private List<ResourcePack> enhanced_bes$injectBasePack(List<ResourcePack> old) {
         var packs = new ArrayList<>(old);
 
         int idx = 0;
         if (packs.size() > 0) do {
             idx++;
         } while (idx < packs.size() && !EBEUtil.isVanillaResourcePack(packs.get(idx - 1)));
-        packs.add(idx, ResourceUtil.getPack());
+        packs.add(idx, ResourceUtil.getBasePack());
 
         return packs;
     }
 
     @Inject(method = "<init>", at = @At(value = "TAIL"))
-    private void enhanced_bes$injectExperimentalPack(ResourceType type, List<ResourcePack> packs, CallbackInfo ci) {
+    private void enhanced_bes$injectTopLevelPack(ResourceType type, List<ResourcePack> packs, CallbackInfo ci) {
         ExperimentalSetup.cacheResources((ResourceManager) this);
         ExperimentalSetup.setup();
 
-        addPack(type, ResourceUtil.getExperimentalPack());
+        addPack(type, ResourceUtil.getTopLevelPack());
     }
 
     private void addPack(ResourceType type, ResourcePack pack) {

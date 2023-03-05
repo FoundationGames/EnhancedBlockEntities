@@ -10,20 +10,11 @@ archivesBaseName = project.archives_base_name
 version = project.mod_version
 group = project.maven_group
 
-static String terraformers() {
-	def url = "https://maven.terraformersmc.com/"
-	def conn = new URL(url).openConnection()
-	conn.connect()
-	url = conn.getResponseCode() == 521 ? "https://raw.githubusercontent.com/TerraformersMC/Archive/main/releases" : url
-	return url
-}
-
 repositories {
-	maven { url = terraformers() }
-	maven { url = "https://storage.googleapis.com/devan-maven/" }
+	maven { url = "https://maven.terraformersmc.com/" }
+	maven { url = "https://ueaj.dev/maven/" }
 	maven { url = "https://api.modrinth.com/maven/" }
 	maven { url = "https://maven.gegy.dev/" }
-	maven { url = "https://notalpha.dev/maven/" }
 }
 
 dependencies {
@@ -43,8 +34,7 @@ dependencies {
 	modApi "com.terraformersmc:modmenu:${project.modmenu_version}"
 
 	// Dashloader (compatibility)
-	modCompileOnly "dev.quantumfusion.dashloader:dashloader-core:$project.dashloader_core_version"
-	modCompileOnly "dev.quantumfusion.dashloader:dashloader-definitions:$project.dashloader_definitions_version"
+	modCompileOnly "maven.modrinth:dashloader:${project.dashloader_version}"
 
 	// a bit less load time
 	modLocalRuntime "maven.modrinth:lazydfu:0.1.2"

@@ -12,6 +12,10 @@ public interface ModelStateHolder {
     void applyModelState(int state);
 
     default void setModelState(int state, World world, BlockPos pos) {
+        if (!world.isClient()) {
+            return;
+        }
+
         this.applyModelState(state);
         var bState = world.getBlockState(pos);
         try {

@@ -1,0 +1,32 @@
+{
+	"ambientocclusion": true,
+	"texture_size": [64, 32],
+	"elements": [
+		{
+			"from": [7, 0, 1],
+			"to": [9, 10, 15],
+			"rotation": {"angle": -22.5, "axis": "y", "origin": [8, 0, 8]},
+			"faces": {
+				"north": {"uv": [0, 7, 0.5, 12], "texture": "#sign"},
+				"east": {"uv": [4.5, 7, 8, 12], "texture": "#sign"},
+				"south": {"uv": [4, 7, 4.5, 12], "texture": "#sign"},
+				"west": {"uv": [0.5, 7, 4, 12], "texture": "#sign"},
+				"up": {"uv": [0.5, 7, 4, 6], "rotation": 270, "texture": "#sign"},
+				"down": {"uv": [4, 6, 7.5, 7], "rotation": 90, "texture": "#sign"}
+			}
+		},
+		{
+			"from": [8, 10, 2],
+			"to": [8, 16, 14],
+			"rotation": {"angle": -22.5, "axis": "y", "origin": [8, 0, 8]},
+			"faces": {
+				"north": {"uv": [0, 0, 0, 3], "texture": "#sign"},
+				"east": {"uv": [3.5, 3, 6.5, 6], "texture": "#sign"},
+				"south": {"uv": [0, 0, 0, 3], "texture": "#sign"},
+				"west": {"uv": [3.5, 3, 6.5, 6], "texture": "#sign"},
+				"up": {"uv": [0, 0, 3, 0], "rotation": 270, "texture": "#sign"},
+				"down": {"uv": [0, 0, 3, 0], "rotation": 90, "texture": "#sign"}
+			}
+		}
+	]
+}

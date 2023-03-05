@@ -1,8 +1,7 @@
 package foundationgames.enhancedblockentities.util;
 
 import foundationgames.enhancedblockentities.EnhancedBlockEntities;
-import foundationgames.enhancedblockentities.client.resource.ExperimentalResourcePack;
-import net.devtech.arrp.api.RuntimeResourcePack;
+import foundationgames.enhancedblockentities.client.resource.EBEPack;
 import net.devtech.arrp.json.blockstate.JState;
 import net.devtech.arrp.json.blockstate.JVariant;
 import net.devtech.arrp.json.models.JModel;
@@ -20,21 +19,52 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public enum ResourceUtil {;
-    private static RuntimeResourcePack PACK;
-    private static ExperimentalResourcePack EXPERIMENTAL_PACK;
+    private static EBEPack BASE_PACK;
+    private static EBEPack TOP_LEVEL_PACK;
 
-    public static final String CHEST_ITEM_MODEL_RESOURCE = "{\"parent\":\"block/chest_center\",\"overrides\":[{\"predicate\":{\"is_christmas\":1},\"model\": \"item/christmas_chest\"}]}";
+    public static String createChestItemModelResource(String centerChest) {
+        return "{\"parent\":\"block/"+centerChest+"\",\"overrides\":[{\"predicate\":{\"ebe:is_christmas\":1},\"model\": \"item/christmas_chest\"}]}";
+    }
 
-    public static void addSingleChestModels(String texture, String chestName, RuntimeResourcePack pack) {
+    private static JVariant variantRotation16(JVariant variant, String keyPrefix, String modelPrefix) {
+        return variant
+                .put(keyPrefix+"0", JState.model(modelPrefix+"_0").y(180))
+                .put(keyPrefix+"1", JState.model(modelPrefix+"_67_5").y(270))
+                .put(keyPrefix+"2", JState.model(modelPrefix+"_45").y(270))
+                .put(keyPrefix+"3", JState.model(modelPrefix+"_22_5").y(270))
+                .put(keyPrefix+"4", JState.model(modelPrefix+"_0").y(270))
+                .put(keyPrefix+"5", JState.model(modelPrefix+"_67_5"))
+                .put(keyPrefix+"6", JState.model(modelPrefix+"_45"))
+                .put(keyPrefix+"7", JState.model(modelPrefix+"_22_5"))
+                .put(keyPrefix+"8", JState.model(modelPrefix+"_0"))
+                .put(keyPrefix+"9", JState.model(modelPrefix+"_67_5").y(90))
+                .put(keyPrefix+"10", JState.model(modelPrefix+"_45").y(90))
+                .put(keyPrefix+"11", JState.model(modelPrefix+"_22_5").y(90))
+                .put(keyPrefix+"12", JState.model(modelPrefix+"_0").y(90))
+                .put(keyPrefix+"13", JState.model(modelPrefix+"_67_5").y(180))
+                .put(keyPrefix+"14", JState.model(modelPrefix+"_45").y(180))
+                .put(keyPrefix+"15", JState.model(modelPrefix+"_22_5").y(180));
+    }
+
+    private static JVariant variantHFacing(JVariant variant, String keyPrefix, String model) {
+        return variant
+                .put(keyPrefix+"north", JState.model(model))
+                .put(keyPrefix+"west", JState.model(model).y(270))
+                .put(keyPrefix+"south", JState.model(model).y(180))
+                .put(keyPrefix+"east", JState.model(model).y(90));
+    }
+
+    public static void addSingleChestModels(String texture, String chestName, EBEPack pack) {
         pack.addModel(JModel.model().parent("block/template_chest_center").textures(withChestParticle(JModel.textures().var("chest", texture), chestName)), new Identifier("block/" + chestName + "_center"));
         pack.addModel(JModel.model().parent("block/template_chest_center_lid").textures(withChestParticle(JModel.textures().var("chest", texture), chestName)), new Identifier("block/" + chestName + "_center_lid"));
         pack.addModel(JModel.model().parent("block/template_chest_center_trunk").textures(withChestParticle(JModel.textures().var("chest", texture), chestName)), new Identifier("block/" + chestName + "_center_trunk"));
     }
 
-    public static void addDoubleChestModels(String leftTex, String rightTex, String chestName, RuntimeResourcePack pack) {
+    public static void addDoubleChestModels(String leftTex, String rightTex, String chestName, EBEPack pack) {
         pack.addModel(JModel.model().parent("block/template_chest_left").textures(withChestParticle(JModel.textures().var("chest", leftTex), chestName)), new Identifier("block/" + chestName + "_left"));
         pack.addModel(JModel.model().parent("block/template_chest_left_lid").textures(withChestParticle(JModel.textures().var("chest", leftTex), chestName)), new Identifier("block/" + chestName + "_left_lid"));
         pack.addModel(JModel.model().parent("block/template_chest_left_trunk").textures(withChestParticle(JModel.textures().var("chest", leftTex), chestName)), new Identifier("block/" + chestName + "_left_trunk"));
@@ -58,44 +88,49 @@ public enum ResourceUtil {;
         return textures;
     }
 
-    public static void addChestBlockStates(String chestName, RuntimeResourcePack pack) {
+    public static void addChestBlockStates(String chestName, EBEPack pack) {
+        var variant = JState.variant();
+        variantHFacing(variant, "type=single,facing=", "builtin:"+chestName+"_center");
+        variantHFacing(variant, "type=left,facing=", "builtin:"+chestName+"_left");
+        variantHFacing(variant, "type=right,facing=", "builtin:"+chestName+"_right");
+
+        pack.addBlockState(JState.state(variant), new Identifier(chestName));
+    }
+
+    public static void addSingleChestOnlyBlockStates(String chestName, EBEPack pack) {
         pack.addBlockState(
                 JState.state(
-                        JState.variant()
-                                .put("facing=east,type=single", JState.model("builtin:"+chestName+"_center").y(90))
-                                .put("facing=north,type=single", JState.model("builtin:"+chestName+"_center"))
-                                .put("facing=south,type=single", JState.model("builtin:"+chestName+"_center").y(180))
-                                .put("facing=west,type=single", JState.model("builtin:"+chestName+"_center").y(270))
-                                .put("facing=east,type=left", JState.model("builtin:"+chestName+"_left").y(90))
-                                .put("facing=north,type=left", JState.model("builtin:"+chestName+"_left"))
-                                .put("facing=south,type=left", JState.model("builtin:"+chestName+"_left").y(180))
-                                .put("facing=west,type=left", JState.model("builtin:"+chestName+"_left").y(270))
-                                .put("facing=east,type=right", JState.model("builtin:"+chestName+"_right").y(90))
-                                .put("facing=north,type=right", JState.model("builtin:"+chestName+"_right"))
-                                .put("facing=south,type=right", JState.model("builtin:"+chestName+"_right").y(180))
-                                .put("facing=west,type=right", JState.model("builtin:"+chestName+"_right").y(270))
+                        variantHFacing(JState.variant(), "facing=", "builtin:"+chestName+"_center")
                 ), new Identifier(chestName)
         );
     }
 
-    public static void addSingleChestOnlyBlockStates(String chestName, RuntimeResourcePack pack) {
-        pack.addBlockState(
-                JState.state(
-                        JState.variant()
-                                .put("facing=east", JState.model("builtin:"+chestName+"_center").y(90))
-                                .put("facing=north", JState.model("builtin:"+chestName+"_center"))
-                                .put("facing=south", JState.model("builtin:"+chestName+"_center").y(180))
-                                .put("facing=west", JState.model("builtin:"+chestName+"_center").y(270))
-                ), new Identifier(chestName)
-        );
+    public static void addSignTypeModels(String signType, EBEPack pack) {
+        var signName = signType+"_sign";
+        var signTex = "entity/signs/"+signType;
+        addRotation16Models(
+                withSignParticle(new JTextures().var("sign", signTex), signName),
+                "block/template_sign", "block/"+signName, ResourceUtil::signAOSuffix, pack);
+
+        var hangingTexDef = new JTextures()
+                .var("sign", "entity/signs/hanging/"+signType)
+                .var("particle", "block/particle_hanging_sign_"+signType);
+        addRotation16Models(hangingTexDef, "block/template_hanging_sign", "block/"+signType+"_hanging_sign",
+                ResourceUtil::signAOSuffix, pack);
+        addRotation16Models(hangingTexDef, "block/template_hanging_sign_attached", "block/"+signType+"_hanging_sign_attached",
+                ResourceUtil::signAOSuffix, pack);
+
+        pack.addModel(JModel.model().parent(signAOSuffix("block/template_wall_sign"))
+                .textures(withSignParticle(JModel.textures().var("sign", signTex), signName)), new Identifier("block/"+signType+"_wall_sign"));
+        pack.addModel(JModel.model().parent(signAOSuffix("block/template_wall_hanging_sign"))
+                .textures(hangingTexDef), new Identifier("block/"+signType+"_wall_hanging_sign"));
     }
 
-    public static void addSignModels(String texture, String signName, String wallSignName, RuntimeResourcePack pack) {
-        pack.addModel(JModel.model().parent(signAOSuffix("block/template_sign_0")).textures(withSignParticle(JModel.textures().var("sign", texture), signName)), new Identifier("block/" + signName + "_0"));
-        pack.addModel(JModel.model().parent(signAOSuffix("block/template_sign_22_5")).textures(withSignParticle(JModel.textures().var("sign", texture), signName)), new Identifier("block/" + signName + "_22_5"));
-        pack.addModel(JModel.model().parent(signAOSuffix("block/template_sign_45")).textures(withSignParticle(JModel.textures().var("sign", texture), signName)), new Identifier("block/" + signName + "_45"));
-        pack.addModel(JModel.model().parent(signAOSuffix("block/template_sign_67_5")).textures(withSignParticle(JModel.textures().var("sign", texture), signName)), new Identifier("block/" + signName + "_67_5"));
-        pack.addModel(JModel.model().parent(signAOSuffix("block/template_wall_sign")).textures(withSignParticle(JModel.textures().var("sign", texture), signName)), new Identifier("block/" + wallSignName));
+    public static void addRotation16Models(JTextures textures, String templatePrefix, String modelPrefix, Function<String, String> suffix, EBEPack pack) {
+        pack.addModel(JModel.model().parent(suffix.apply(templatePrefix+"_0")).textures(textures), new Identifier(modelPrefix + "_0"));
+        pack.addModel(JModel.model().parent(suffix.apply(templatePrefix+"_22_5")).textures(textures), new Identifier(modelPrefix + "_22_5"));
+        pack.addModel(JModel.model().parent(suffix.apply(templatePrefix+"_45")).textures(textures), new Identifier(modelPrefix + "_45"));
+        pack.addModel(JModel.model().parent(suffix.apply(templatePrefix+"_67_5")).textures(textures), new Identifier(modelPrefix + "_67_5"));
     }
 
     private static String signAOSuffix(String model) {
@@ -103,40 +138,33 @@ public enum ResourceUtil {;
         return model;
     }
 
-    public static void addSignBlockStates(String signName, String wallSignName, RuntimeResourcePack pack) {
+    public static void addSignBlockStates(String signName, String wallSignName, EBEPack pack) {
         pack.addBlockState(
                 JState.state(
-                        JState.variant()
-                                .put("rotation=0", JState.model("block/"+signName+"_0").y(180))
-                                .put("rotation=1", JState.model("block/"+signName+"_67_5").y(270))
-                                .put("rotation=2", JState.model("block/"+signName+"_45").y(270))
-                                .put("rotation=3", JState.model("block/"+signName+"_22_5").y(270))
-                                .put("rotation=4", JState.model("block/"+signName+"_0").y(270))
-                                .put("rotation=5", JState.model("block/"+signName+"_67_5"))
-                                .put("rotation=6", JState.model("block/"+signName+"_45"))
-                                .put("rotation=7", JState.model("block/"+signName+"_22_5"))
-                                .put("rotation=8", JState.model("block/"+signName+"_0"))
-                                .put("rotation=9", JState.model("block/"+signName+"_67_5").y(90))
-                                .put("rotation=10", JState.model("block/"+signName+"_45").y(90))
-                                .put("rotation=11", JState.model("block/"+signName+"_22_5").y(90))
-                                .put("rotation=12", JState.model("block/"+signName+"_0").y(90))
-                                .put("rotation=13", JState.model("block/"+signName+"_67_5").y(180))
-                                .put("rotation=14", JState.model("block/"+signName+"_45").y(180))
-                                .put("rotation=15", JState.model("block/"+signName+"_22_5").y(180))
+                        variantRotation16(JState.variant(), "rotation=", "block/"+signName)
                 ), new Identifier(signName)
         );
         pack.addBlockState(
                 JState.state(
-                        JState.variant()
-                                .put("facing=north", JState.model("block/"+wallSignName))
-                                .put("facing=west", JState.model("block/"+wallSignName).y(270))
-                                .put("facing=south", JState.model("block/"+wallSignName).y(180))
-                                .put("facing=east", JState.model("block/"+wallSignName).y(90))
+                        variantHFacing(JState.variant(), "facing=", "block/"+wallSignName)
                 ), new Identifier(wallSignName)
         );
     }
 
-    public static void addBellBlockState(RuntimeResourcePack pack) {
+    public static void addHangingSignBlockStates(String signName, String wallSignName, EBEPack pack) {
+        var variant = JState.variant();
+        variantRotation16(variant, "attached=false,rotation=", "block/"+signName);
+        variantRotation16(variant, "attached=true,rotation=", "block/"+signName+"_attached");
+
+        pack.addBlockState(JState.state(variant), new Identifier(signName));
+        pack.addBlockState(
+                JState.state(
+                        variantHFacing(JState.variant(), "facing=", "block/"+wallSignName)
+                ), new Identifier(wallSignName)
+        );
+    }
+
+    public static void addBellBlockState(EBEPack pack) {
         JVariant variant = JState.variant();
         for (Direction dir : new Direction[] {Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST}) {
             int rot = (int)dir.asRotation() + 90;
@@ -150,7 +178,7 @@ public enum ResourceUtil {;
         pack.addBlockState(JState.state(variant), new Identifier("bell"));
     }
 
-    public static void addBedModels(DyeColor bedColor, RuntimeResourcePack pack) {
+    public static void addBedModels(DyeColor bedColor, EBEPack pack) {
         String color = bedColor.getName();
         pack.addModel(
                 JModel.model()
@@ -166,15 +194,14 @@ public enum ResourceUtil {;
         );
     }
 
-    public static void addBedBlockState(DyeColor bedColor, RuntimeResourcePack pack) {
+    public static void addBedBlockState(DyeColor bedColor, EBEPack pack) {
         String color = bedColor.getName();
         JVariant variant = JState.variant();
         for (Direction dir : new Direction[] {Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST}) {
             int rot = (int)dir.asRotation() + 180;
             variant
                     .put("part=head,facing="+dir.getName(), JState.model("block/" + bedColor + "_bed_head").y(rot))
-                    .put("part=foot,facing="+dir.getName(), JState.model("block/" + bedColor + "_bed_foot").y(rot))
-            ;
+                    .put("part=foot,facing="+dir.getName(), JState.model("block/" + bedColor + "_bed_foot").y(rot));
         }
         pack.addBlockState(JState.state(variant), new Identifier(color + "_bed"));
     }
@@ -184,7 +211,7 @@ public enum ResourceUtil {;
         return model;
     }
 
-    public static void addShulkerBoxModels(@Nullable DyeColor color, RuntimeResourcePack pack) {
+    public static void addShulkerBoxModels(@Nullable DyeColor color, EBEPack pack) {
         var texture = color != null ? "entity/shulker/shulker_"+color.getName() : "entity/shulker/shulker";
         var shulkerBoxStr = color != null ? color.getName()+"_shulker_box" : "shulker_box";
         var particle = "block/"+shulkerBoxStr;
@@ -193,7 +220,7 @@ public enum ResourceUtil {;
         pack.addModel(JModel.model().parent("block/template_shulker_box_lid").textures(JModel.textures().var("shulker", texture).var("particle", particle)), new Identifier("block/"+shulkerBoxStr+"_lid"));
     }
 
-    public static void addShulkerBoxBlockStates(@Nullable DyeColor color, RuntimeResourcePack pack) {
+    public static void addShulkerBoxBlockStates(@Nullable DyeColor color, EBEPack pack) {
         var shulkerBoxStr = color != null ? color.getName()+"_shulker_box" : "shulker_box";
         var variant = JState.variant()
                 .put("facing=up", JState.model("builtin:"+shulkerBoxStr))
@@ -205,20 +232,31 @@ public enum ResourceUtil {;
         pack.addBlockState(JState.state(variant), new Identifier(shulkerBoxStr));
     }
 
-    public static void resetPack() {
-        PACK = RuntimeResourcePack.create("ebe:pack");
+    public static void resetBasePack() {
+        BASE_PACK = new EBEPack(EBEUtil.id("base_resources"));
     }
 
-    public static void resetExperimentalPack() {
-        EXPERIMENTAL_PACK = new ExperimentalResourcePack();
+    public static void resetTopLevelPack() {
+        TOP_LEVEL_PACK = new EBEPack(EBEUtil.id("top_level_resources"));
     }
 
-    public static RuntimeResourcePack getPack() {
-        return PACK;
+    public static EBEPack getBasePack() {
+        return BASE_PACK;
     }
 
-    public static ExperimentalResourcePack getExperimentalPack() {
-        return EXPERIMENTAL_PACK;
+    public static EBEPack getTopLevelPack() {
+        return TOP_LEVEL_PACK;
+    }
+
+    /**
+     * @return the pack most appropriate for resources that might be accidentally overwritten by resource packs
+     */
+    public static EBEPack getPackForCompat() {
+        if (EnhancedBlockEntities.CONFIG.forceResourcePackCompat) {
+            return getTopLevelPack();
+        }
+
+        return getBasePack();
     }
 
     public static void dumpModAssets(Path dest) throws IOException {
@@ -240,12 +278,13 @@ public enum ResourceUtil {;
     }
 
     public static void dumpAllPacks(Path dest) throws IOException {
-        getPack().dumpDirect(dest);
+        getBasePack().dumpDirect(dest);
+        getTopLevelPack().dumpDirect(dest);
         dumpModAssets(dest);
     }
 
     static {
-        resetPack();
-        resetExperimentalPack();
+        resetBasePack();
+        resetTopLevelPack();
     }
 }

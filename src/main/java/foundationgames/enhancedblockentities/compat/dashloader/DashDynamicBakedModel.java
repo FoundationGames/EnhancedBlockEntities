@@ -1,23 +1,14 @@
 package foundationgames.enhancedblockentities.compat.dashloader;
 
-import dev.quantumfusion.dashloader.core.api.DashDependencies;
-import dev.quantumfusion.dashloader.core.api.DashObject;
-import dev.quantumfusion.dashloader.core.registry.RegistryReader;
-import dev.quantumfusion.dashloader.core.registry.RegistryWriter;
-import dev.quantumfusion.dashloader.def.data.model.DashBasicBakedModel;
-import dev.quantumfusion.dashloader.def.data.model.DashBuiltinBakedModel;
-import dev.quantumfusion.dashloader.def.data.model.DashModel;
-import dev.quantumfusion.dashloader.def.data.model.DashMultipartBakedModel;
-import dev.quantumfusion.hyphen.scan.annotations.Data;
+import dev.notalpha.dashloader.api.DashObject;
+import dev.notalpha.dashloader.registry.RegistryReader;
+import dev.notalpha.dashloader.registry.RegistryWriter;
 import foundationgames.enhancedblockentities.client.model.DynamicBakedModel;
 import foundationgames.enhancedblockentities.client.model.DynamicModelEffects;
 import foundationgames.enhancedblockentities.client.model.ModelSelector;
 import net.minecraft.client.render.model.BakedModel;
 
-@Data
-@DashObject(DynamicBakedModel.class)
-@DashDependencies({DashBasicBakedModel.class, DashBuiltinBakedModel.class, DashMultipartBakedModel.class})
-public class DashDynamicBakedModel implements DashModel {
+public class DashDynamicBakedModel implements DashObject<DynamicBakedModel> {
     public final int[] models;
     public final int selectorId;
     public final int effectsId;
@@ -41,7 +32,7 @@ public class DashDynamicBakedModel implements DashModel {
     }
 
     @Override
-    public BakedModel export(RegistryReader reader) {
+    public DynamicBakedModel export(RegistryReader reader) {
         BakedModel[] out = new BakedModel[models.length];
         for (int i = 0; i < models.length; i++) {
             out[i] = reader.get(models[i]);

@@ -24,6 +24,9 @@
     ],
     "modmenu": [
       "foundationgames.enhancedblockentities.config.gui.EBEModMenuPlugin"
+    ],
+    "dashloader": [
+      "foundationgames.enhancedblockentities.compat.dashloader.EBEDashLoader"
     ]
   },
   "mixins": [
@@ -33,7 +36,7 @@
   "depends": {
     "fabricloader": ">=0.7.4",
     "fabric": "*",
-    "minecraft": "1.19.x"
+    "minecraft": ">=1.19.3"
   },
   "breaks": {
     "optifabric": "*"

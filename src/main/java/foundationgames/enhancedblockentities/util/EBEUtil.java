@@ -1,5 +1,6 @@
 package foundationgames.enhancedblockentities.util;
 
+import foundationgames.enhancedblockentities.EnhancedBlockEntities;
 import net.fabricmc.fabric.api.renderer.v1.model.ModelHelper;
 import net.fabricmc.fabric.impl.resource.loader.GroupResourcePack;
 import net.fabricmc.loader.api.FabricLoader;
@@ -13,6 +14,7 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.resource.DefaultResourcePack;
 import net.minecraft.resource.ResourcePack;
 import net.minecraft.util.DyeColor;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.random.Random;
 
 import java.io.IOException;
@@ -43,6 +45,10 @@ public enum EBEUtil {;
         return (pack instanceof DefaultResourcePack) ||
                 // Terrible quilt compat hack
                 ("org.quiltmc.qsl.resource.loader.api.GroupResourcePack$Wrapped".equals(pack.getClass().getName()));
+    }
+
+    public static Identifier id(String path) {
+        return new Identifier(EnhancedBlockEntities.NAMESPACE, path);
     }
 
     public static final String DUMP_FOLDER_NAME = "enhanced_bes_dump";

@@ -11,6 +11,7 @@ import net.minecraft.client.option.SimpleOption;
 import net.minecraft.text.Text;
 
 import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 public class ConfigButtonOption {
@@ -28,10 +29,10 @@ public class ConfigButtonOption {
 
     private record ConfigButtonCallbacks<T>(Screen parent) implements SimpleOption.Callbacks<T> {
         @Override
-        public Function<SimpleOption<T>, ClickableWidget> getButtonCreator(SimpleOption.TooltipFactory<T> tooltipFactory, GameOptions gameOptions, int x, int y, int width) {
-            return (option) -> new ButtonWidget(x, y, width, 20, Text.translatable("option.ebe.config"), b -> {
+        public Function<SimpleOption<T>, ClickableWidget> getButtonCreator(SimpleOption.TooltipFactory<T> tooltipFactory, GameOptions gameOptions, int x, int y, int width, Consumer<T> changed) {
+            return (option) -> ButtonWidget.builder(Text.translatable("option.ebe.config"), b -> {
                 MinecraftClient.getInstance().setScreen(new EBEConfigScreen(parent));
-            });
+            }).dimensions(x, y, width, 20).build();
         }
 
         @Override

@@ -2,66 +2,89 @@ package foundationgames.enhancedblockentities.client.render.entity;
 
 import foundationgames.enhancedblockentities.client.render.BlockEntityRendererOverride;
 import foundationgames.enhancedblockentities.mixin.SignBlockEntityRenderAccessor;
+import net.minecraft.block.HangingSignBlock;
 import net.minecraft.block.SignBlock;
 import net.minecraft.block.WallSignBlock;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.HangingSignBlockEntity;
 import net.minecraft.block.entity.SignBlockEntity;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.font.TextRenderer;
+import net.minecraft.client.model.ModelPart;
 import net.minecraft.client.render.VertexConsumerProvider;
+import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
+import net.minecraft.client.render.block.entity.SignBlockEntityRenderer;
+import net.minecraft.client.render.entity.model.EntityModelLayer;
+import net.minecraft.client.render.entity.model.EntityModelLoader;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.text.OrderedText;
-import net.minecraft.util.math.Vec3f;
+import net.minecraft.state.property.Properties;
+import net.minecraft.util.math.RotationAxis;
+import net.minecraft.util.math.RotationPropertyHelper;
 
 public class SignBlockEntityRendererOverride extends BlockEntityRendererOverride {
+    private SignBlockEntityRenderAccessor textRenderer;
+
     public SignBlockEntityRendererOverride() {}
 
     @Override
     public void render(BlockEntity blockEntity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
+        if (textRenderer == null) {
+            textRenderer = ((SignBlockEntityRenderAccessor) new SignBlockEntityRenderer(new DummyRenderContext()));
+        }
+
         if (blockEntity instanceof SignBlockEntity be) {
             matrices.push();
+            var state = be.getCachedState();
 
-            float signAngle;
-            matrices.translate(0.5D, 0.5D, 0.5D);
-            if (be.getCachedState().getBlock() instanceof SignBlock) {
-                signAngle = - ((float)(be.getCachedState().get(SignBlock.ROTATION) * 360) / 16);
-                matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(signAngle));
-            } else {
-                signAngle = - be.getCachedState().get(WallSignBlock.FACING).asRotation();
-                matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(signAngle));
-                matrices.translate(0.0D, -0.3125, -0.4375);
-            }
-            matrices.translate(0.0, 0.333333, 0.0466666);
-            matrices.scale(0.01f, -0.01f, 0.01f);
-            var tr = MinecraftClient.getInstance().textRenderer;
-            var orderedTexts = be.updateSign(MinecraftClient.getInstance().shouldFilterText(), (text) -> {
-                var list = tr.wrapLines(text, 90);
-                return list.isEmpty() ? OrderedText.EMPTY : list.get(0);
-            });
-            int outlineColor = SignBlockEntityRenderAccessor.enhanced_bes$getColor(be);
-            int textColor;
-            boolean outline;
-            int textLight;
-            if (be.isGlowingText()) {
-                textColor = be.getTextColor().getSignColor();
-                outline = true;
-                textLight = 15728880;
-            } else {
-                textColor = outlineColor;
-                outline = false;
-                textLight = light;
-            }
-
-            for(int i = 0; i < 4; ++i) {
-                var orderedText = orderedTexts[i];
-                float t = (float)(-tr.getWidth(orderedText) / 2);
-                if (outline) {
-                    tr.drawWithOutline(orderedText, t, (float)((i * 10) - 20), textColor, outlineColor, matrices.peek().getPositionMatrix(), vertexConsumers, textLight);
+            if (be instanceof HangingSignBlockEntity) {
+                // 15/128 matches the vanilla positioning of the text best
+                matrices.translate(0.5, 15f/128, 0.5);
+                if (state.contains(Properties.ATTACHED) && state.get(Properties.ATTACHED)) {
+                    matrices.multiply(
+                            RotationAxis.NEGATIVE_Y.rotationDegrees(RotationPropertyHelper.toDegrees(state.get(HangingSignBlock.ROTATION))));
                 } else {
-                    tr.draw(orderedText, t, (float)((i * 10) - 20), textColor, false, matrices.peek().getPositionMatrix(), vertexConsumers, false, 0, textLight);
+                    matrices.multiply(
+                            RotationAxis.NEGATIVE_Y.rotationDegrees(state.getBlock() instanceof HangingSignBlock ?
+                                    ((state.get(HangingSignBlock.ROTATION) * 360f) / 16) :
+                                    (state.get(WallSignBlock.FACING)).asRotation()
+                            ));
                 }
-            }
 
-            matrices.pop();
+                matrices.translate(0.0, -0.3125, 0.0);
+                textRenderer.enhanced_bes$renderText(be, matrices, vertexConsumers, light, 1);
+            } else {
+                if (state.getBlock() instanceof SignBlock) {
+                    matrices.translate(0.5, 0.5, 0.5);
+                    matrices.multiply(
+                            RotationAxis.NEGATIVE_Y.rotationDegrees(RotationPropertyHelper.toDegrees(state.get(SignBlock.ROTATION))));
+                } else {
+                    matrices.translate(0.5, 0.5, 0.5);
+                    matrices.multiply(
+                            RotationAxis.NEGATIVE_Y.rotationDegrees((state.get(WallSignBlock.FACING)).asRotation()));
+                    matrices.translate(0.0, -0.3125, -0.4375);
+                }
+
+                textRenderer.enhanced_bes$renderText(be, matrices, vertexConsumers, light, 2f/3);
+            }
+        }
+    }
+
+    public static class DummyRenderContext extends BlockEntityRendererFactory.Context {
+        private static final EntityModelLoader DUMMY_LOADER = new EntityModelLoader() {
+            @Override
+            public ModelPart getModelPart(EntityModelLayer layer) {
+                return SignBlockEntityRenderer.getTexturedModelData().createModel();
+            }
+        };
+
+        public DummyRenderContext() {
+            super(null, null, null, null,
+                    DUMMY_LOADER, null);
+        }
+
+        @Override
+        public TextRenderer getTextRenderer() {
+            return MinecraftClient.getInstance().textRenderer;
         }
     }
 }

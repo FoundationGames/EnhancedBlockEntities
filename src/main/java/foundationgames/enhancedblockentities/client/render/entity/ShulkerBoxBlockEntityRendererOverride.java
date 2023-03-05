@@ -11,7 +11,7 @@ import net.minecraft.client.render.model.BakedModel;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.Vec3f;
+import net.minecraft.util.math.RotationAxis;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -40,7 +40,7 @@ public class ShulkerBoxBlockEntityRendererOverride extends BlockEntityRendererOv
 
             matrices.translate(0.5, 0.5, 0.5);
             matrices.multiply(dir.getRotationQuaternion());
-            matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(270 * animation));
+            matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(270 * animation));
             matrices.translate(-0.5, -0.5, -0.5);
 
             matrices.translate(0, animation * 0.5f, 0);

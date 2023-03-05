@@ -1,6 +1,7 @@
 package foundationgames.enhancedblockentities.mixin;
 
 import foundationgames.enhancedblockentities.EnhancedBlockEntities;
+import foundationgames.enhancedblockentities.EnhancedBlockEntityRegistry;
 import foundationgames.enhancedblockentities.util.EBEUtil;
 import net.minecraft.block.BedBlock;
 import net.minecraft.block.enums.BedPart;
@@ -23,7 +24,9 @@ public class BuiltinModelItemRendererMixin {
     @Inject(method = "render", at = @At("HEAD"), cancellable = true)
     private void enhanced_bes$renderBeds(ItemStack stack, ModelTransformation.Mode mode, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay, CallbackInfo ci) {
         if (EnhancedBlockEntities.CONFIG.renderEnhancedBeds &&
-                stack.getItem() instanceof BlockItem item && item.getBlock() instanceof BedBlock bed) {
+                stack.getItem() instanceof BlockItem item &&
+                item.getBlock() instanceof BedBlock bed &&
+                EnhancedBlockEntityRegistry.BLOCKS.contains(bed)) {
             var models = MinecraftClient.getInstance().getBakedModelManager().getBlockModels();
 
             var bedState = bed.getDefaultState().with(Properties.HORIZONTAL_FACING, Direction.SOUTH);

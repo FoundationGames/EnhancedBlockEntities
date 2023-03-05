@@ -9,6 +9,12 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
 @Mixin(WorldRenderer.class)
 public class WorldRendererMixin {
+    /*  X------------------------updateChunks(Camera camera)-------------------------X
+        |---> HERE <---                                                              |
+        |   if (bl) {                                                                |
+        |       this.client.getProfiler().push("build_near_sync");                   |
+        |       this.chunkBuilder.rebuild(builtChunk, chunkRendererRegionBuilder);   |
+        X----------------------------[END: 5 LINES DOWN]-----------------------------X  */
     @ModifyVariable(method = "updateChunks", at = @At(value = "JUMP", shift = At.Shift.BEFORE, opcode = Opcodes.IFEQ, ordinal = 4), index = 9)
     private boolean enhanced_bes$forceSynchronousChunkRebuild(boolean old) {
         if (WorldUtil.FORCE_SYNCHRONOUS_CHUNK_REBUILD) {

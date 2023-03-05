@@ -1,7 +1,8 @@
 package foundationgames.enhancedblockentities.util.hacks;
 
-import foundationgames.enhancedblockentities.client.resource.ExperimentalResourcePack;
+import foundationgames.enhancedblockentities.client.resource.EBEPack;
 import net.minecraft.resource.ResourceManager;
+import net.minecraft.resource.ResourceType;
 import net.minecraft.util.Identifier;
 
 import java.io.IOException;
@@ -9,7 +10,7 @@ import java.io.InputStream;
 import java.util.NoSuchElementException;
 
 public enum ResourceHacks {;
-    private static void cropAndPutTexture(Identifier source, Identifier result, ResourceManager manager, ExperimentalResourcePack pack, float u0, float v0, float u1, float v1) throws IOException {
+    private static void cropAndPutTexture(Identifier source, Identifier result, ResourceManager manager, EBEPack pack, float u0, float v0, float u1, float v1) throws IOException {
         InputStream image;
         try {
             image = manager.getResource(source).orElseThrow().getInputStream();
@@ -18,11 +19,11 @@ public enum ResourceHacks {;
         }
         if (image == null) return;
 
-        TextureHacks.cropImage(image, u0, v0, u1, v1).ifPresent(imgBytes -> pack.put(result, imgBytes));
+        TextureHacks.cropImage(image, u0, v0, u1, v1).ifPresent(imgBytes -> pack.addResource(ResourceType.CLIENT_RESOURCES, result, imgBytes));
         image.close();
     }
 
-    public static void addChestParticleTexture(String chestName, String chestTexture, ResourceManager manager, ExperimentalResourcePack pack) throws IOException {
+    public static void addChestParticleTexture(String chestName, String chestTexture, ResourceManager manager, EBEPack pack) throws IOException {
         cropAndPutTexture(
                 new Identifier("textures/"+chestTexture+".png"), new Identifier("textures/block/"+chestName+"_particle.png"),
                 manager, pack,
@@ -30,7 +31,7 @@ public enum ResourceHacks {;
         );
     }
 
-    public static void addBedParticleTexture(String bedColor, String bedTexture, ResourceManager manager, ExperimentalResourcePack pack) throws IOException {
+    public static void addBedParticleTexture(String bedColor, String bedTexture, ResourceManager manager, EBEPack pack) throws IOException {
         cropAndPutTexture(
                 new Identifier("textures/"+bedTexture+".png"), new Identifier("textures/block/"+bedColor+"_bed_particle.png"),
                 manager, pack,
@@ -38,7 +39,7 @@ public enum ResourceHacks {;
         );
     }
 
-    public static void addSignParticleTexture(String signType, String signTexture, ResourceManager manager, ExperimentalResourcePack pack) throws IOException {
+    public static void addSignParticleTexture(String signType, String signTexture, ResourceManager manager, EBEPack pack) throws IOException {
         cropAndPutTexture(
                 new Identifier("textures/"+signTexture+".png"), new Identifier("textures/block/"+signType+"_sign_particle.png"),
                 manager, pack,

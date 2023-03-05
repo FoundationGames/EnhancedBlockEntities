@@ -1,22 +1,28 @@
 package foundationgames.enhancedblockentities;
 
-import foundationgames.enhancedblockentities.client.model.*;
+import foundationgames.enhancedblockentities.client.model.DynamicModelEffects;
+import foundationgames.enhancedblockentities.client.model.DynamicModelProvider;
+import foundationgames.enhancedblockentities.client.model.DynamicUnbakedModel;
+import foundationgames.enhancedblockentities.client.model.ModelIdentifiers;
+import foundationgames.enhancedblockentities.client.model.ModelSelector;
 import foundationgames.enhancedblockentities.client.render.BlockEntityRenderCondition;
 import foundationgames.enhancedblockentities.client.render.BlockEntityRendererOverride;
 import foundationgames.enhancedblockentities.client.render.entity.BellBlockEntityRendererOverride;
 import foundationgames.enhancedblockentities.client.render.entity.ChestBlockEntityRendererOverride;
 import foundationgames.enhancedblockentities.client.render.entity.ShulkerBoxBlockEntityRendererOverride;
 import foundationgames.enhancedblockentities.client.render.entity.SignBlockEntityRendererOverride;
+import foundationgames.enhancedblockentities.client.resource.EBEPack;
 import foundationgames.enhancedblockentities.util.DateUtil;
 import foundationgames.enhancedblockentities.util.EBEUtil;
 import foundationgames.enhancedblockentities.util.ResourceUtil;
 import foundationgames.enhancedblockentities.util.duck.BakedModelManagerAccess;
-import net.devtech.arrp.api.RuntimeResourcePack;
 import net.devtech.arrp.json.models.JModel;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.model.ModelLoadingRegistry;
+import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.ShulkerBoxBlock;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.block.enums.ChestType;
 import net.minecraft.client.MinecraftClient;
@@ -27,14 +33,18 @@ import net.minecraft.state.property.Properties;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
 
+import java.util.function.Function;
+
 public enum EBESetup {;
     public static void setupRRPChests() {
-        RuntimeResourcePack p = ResourceUtil.getPack();
+        EBEPack p = ResourceUtil.getPackForCompat();
 
         ResourceUtil.addChestBlockStates("chest", p);
         ResourceUtil.addChestBlockStates("trapped_chest", p);
         ResourceUtil.addChestBlockStates("christmas_chest", p);
         ResourceUtil.addSingleChestOnlyBlockStates("ender_chest", p);
+
+        p = ResourceUtil.getBasePack();
 
         ResourceUtil.addSingleChestModels("entity/chest/normal", "chest", p);
         ResourceUtil.addDoubleChestModels("entity/chest/normal_left", "entity/chest/normal_right","chest", p);
@@ -44,13 +54,17 @@ public enum EBESetup {;
         ResourceUtil.addDoubleChestModels("entity/chest/christmas_left", "entity/chest/christmas_right","christmas_chest", p);
         ResourceUtil.addSingleChestModels("entity/chest/ender", "ender_chest", p);
 
-        p.addResource(ResourceType.CLIENT_RESOURCES, new Identifier("models/item/chest.json"), ResourceUtil.CHEST_ITEM_MODEL_RESOURCE.getBytes());
-        p.addModel(JModel.model("block/trapped_chest_center"), new Identifier("item/trapped_chest"));
+        p.addResource(ResourceType.CLIENT_RESOURCES, new Identifier("models/item/chest.json"),
+                ResourceUtil.createChestItemModelResource("chest_center").getBytes());
+        p.addResource(ResourceType.CLIENT_RESOURCES, new Identifier("models/item/trapped_chest.json"),
+                ResourceUtil.createChestItemModelResource("trapped_chest_center").getBytes());
         p.addModel(JModel.model("block/ender_chest_center"), new Identifier("item/ender_chest"));
+
+        p.addDirBlockSprites("entity/chest", "entity/chest/");
     }
 
     public static void setupRRPSigns() {
-        RuntimeResourcePack p = ResourceUtil.getPack();
+        EBEPack p = ResourceUtil.getPackForCompat();
 
         ResourceUtil.addSignBlockStates("oak_sign", "oak_wall_sign", p);
         ResourceUtil.addSignBlockStates("birch_sign", "birch_wall_sign", p);
@@ -61,40 +75,67 @@ public enum EBESetup {;
         ResourceUtil.addSignBlockStates("mangrove_sign", "mangrove_wall_sign", p);
         ResourceUtil.addSignBlockStates("crimson_sign", "crimson_wall_sign", p);
         ResourceUtil.addSignBlockStates("warped_sign", "warped_wall_sign", p);
+        ResourceUtil.addSignBlockStates("bamboo_sign", "bamboo_wall_sign", p);
 
-        ResourceUtil.addSignModels("entity/signs/oak", "oak_sign", "oak_wall_sign", p);
-        ResourceUtil.addSignModels("entity/signs/birch", "birch_sign", "birch_wall_sign", p);
-        ResourceUtil.addSignModels("entity/signs/spruce", "spruce_sign", "spruce_wall_sign", p);
-        ResourceUtil.addSignModels("entity/signs/jungle", "jungle_sign", "jungle_wall_sign", p);
-        ResourceUtil.addSignModels("entity/signs/acacia", "acacia_sign", "acacia_wall_sign", p);
-        ResourceUtil.addSignModels("entity/signs/dark_oak", "dark_oak_sign", "dark_oak_wall_sign", p);
-        ResourceUtil.addSignModels("entity/signs/mangrove", "mangrove_sign", "mangrove_wall_sign", p);
-        ResourceUtil.addSignModels("entity/signs/crimson", "crimson_sign", "crimson_wall_sign", p);
-        ResourceUtil.addSignModels("entity/signs/warped", "warped_sign", "warped_wall_sign", p);
+        ResourceUtil.addHangingSignBlockStates("oak_hanging_sign", "oak_wall_hanging_sign", p);
+        ResourceUtil.addHangingSignBlockStates("birch_hanging_sign", "birch_wall_hanging_sign", p);
+        ResourceUtil.addHangingSignBlockStates("spruce_hanging_sign", "spruce_wall_hanging_sign", p);
+        ResourceUtil.addHangingSignBlockStates("jungle_hanging_sign", "jungle_wall_hanging_sign", p);
+        ResourceUtil.addHangingSignBlockStates("acacia_hanging_sign", "acacia_wall_hanging_sign", p);
+        ResourceUtil.addHangingSignBlockStates("dark_oak_hanging_sign", "dark_oak_wall_hanging_sign", p);
+        ResourceUtil.addHangingSignBlockStates("mangrove_hanging_sign", "mangrove_wall_hanging_sign", p);
+        ResourceUtil.addHangingSignBlockStates("crimson_hanging_sign", "crimson_wall_hanging_sign", p);
+        ResourceUtil.addHangingSignBlockStates("warped_hanging_sign", "warped_wall_hanging_sign", p);
+        ResourceUtil.addHangingSignBlockStates("bamboo_hanging_sign", "bamboo_wall_hanging_sign", p);
+
+        p = ResourceUtil.getBasePack();
+
+        ResourceUtil.addSignTypeModels("oak", p);
+        ResourceUtil.addSignTypeModels("birch", p);
+        ResourceUtil.addSignTypeModels("spruce", p);
+        ResourceUtil.addSignTypeModels("jungle", p);
+        ResourceUtil.addSignTypeModels("acacia", p);
+        ResourceUtil.addSignTypeModels("dark_oak", p);
+        ResourceUtil.addSignTypeModels("mangrove", p);
+        ResourceUtil.addSignTypeModels("crimson", p);
+        ResourceUtil.addSignTypeModels("warped", p);
+        ResourceUtil.addSignTypeModels("bamboo", p);
+
+        p.addDirBlockSprites("entity/signs", "entity/signs/");
+        p.addDirBlockSprites("entity/signs/hanging", "entity/signs/hanging/");
+        p.addDirBlockSprites("gui/hanging_signs", "block/particle_hanging_sign_");
     }
 
     public static void setupRRPBells() {
-        ResourceUtil.addBellBlockState(ResourceUtil.getPack());
+        ResourceUtil.addBellBlockState(ResourceUtil.getPackForCompat());
+
+        ResourceUtil.getBasePack().addSingleBlockSprite(new Identifier("entity/bell/bell_body"));
     }
 
     public static void setupRRPBeds() {
-        RuntimeResourcePack p = ResourceUtil.getPack();
+        EBEPack p = ResourceUtil.getBasePack();
+        EBEPack pCompat = ResourceUtil.getPackForCompat();
 
         for (DyeColor color : DyeColor.values()) {
-            ResourceUtil.addBedBlockState(color, p);
+            ResourceUtil.addBedBlockState(color, pCompat);
             ResourceUtil.addBedModels(color, p);
         }
+
+        p.addDirBlockSprites("entity/bed", "entity/bed/");
     }
 
     public static void setupRRPShulkerBoxes() {
-        RuntimeResourcePack p = ResourceUtil.getPack();
+        EBEPack p = ResourceUtil.getBasePack();
+        EBEPack pCompat = ResourceUtil.getPackForCompat();
 
         for (DyeColor color : EBEUtil.DEFAULTED_DYE_COLORS) {
             var id = color != null ? color.getName()+"_shulker_box" : "shulker_box";
-            ResourceUtil.addShulkerBoxBlockStates(color, p);
+            ResourceUtil.addShulkerBoxBlockStates(color, pCompat);
             ResourceUtil.addShulkerBoxModels(color, p);
             p.addModel(JModel.model("block/"+id), new Identifier("item/"+id));
         }
+
+        p.addDirBlockSprites("entity/shulker", "entity/shulker/");
     }
 
     public static void setupResourceProviders() {
@@ -143,9 +184,11 @@ public enum EBESetup {;
                 () -> new DynamicUnbakedModel(
                         new Identifier[] {
                                 ModelIdentifiers.TRAPPED_CHEST_CENTER,
-                                ModelIdentifiers.TRAPPED_CHEST_CENTER_TRUNK
+                                ModelIdentifiers.TRAPPED_CHEST_CENTER_TRUNK,
+                                ModelIdentifiers.CHRISTMAS_CHEST_CENTER,
+                                ModelIdentifiers.CHRISTMAS_CHEST_CENTER_TRUNK
                         },
-                        ModelSelector.CHEST,
+                        ModelSelector.CHEST_WITH_CHRISTMAS,
                         DynamicModelEffects.CHEST
                 )
         ));
@@ -154,9 +197,11 @@ public enum EBESetup {;
                 () -> new DynamicUnbakedModel(
                         new Identifier[] {
                                 ModelIdentifiers.TRAPPED_CHEST_LEFT,
-                                ModelIdentifiers.TRAPPED_CHEST_LEFT_TRUNK
+                                ModelIdentifiers.TRAPPED_CHEST_LEFT_TRUNK,
+                                ModelIdentifiers.CHRISTMAS_CHEST_LEFT,
+                                ModelIdentifiers.CHRISTMAS_CHEST_LEFT_TRUNK
                         },
-                        ModelSelector.CHEST,
+                        ModelSelector.CHEST_WITH_CHRISTMAS,
                         DynamicModelEffects.CHEST
                 )
         ));
@@ -165,9 +210,11 @@ public enum EBESetup {;
                 () -> new DynamicUnbakedModel(
                         new Identifier[] {
                                 ModelIdentifiers.TRAPPED_CHEST_RIGHT,
-                                ModelIdentifiers.TRAPPED_CHEST_RIGHT_TRUNK
+                                ModelIdentifiers.TRAPPED_CHEST_RIGHT_TRUNK,
+                                ModelIdentifiers.CHRISTMAS_CHEST_RIGHT,
+                                ModelIdentifiers.CHRISTMAS_CHEST_RIGHT_TRUNK
                         },
-                        ModelSelector.CHEST,
+                        ModelSelector.CHEST_WITH_CHRISTMAS,
                         DynamicModelEffects.CHEST
                 )
         ));
@@ -246,6 +293,12 @@ public enum EBESetup {;
         BlockRenderLayerMap.INSTANCE.putBlock(Blocks.CHEST, RenderLayer.getCutoutMipped());
         BlockRenderLayerMap.INSTANCE.putBlock(Blocks.TRAPPED_CHEST, RenderLayer.getCutoutMipped());
         BlockRenderLayerMap.INSTANCE.putBlock(Blocks.ENDER_CHEST, RenderLayer.getCutoutMipped());
+
+        Function<BlockEntity, Integer> christmasChestSelector = entity -> {
+            int os = DateUtil.isChristmas() ? 3 : 0;
+            ChestType type = entity.getCachedState().get(Properties.CHEST_TYPE);
+            return type == ChestType.RIGHT ? 2 + os : type == ChestType.LEFT ? 1 + os : os;
+        };
         EnhancedBlockEntityRegistry.register(Blocks.CHEST, BlockEntityType.CHEST, BlockEntityRenderCondition.CHEST,
                 new ChestBlockEntityRendererOverride(() -> {
                     BakedModelManagerAccess manager = (BakedModelManagerAccess) MinecraftClient.getInstance().getBakedModelManager();
@@ -257,11 +310,7 @@ public enum EBESetup {;
                             manager.getModel(ModelIdentifiers.CHRISTMAS_CHEST_LEFT_LID),
                             manager.getModel(ModelIdentifiers.CHRISTMAS_CHEST_RIGHT_LID)
                     };
-                }, entity -> {
-                    int os = DateUtil.isChristmas() ? 3 : 0;
-                    ChestType type = entity.getCachedState().get(Properties.CHEST_TYPE);
-                    return type == ChestType.RIGHT ? 2 + os : type == ChestType.LEFT ? 1 + os : os;
-                })
+                }, christmasChestSelector)
         );
         EnhancedBlockEntityRegistry.register(Blocks.TRAPPED_CHEST, BlockEntityType.TRAPPED_CHEST, BlockEntityRenderCondition.CHEST,
                 new ChestBlockEntityRendererOverride(() -> {
@@ -269,12 +318,12 @@ public enum EBESetup {;
                     return new BakedModel[] {
                             manager.getModel(ModelIdentifiers.TRAPPED_CHEST_CENTER_LID),
                             manager.getModel(ModelIdentifiers.TRAPPED_CHEST_LEFT_LID),
-                            manager.getModel(ModelIdentifiers.TRAPPED_CHEST_RIGHT_LID)
+                            manager.getModel(ModelIdentifiers.TRAPPED_CHEST_RIGHT_LID),
+                            manager.getModel(ModelIdentifiers.CHRISTMAS_CHEST_CENTER_LID),
+                            manager.getModel(ModelIdentifiers.CHRISTMAS_CHEST_LEFT_LID),
+                            manager.getModel(ModelIdentifiers.CHRISTMAS_CHEST_RIGHT_LID)
                     };
-                }, entity -> {
-                    ChestType type = entity.getCachedState().get(Properties.CHEST_TYPE);
-                    return type == ChestType.RIGHT ? 2 : type == ChestType.LEFT ? 1 : 0;
-                })
+                }, christmasChestSelector)
         );
         EnhancedBlockEntityRegistry.register(Blocks.ENDER_CHEST, BlockEntityType.ENDER_CHEST, BlockEntityRenderCondition.CHEST,
                 new ChestBlockEntityRendererOverride(() -> {
@@ -285,60 +334,40 @@ public enum EBESetup {;
     }
 
     public static void setupSigns() {
-        EnhancedBlockEntityRegistry.register(Blocks.OAK_SIGN, BlockEntityType.SIGN, BlockEntityRenderCondition.SIGN,
-                new SignBlockEntityRendererOverride()
-        );
-        EnhancedBlockEntityRegistry.register(Blocks.OAK_WALL_SIGN, BlockEntityType.SIGN, BlockEntityRenderCondition.SIGN,
-                new SignBlockEntityRendererOverride()
-        );
-        EnhancedBlockEntityRegistry.register(Blocks.BIRCH_SIGN, BlockEntityType.SIGN, BlockEntityRenderCondition.SIGN,
-                new SignBlockEntityRendererOverride()
-        );
-        EnhancedBlockEntityRegistry.register(Blocks.BIRCH_WALL_SIGN, BlockEntityType.SIGN, BlockEntityRenderCondition.SIGN,
-                new SignBlockEntityRendererOverride()
-        );
-        EnhancedBlockEntityRegistry.register(Blocks.SPRUCE_SIGN, BlockEntityType.SIGN, BlockEntityRenderCondition.SIGN,
-                new SignBlockEntityRendererOverride()
-        );
-        EnhancedBlockEntityRegistry.register(Blocks.SPRUCE_WALL_SIGN, BlockEntityType.SIGN, BlockEntityRenderCondition.SIGN,
-                new SignBlockEntityRendererOverride()
-        );
-        EnhancedBlockEntityRegistry.register(Blocks.JUNGLE_SIGN, BlockEntityType.SIGN, BlockEntityRenderCondition.SIGN,
-                new SignBlockEntityRendererOverride()
-        );
-        EnhancedBlockEntityRegistry.register(Blocks.JUNGLE_WALL_SIGN, BlockEntityType.SIGN, BlockEntityRenderCondition.SIGN,
-                new SignBlockEntityRendererOverride()
-        );
-        EnhancedBlockEntityRegistry.register(Blocks.ACACIA_SIGN, BlockEntityType.SIGN, BlockEntityRenderCondition.SIGN,
-                new SignBlockEntityRendererOverride()
-        );
-        EnhancedBlockEntityRegistry.register(Blocks.ACACIA_WALL_SIGN, BlockEntityType.SIGN, BlockEntityRenderCondition.SIGN,
-                new SignBlockEntityRendererOverride()
-        );
-        EnhancedBlockEntityRegistry.register(Blocks.DARK_OAK_SIGN, BlockEntityType.SIGN, BlockEntityRenderCondition.SIGN,
-                new SignBlockEntityRendererOverride()
-        );
-        EnhancedBlockEntityRegistry.register(Blocks.DARK_OAK_WALL_SIGN, BlockEntityType.SIGN, BlockEntityRenderCondition.SIGN,
-                new SignBlockEntityRendererOverride()
-        );
-        EnhancedBlockEntityRegistry.register(Blocks.MANGROVE_SIGN, BlockEntityType.SIGN, BlockEntityRenderCondition.SIGN,
-                new SignBlockEntityRendererOverride()
-        );
-        EnhancedBlockEntityRegistry.register(Blocks.MANGROVE_WALL_SIGN, BlockEntityType.SIGN, BlockEntityRenderCondition.SIGN,
-                new SignBlockEntityRendererOverride()
-        );
-        EnhancedBlockEntityRegistry.register(Blocks.CRIMSON_SIGN, BlockEntityType.SIGN, BlockEntityRenderCondition.SIGN,
-                new SignBlockEntityRendererOverride()
-        );
-        EnhancedBlockEntityRegistry.register(Blocks.CRIMSON_WALL_SIGN, BlockEntityType.SIGN, BlockEntityRenderCondition.SIGN,
-                new SignBlockEntityRendererOverride()
-        );
-        EnhancedBlockEntityRegistry.register(Blocks.WARPED_SIGN, BlockEntityType.SIGN, BlockEntityRenderCondition.SIGN,
-                new SignBlockEntityRendererOverride()
-        );
-        EnhancedBlockEntityRegistry.register(Blocks.WARPED_WALL_SIGN, BlockEntityType.SIGN, BlockEntityRenderCondition.SIGN,
-                new SignBlockEntityRendererOverride()
-        );
+        for (var sign : new Block[] {
+                Blocks.OAK_SIGN, Blocks.OAK_WALL_SIGN,
+                Blocks.BIRCH_SIGN, Blocks.BIRCH_WALL_SIGN,
+                Blocks.SPRUCE_SIGN, Blocks.SPRUCE_WALL_SIGN,
+                Blocks.JUNGLE_SIGN, Blocks.JUNGLE_WALL_SIGN,
+                Blocks.ACACIA_SIGN, Blocks.ACACIA_WALL_SIGN,
+                Blocks.DARK_OAK_SIGN, Blocks.DARK_OAK_WALL_SIGN,
+                Blocks.MANGROVE_SIGN, Blocks.MANGROVE_WALL_SIGN,
+                Blocks.CRIMSON_SIGN, Blocks.CRIMSON_WALL_SIGN,
+                Blocks.WARPED_SIGN, Blocks.WARPED_WALL_SIGN,
+                Blocks.BAMBOO_SIGN, Blocks.BAMBOO_WALL_SIGN,
+        }) {
+            EnhancedBlockEntityRegistry.register(sign, BlockEntityType.SIGN, BlockEntityRenderCondition.SIGN,
+                    new SignBlockEntityRendererOverride()
+            );
+        }
+
+        for (var sign : new Block[] {
+                Blocks.OAK_HANGING_SIGN, Blocks.OAK_WALL_HANGING_SIGN,
+                Blocks.BIRCH_HANGING_SIGN, Blocks.BIRCH_WALL_HANGING_SIGN,
+                Blocks.SPRUCE_HANGING_SIGN, Blocks.SPRUCE_WALL_HANGING_SIGN,
+                Blocks.JUNGLE_HANGING_SIGN, Blocks.JUNGLE_WALL_HANGING_SIGN,
+                Blocks.ACACIA_HANGING_SIGN, Blocks.ACACIA_WALL_HANGING_SIGN,
+                Blocks.DARK_OAK_HANGING_SIGN, Blocks.DARK_OAK_WALL_HANGING_SIGN,
+                Blocks.MANGROVE_HANGING_SIGN, Blocks.MANGROVE_WALL_HANGING_SIGN,
+                Blocks.CRIMSON_HANGING_SIGN, Blocks.CRIMSON_WALL_HANGING_SIGN,
+                Blocks.WARPED_HANGING_SIGN, Blocks.WARPED_WALL_HANGING_SIGN,
+                Blocks.BAMBOO_HANGING_SIGN, Blocks.BAMBOO_WALL_HANGING_SIGN,
+        }) {
+            EnhancedBlockEntityRegistry.register(sign, BlockEntityType.HANGING_SIGN, BlockEntityRenderCondition.SIGN,
+                    new SignBlockEntityRendererOverride()
+            );
+            BlockRenderLayerMap.INSTANCE.putBlock(sign, RenderLayer.getCutout());
+        }
     }
 
     public static void setupBells() {

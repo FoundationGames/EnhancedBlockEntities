@@ -38,5 +38,7 @@ Rendering 1700 chests:
 A 155% frame rate increase!
 
 ## Resource Packs
+You can edit EBE's block entity models using resource packs, since they have been converted to conventional .json block models. <br/>
+To view EBE's built-in resources, click on 
 Here's an example of how you can customize chests with resource packs using EBE. <br/><br/>
 ![Custom Chest GIF](https://user-images.githubusercontent.com/55095883/112942134-f67fe780-912f-11eb-8b11-cf316544c22b.gif)

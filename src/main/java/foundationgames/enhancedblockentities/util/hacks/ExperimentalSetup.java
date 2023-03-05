@@ -1,7 +1,7 @@
 package foundationgames.enhancedblockentities.util.hacks;
 
 import foundationgames.enhancedblockentities.EnhancedBlockEntities;
-import foundationgames.enhancedblockentities.client.resource.ExperimentalResourcePack;
+import foundationgames.enhancedblockentities.client.resource.EBEPack;
 import foundationgames.enhancedblockentities.config.EBEConfig;
 import foundationgames.enhancedblockentities.util.ResourceUtil;
 import net.minecraft.resource.ResourceManager;
@@ -14,7 +14,6 @@ public enum ExperimentalSetup {;
 
     public static void setup() {
         EBEConfig config = EnhancedBlockEntities.CONFIG;
-        ResourceUtil.resetExperimentalPack();
 
         if (config.renderEnhancedChests && config.experimentalChests) {
             try {
@@ -46,7 +45,7 @@ public enum ExperimentalSetup {;
     }
 
     public static void setupChests(ResourceManager manager) throws IOException {
-        ExperimentalResourcePack p = ResourceUtil.getExperimentalPack();
+        EBEPack p = ResourceUtil.getTopLevelPack();
 
         ResourceHacks.addChestParticleTexture("chest", "entity/chest/normal", manager, p);
         ResourceHacks.addChestParticleTexture("trapped_chest", "entity/chest/trapped", manager, p);
@@ -55,7 +54,7 @@ public enum ExperimentalSetup {;
     }
 
     public static void setupBeds(ResourceManager manager) throws IOException {
-        ExperimentalResourcePack p = ResourceUtil.getExperimentalPack();
+        EBEPack p = ResourceUtil.getTopLevelPack();
 
         for (var color : DyeColor.values()) {
             ResourceHacks.addBedParticleTexture(color.getName(), "entity/bed/"+color.getName(), manager, p);
@@ -63,7 +62,7 @@ public enum ExperimentalSetup {;
     }
 
     public static void setupSigns(ResourceManager manager) throws IOException {
-        ExperimentalResourcePack p = ResourceUtil.getExperimentalPack();
+        EBEPack p = ResourceUtil.getTopLevelPack();
 
         ResourceHacks.addSignParticleTexture("oak", "entity/signs/oak", manager, p);
         ResourceHacks.addSignParticleTexture("birch", "entity/signs/birch", manager, p);
@@ -74,6 +73,7 @@ public enum ExperimentalSetup {;
         ResourceHacks.addSignParticleTexture("mangrove", "entity/signs/mangrove", manager, p);
         ResourceHacks.addSignParticleTexture("crimson", "entity/signs/crimson", manager, p);
         ResourceHacks.addSignParticleTexture("warped", "entity/signs/warped", manager, p);
+        ResourceHacks.addSignParticleTexture("bamboo", "entity/signs/bamboo", manager, p);
     }
 
     public static void cacheResources(ResourceManager resources) {

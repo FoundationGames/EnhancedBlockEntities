@@ -30,18 +30,26 @@ public abstract class ModelSelector {
 
     public static final ModelSelector CHEST_WITH_CHRISTMAS = new ModelSelector() {
         @Override
+        public int getParticleModelIndex() {
+            return DateUtil.isChristmas() ? 2 : 0;
+        }
+
+        @Override
         public int getModelIndex(BlockRenderView view, BlockState state, BlockPos pos, Supplier<Random> rand, @Nullable RenderContext ctx) {
-            int os = DateUtil.isChristmas() ? 2 : 0;
             if(view.getBlockEntity(pos) instanceof ModelStateHolder stateHolder) {
-                return stateHolder.getModelState() + os;
+                return stateHolder.getModelState() + this.getParticleModelIndex();
             }
-            return os;
+            return this.getParticleModelIndex();
         }
     };
 
     public static final ModelSelector BELL = STATE_HOLDER_SELECTOR;
 
     public static final ModelSelector SHULKER_BOX = STATE_HOLDER_SELECTOR;
+
+    public int getParticleModelIndex() {
+        return 0;
+    }
 
     public abstract int getModelIndex(BlockRenderView view, BlockState state, BlockPos pos, Supplier<Random> rand, @Nullable RenderContext ctx);
 
