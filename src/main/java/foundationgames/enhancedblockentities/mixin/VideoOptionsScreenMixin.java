@@ -25,7 +25,7 @@ public abstract class VideoOptionsScreenMixin extends Screen {
             method = "init",
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/client/gui/widget/ButtonListWidget;addAll([Lnet/minecraft/client/option/SimpleOption;)V"
+                    target = "Lnet/minecraft/client/gui/widget/OptionListWidget;addAll([Lnet/minecraft/client/option/SimpleOption;)V"
             ),
             index = 0
     )
