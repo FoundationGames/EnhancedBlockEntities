@@ -97,8 +97,8 @@ public class EBEConfigScreen extends SpruceScreen {
 
         super.render(matrices, mouseX, mouseY, delta);
 
-        drawCenteredText(matrices, this.textRenderer, this.title, (int)(this.width * 0.5), 8, 0xFFFFFF);
-        drawCenteredText(matrices, this.textRenderer, HOLD_SHIFT, (int)(this.width * 0.5), 21, 0xFFFFFF);
+        drawCenteredTextWithShadow(matrices, this.textRenderer, this.title, (int)(this.width * 0.5), 8, 0xFFFFFF);
+        drawCenteredTextWithShadow(matrices, this.textRenderer, HOLD_SHIFT, (int)(this.width * 0.5), 21, 0xFFFFFF);
     }
 
     @Override
