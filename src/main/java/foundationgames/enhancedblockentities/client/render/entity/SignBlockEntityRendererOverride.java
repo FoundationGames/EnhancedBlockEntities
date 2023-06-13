@@ -51,7 +51,10 @@ public class SignBlockEntityRendererOverride extends BlockEntityRendererOverride
                 }
 
                 matrices.translate(0.0, -0.3125, 0.0);
-                textRenderer.enhanced_bes$renderText(be, matrices, vertexConsumers, light, 1);
+                matrices.scale(1.5f, 1.5f, 1.5f);
+                textRenderer.enhanced_bes$renderText(be.getPos(), be.getFrontText(), matrices, vertexConsumers, light, be.getTextLineHeight(), be.getMaxTextWidth(), true);
+                textRenderer.enhanced_bes$renderText(be.getPos(), be.getBackText(), matrices, vertexConsumers, light, be.getTextLineHeight(), be.getMaxTextWidth(), false);
+                // textRenderer.enhanced_bes$renderText(be, matrices, vertexConsumers, light, 1);
             } else {
                 if (state.getBlock() instanceof SignBlock) {
                     matrices.translate(0.5, 0.5, 0.5);
@@ -64,8 +67,11 @@ public class SignBlockEntityRendererOverride extends BlockEntityRendererOverride
                     matrices.translate(0.0, -0.3125, -0.4375);
                 }
 
-                textRenderer.enhanced_bes$renderText(be, matrices, vertexConsumers, light, 2f/3);
+                textRenderer.enhanced_bes$renderText(be.getPos(), be.getFrontText(), matrices, vertexConsumers, light, be.getTextLineHeight(), be.getMaxTextWidth(), true);
+                textRenderer.enhanced_bes$renderText(be.getPos(), be.getBackText(), matrices, vertexConsumers, light, be.getTextLineHeight(), be.getMaxTextWidth(), false);
+                // textRenderer.enhanced_bes$renderText(be, matrices, vertexConsumers, light, 2f/3);
             }
+            matrices.pop();
         }
     }
 
