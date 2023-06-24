@@ -29,7 +29,7 @@ public class ConfigButtonOption {
 
     private record ConfigButtonCallbacks<T>(Screen parent) implements SimpleOption.Callbacks<T> {
         @Override
-        public Function<SimpleOption<T>, ClickableWidget> getButtonCreator(SimpleOption.TooltipFactory<T> tooltipFactory, GameOptions gameOptions, int x, int y, int width, Consumer<T> changed) {
+        public Function<SimpleOption<T>, ClickableWidget> getWidgetCreator(SimpleOption.TooltipFactory<T> tooltipFactory, GameOptions gameOptions, int x, int y, int width, Consumer<T> changed) {
             return (option) -> ButtonWidget.builder(Text.translatable("option.ebe.config"), b -> {
                 MinecraftClient.getInstance().setScreen(new EBEConfigScreen(parent));
             }).dimensions(x, y, width, 20).build();
