@@ -24,7 +24,7 @@ import java.util.Map;
 public abstract class LifecycledResourceManagerImplMixin {
     @Shadow @Final          private Map<String, NamespaceResourceManager> subManagers;
 
-    @ModifyVariable(method = "<init>", at = @At(value = "INVOKE_ASSIGN", target = "Ljava/util/List;copyOf(Ljava/util/Collection;)Ljava/util/List;", shift = At.Shift.BEFORE), ordinal = 0)
+    @ModifyVariable(method = "<init>", at = @At(value = "INVOKE", target = "Ljava/util/List;copyOf(Ljava/util/Collection;)Ljava/util/List;", shift = At.Shift.BEFORE), ordinal = 0)
     private List<ResourcePack> enhanced_bes$injectBasePack(List<ResourcePack> old) {
         var packs = new ArrayList<>(old);
 
