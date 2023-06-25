@@ -74,6 +74,7 @@ public enum ExperimentalSetup {;
         ResourceHacks.addSignParticleTexture("crimson", "entity/signs/crimson", manager, p);
         ResourceHacks.addSignParticleTexture("warped", "entity/signs/warped", manager, p);
         ResourceHacks.addSignParticleTexture("bamboo", "entity/signs/bamboo", manager, p);
+        ResourceHacks.addSignParticleTexture("cherry", "entity/signs/cherry", manager, p);
     }
 
     public static void cacheResources(ResourceManager resources) {
