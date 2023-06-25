@@ -7,6 +7,7 @@ import net.minecraft.block.ShulkerBoxBlock;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.ShulkerBoxBlockEntity;
 import net.minecraft.client.render.VertexConsumerProvider;
+import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.render.model.BakedModel;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.DyeColor;
@@ -26,7 +27,7 @@ public class ShulkerBoxBlockEntityRendererOverride extends BlockEntityRendererOv
     }
 
     @Override
-    public void render(BlockEntity blockEntity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
+    public void render(BlockEntityRenderer<BlockEntity> renderer, BlockEntity blockEntity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
         if (models.isEmpty()) modelMapFiller.accept(models);
         if (blockEntity instanceof ShulkerBoxBlockEntity entity) {
             Direction dir = Direction.UP;
