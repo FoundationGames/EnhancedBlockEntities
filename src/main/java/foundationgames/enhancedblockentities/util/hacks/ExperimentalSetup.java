@@ -71,6 +71,7 @@ public enum ExperimentalSetup {;
         ResourceHacks.addSignParticleTexture("acacia", "entity/signs/acacia", manager, p);
         ResourceHacks.addSignParticleTexture("dark_oak", "entity/signs/dark_oak", manager, p);
         ResourceHacks.addSignParticleTexture("mangrove", "entity/signs/mangrove", manager, p);
+        ResourceHacks.addSignParticleTexture("cherry", "entity/signs/cherry", manager, p);
         ResourceHacks.addSignParticleTexture("crimson", "entity/signs/crimson", manager, p);
         ResourceHacks.addSignParticleTexture("warped", "entity/signs/warped", manager, p);
         ResourceHacks.addSignParticleTexture("bamboo", "entity/signs/bamboo", manager, p);

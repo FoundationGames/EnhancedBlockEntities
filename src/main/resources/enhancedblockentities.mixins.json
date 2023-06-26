@@ -10,6 +10,7 @@
     "BlockEntityRenderDispatcherMixin",
     "BuiltinModelItemRendererMixin",
     "ChestBlockEntityMixin",
+    "DecoratedPotBlockEntityMixin",
     "EnderChestBlockEntityMixin",
     "LifecycledResourceManagerImplMixin",
     "ShulkerBoxBlockEntityMixin",

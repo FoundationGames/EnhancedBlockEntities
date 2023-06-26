@@ -12,8 +12,8 @@ import dev.lambdaurora.spruceui.util.RenderUtil;
 import dev.lambdaurora.spruceui.widget.SpruceButtonWidget;
 import dev.lambdaurora.spruceui.widget.container.SpruceOptionListWidget;
 import foundationgames.enhancedblockentities.EnhancedBlockEntities;
-import foundationgames.enhancedblockentities.config.EBEConfig;
 import foundationgames.enhancedblockentities.ReloadType;
+import foundationgames.enhancedblockentities.config.EBEConfig;
 import foundationgames.enhancedblockentities.config.gui.option.EBEOption;
 import foundationgames.enhancedblockentities.config.gui.option.TextPalette;
 import foundationgames.enhancedblockentities.util.EBEUtil;
@@ -49,6 +49,7 @@ public class EBEConfigScreen extends SpruceScreen {
     private static final String BELL_OPTIONS_TITLE = "text.ebe.bell_options";
     private static final String BED_OPTIONS_TITLE = "text.ebe.bed_options";
     private static final String SHULKER_BOX_OPTIONS_TITLE = "text.ebe.shulker_box_options";
+    private static final String DECORATED_POT_OPTIONS_TITLE = "text.ebe.decorated_pot_options";
     private static final String ADVANCED_TITLE = "text.ebe.advanced";
 
     private static final Text DUMP_LABEL = Text.translatable("option.ebe.dump");
@@ -81,7 +82,7 @@ public class EBEConfigScreen extends SpruceScreen {
     }
 
     @Override
-    public void renderBackground(MatrixStack matrices) {
+    public void renderBackgroundTexture(MatrixStack matrices) {
     }
 
     @Override
@@ -91,7 +92,7 @@ public class EBEConfigScreen extends SpruceScreen {
             RenderSystem.setShader(GameRenderer::getPositionTexProgram);
         }
 
-        this.fillGradient(matrices, 0, 0, width, height, 0x4F141414, 0x4F141414);
+        fillGradient(matrices, 0, 0, width, height, 0x4F141414, 0x4F141414);
         RenderUtil.renderBackgroundTexture(0, 0, this.width, 34, 0);
         RenderUtil.renderBackgroundTexture(0, this.height - 35, this.width, 35, 0);
 
@@ -175,6 +176,14 @@ public class EBEConfigScreen extends SpruceScreen {
         ));
         optionsWidget.addSingleOptionEntry(option(
                 new EBEOption(EBEConfig.SHULKER_BOX_AO_KEY, BOOLEAN_OPTIONS, BOOLEAN_OPTIONS.indexOf(config.getProperty(EBEConfig.SHULKER_BOX_AO_KEY)), false, TextPalette.ON_OFF, ReloadType.RESOURCES)
+        ));
+
+        optionsWidget.addSingleOptionEntry(new SpruceSeparatorOption(DECORATED_POT_OPTIONS_TITLE, true, null));
+        optionsWidget.addSingleOptionEntry(option(
+                new EBEOption(EBEConfig.RENDER_ENHANCED_DECORATED_POTS_KEY, BOOLEAN_OPTIONS, BOOLEAN_OPTIONS.indexOf(config.getProperty(EBEConfig.RENDER_ENHANCED_DECORATED_POTS_KEY)), false, TextPalette.ON_OFF, ReloadType.RESOURCES)
+        ));
+        optionsWidget.addSingleOptionEntry(option(
+                new EBEOption(EBEConfig.DECORATED_POT_AO_KEY, BOOLEAN_OPTIONS, BOOLEAN_OPTIONS.indexOf(config.getProperty(EBEConfig.DECORATED_POT_AO_KEY)), false, TextPalette.ON_OFF, ReloadType.RESOURCES)
         ));
 
         optionsWidget.addSingleOptionEntry(new SpruceSeparatorOption(ADVANCED_TITLE, true, null));

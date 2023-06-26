@@ -15,11 +15,13 @@ public class EBEConfig {
     public static final String RENDER_ENHANCED_BELLS_KEY = "render_enhanced_bells";
     public static final String RENDER_ENHANCED_BEDS_KEY = "render_enhanced_beds";
     public static final String RENDER_ENHANCED_SHULKER_BOXES_KEY = "render_enhanced_shulker_boxes";
+    public static final String RENDER_ENHANCED_DECORATED_POTS_KEY = "render_enhanced_decorated_pots";
     public static final String CHEST_AO_KEY = "chest_ao";
     public static final String SIGN_AO_KEY = "sign_ao";
     public static final String BELL_AO_KEY = "bell_ao";
     public static final String BED_AO_KEY = "bed_ao";
     public static final String SHULKER_BOX_AO_KEY = "shulker_box_ao";
+    public static final String DECORATED_POT_AO_KEY = "decorated_pot_ao";
     public static final String CHRISTMAS_CHESTS_KEY = "christmas_chests";
     public static final String SIGN_TEXT_RENDERING_KEY = "sign_text_rendering";
     public static final String EXPERIMENTAL_CHESTS_KEY = "experimental_chests";
@@ -32,11 +34,13 @@ public class EBEConfig {
     public boolean renderEnhancedBells = true;
     public boolean renderEnhancedBeds = true;
     public boolean renderEnhancedShulkerBoxes = true;
+    public boolean renderEnhancedDecoratedPots = true;
     public boolean chestAO = false;
     public boolean signAO = false;
     public boolean bellAO = true;
     public boolean bedAO = false;
     public boolean shulkerBoxAO = false;
+    public boolean decoratedPotAO = false;
     public String christmasChests = "allowed";
     public String signTextRendering = "smart";
     public boolean experimentalChests = true;
@@ -50,11 +54,13 @@ public class EBEConfig {
         properties.setProperty(RENDER_ENHANCED_BELLS_KEY, Boolean.toString(renderEnhancedBells));
         properties.setProperty(RENDER_ENHANCED_BEDS_KEY, Boolean.toString(renderEnhancedBeds));
         properties.setProperty(RENDER_ENHANCED_SHULKER_BOXES_KEY, Boolean.toString(renderEnhancedShulkerBoxes));
+        properties.setProperty(RENDER_ENHANCED_DECORATED_POTS_KEY, Boolean.toString(renderEnhancedDecoratedPots));
         properties.setProperty(CHEST_AO_KEY, Boolean.toString(chestAO));
         properties.setProperty(SIGN_AO_KEY, Boolean.toString(signAO));
         properties.setProperty(BELL_AO_KEY, Boolean.toString(bellAO));
         properties.setProperty(BED_AO_KEY, Boolean.toString(bedAO));
         properties.setProperty(SHULKER_BOX_AO_KEY, Boolean.toString(shulkerBoxAO));
+        properties.setProperty(DECORATED_POT_AO_KEY, Boolean.toString(decoratedPotAO));
         properties.setProperty(CHRISTMAS_CHESTS_KEY, christmasChests);
         properties.setProperty(SIGN_TEXT_RENDERING_KEY, signTextRendering);
         properties.setProperty(EXPERIMENTAL_CHESTS_KEY, Boolean.toString(experimentalChests));
@@ -69,6 +75,7 @@ public class EBEConfig {
         this.renderEnhancedBells = ConvUtil.defaultedBool(properties.getProperty(RENDER_ENHANCED_BELLS_KEY), true);
         this.renderEnhancedBeds = ConvUtil.defaultedBool(properties.getProperty(RENDER_ENHANCED_BEDS_KEY), true);
         this.renderEnhancedShulkerBoxes = ConvUtil.defaultedBool(properties.getProperty(RENDER_ENHANCED_SHULKER_BOXES_KEY), true);
+        this.renderEnhancedDecoratedPots = ConvUtil.defaultedBool(properties.getProperty(RENDER_ENHANCED_DECORATED_POTS_KEY), true);
         String pCC = properties.getProperty(CHRISTMAS_CHESTS_KEY);
         if(pCC != null && (pCC.equals("allowed") || pCC.equals("forced") || pCC.equals("disabled"))) {
             this.christmasChests = pCC;
@@ -88,6 +95,7 @@ public class EBEConfig {
         this.bellAO = ConvUtil.defaultedBool(properties.getProperty(BELL_AO_KEY), true);
         this.bedAO = ConvUtil.defaultedBool(properties.getProperty(BED_AO_KEY), false);
         this.shulkerBoxAO = ConvUtil.defaultedBool(properties.getProperty(SHULKER_BOX_AO_KEY), false);
+        this.decoratedPotAO = ConvUtil.defaultedBool(properties.getProperty(DECORATED_POT_AO_KEY), false);
         this.experimentalChests = ConvUtil.defaultedBool(properties.getProperty(EXPERIMENTAL_CHESTS_KEY), true);
         this.experimentalBeds = ConvUtil.defaultedBool(properties.getProperty(EXPERIMENTAL_BEDS_KEY), true);
         this.experimentalSigns = ConvUtil.defaultedBool(properties.getProperty(EXPERIMENTAL_SIGNS_KEY), true);
