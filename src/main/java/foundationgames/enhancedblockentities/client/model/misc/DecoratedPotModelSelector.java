@@ -6,6 +6,7 @@ import net.fabricmc.fabric.api.renderer.v1.render.RenderContext;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.DecoratedPotPatterns;
 import net.minecraft.block.entity.DecoratedPotBlockEntity;
+import net.minecraft.item.Item;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.util.Identifier;
@@ -25,7 +26,7 @@ public class DecoratedPotModelSelector extends ModelSelector {
     public DecoratedPotModelSelector() {
         super(5);
 
-        this.potteryPatterns = new ArrayList<>(Registries.DECORATED_POT_PATTERNS.getKeys());
+        this.potteryPatterns = new ArrayList<>(Registries.DECORATED_POT_PATTERN.getKeys());
     }
 
     public Identifier[] createModelIDs() {
@@ -51,13 +52,13 @@ public class DecoratedPotModelSelector extends ModelSelector {
         final int patternCount = potteryPatterns.size();
 
         indices[0] = 0;
-        if (view.getBlockEntity(pos) instanceof DecoratedPotBlockEntity pot && pot.getShards().size() == 4) {
-            for (int i = 0; i < 4; i++) {
-                var pattern = DecoratedPotPatterns.fromShard(pot.getShards().get(i));
-                int patternIndex = MathHelper.clamp(this.potteryPatterns.indexOf(pattern), 0, patternCount - 1);
+        if (view.getBlockEntity(pos) instanceof DecoratedPotBlockEntity pot) {
+            var sherds = pot.getSherds();
 
-                indices[1 + i] = 1 + patternIndex + patternCount * i;
-            }
+            indices[1] = 1 + getPatternIndex(sherds.back(), patternCount);
+            indices[2] = 1 + getPatternIndex(sherds.left(), patternCount) + patternCount;
+            indices[3] = 1 + getPatternIndex(sherds.right(), patternCount) + patternCount * 2;
+            indices[4] = 1 + getPatternIndex(sherds.front(), patternCount) + patternCount * 3;
 
             return;
         }
@@ -65,5 +66,9 @@ public class DecoratedPotModelSelector extends ModelSelector {
         for (int i = 0; i < 4; i++) {
             indices[1 + i] = 1 + patternCount * i;
         }
+    }
+
+    private int getPatternIndex(Item sherd, int max) {
+        return MathHelper.clamp(this.potteryPatterns.indexOf(DecoratedPotPatterns.fromSherd(sherd)), 0, max - 1);
     }
 }

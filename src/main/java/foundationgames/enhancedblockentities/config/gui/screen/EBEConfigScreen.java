@@ -25,7 +25,6 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.TitleScreen;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.resource.language.I18n;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.screen.ScreenTexts;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
@@ -84,24 +83,24 @@ public class EBEConfigScreen extends SpruceScreen {
     }
 
     @Override
-    public void renderBackground(DrawContext graphics) {
+    public void renderBackgroundTexture(DrawContext context) {
     }
 
     @Override
-    public void render(DrawContext graphics, int mouseX, int mouseY, float delta) {
+    public void render(DrawContext context, int mouseX, int mouseY, float delta) {
         if (this.client.world == null) {
             this.background.render(delta, 1);
             RenderSystem.setShader(GameRenderer::getPositionTexProgram);
         }
 
-        graphics.fillGradient(0, 0, width, height, 0x4F141414, 0x4F141414);
+        context.fillGradient(0, 0, width, height, 0x4F141414, 0x4F141414);
         RenderUtil.renderBackgroundTexture(0, 0, this.width, 34, 0);
         RenderUtil.renderBackgroundTexture(0, this.height - 35, this.width, 35, 0);
 
-        super.render(graphics, mouseX, mouseY, delta);
+        super.render(context, mouseX, mouseY, delta);
 
-        graphics.drawCenteredTextWithShadow(this.textRenderer, this.title, (int)(this.width * 0.5), 8, 0xFFFFFF);
-        graphics.drawCenteredTextWithShadow(this.textRenderer, HOLD_SHIFT, (int)(this.width * 0.5), 21, 0xFFFFFF);
+        context.drawCenteredTextWithShadow(this.textRenderer, this.title, (int)(this.width * 0.5), 8, 0xFFFFFF);
+        context.drawCenteredTextWithShadow(this.textRenderer, HOLD_SHIFT, (int)(this.width * 0.5), 21, 0xFFFFFF);
     }
 
     @Override

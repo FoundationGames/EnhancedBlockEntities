@@ -152,7 +152,7 @@ public enum EBESetup {;
         EBEPack pCompat = ResourceUtil.getPackForCompat();
 
         ResourceUtil.addDecoratedPotBlockState(pCompat);
-        for (RegistryKey<String> patternKey : Registries.DECORATED_POT_PATTERNS.getKeys()) {
+        for (RegistryKey<String> patternKey : Registries.DECORATED_POT_PATTERN.getKeys()) {
             ResourceUtil.addDecoratedPotPatternModels(patternKey, p);
         }
 
@@ -376,8 +376,7 @@ public enum EBESetup {;
                 Blocks.CHERRY_SIGN, Blocks.CHERRY_WALL_SIGN,
                 Blocks.CRIMSON_SIGN, Blocks.CRIMSON_WALL_SIGN,
                 Blocks.WARPED_SIGN, Blocks.WARPED_WALL_SIGN,
-                Blocks.BAMBOO_SIGN, Blocks.BAMBOO_WALL_SIGN,
-                Blocks.CHERRY_SIGN, Blocks.CHERRY_WALL_SIGN,
+                Blocks.BAMBOO_SIGN, Blocks.BAMBOO_WALL_SIGN
         }) {
             EnhancedBlockEntityRegistry.register(sign, BlockEntityType.SIGN, BlockEntityRenderCondition.SIGN,
                     new SignBlockEntityRendererOverride()
@@ -395,8 +394,7 @@ public enum EBESetup {;
                 Blocks.CHERRY_HANGING_SIGN, Blocks.CHERRY_WALL_HANGING_SIGN,
                 Blocks.CRIMSON_HANGING_SIGN, Blocks.CRIMSON_WALL_HANGING_SIGN,
                 Blocks.WARPED_HANGING_SIGN, Blocks.WARPED_WALL_HANGING_SIGN,
-                Blocks.BAMBOO_HANGING_SIGN, Blocks.BAMBOO_WALL_HANGING_SIGN,
-                Blocks.CHERRY_HANGING_SIGN, Blocks.CHERRY_WALL_HANGING_SIGN,
+                Blocks.BAMBOO_HANGING_SIGN, Blocks.BAMBOO_WALL_HANGING_SIGN
         }) {
             EnhancedBlockEntityRegistry.register(sign, BlockEntityType.HANGING_SIGN, BlockEntityRenderCondition.SIGN,
                     new SignBlockEntityRendererOverride()
