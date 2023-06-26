@@ -8,6 +8,8 @@ import net.devtech.arrp.json.models.JModel;
 import net.devtech.arrp.json.models.JTextures;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
+import net.minecraft.block.DecoratedPotPatterns;
+import net.minecraft.registry.RegistryKey;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Direction;
@@ -166,7 +168,7 @@ public enum ResourceUtil {;
 
     public static void addBellBlockState(EBEPack pack) {
         JVariant variant = JState.variant();
-        for (Direction dir : new Direction[] {Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST}) {
+        for (Direction dir : EBEUtil.HORIZONTAL_DIRECTIONS) {
             int rot = (int)dir.asRotation() + 90;
             variant
                     .put("attachment=double_wall,facing="+dir.getName(), JState.model("builtin:bell_between_walls").y(rot))
@@ -197,7 +199,7 @@ public enum ResourceUtil {;
     public static void addBedBlockState(DyeColor bedColor, EBEPack pack) {
         String color = bedColor.getName();
         JVariant variant = JState.variant();
-        for (Direction dir : new Direction[] {Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST}) {
+        for (Direction dir : EBEUtil.HORIZONTAL_DIRECTIONS) {
             int rot = (int)dir.asRotation() + 180;
             variant
                     .put("part=head,facing="+dir.getName(), JState.model("block/" + bedColor + "_bed_head").y(rot))
@@ -225,11 +227,27 @@ public enum ResourceUtil {;
         var variant = JState.variant()
                 .put("facing=up", JState.model("builtin:"+shulkerBoxStr))
                 .put("facing=down", JState.model("builtin:"+shulkerBoxStr).x(180));
-        for (Direction dir : new Direction[] {Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST}) {
+        for (Direction dir : EBEUtil.HORIZONTAL_DIRECTIONS) {
             int rot = (int)dir.asRotation() + 180;
             variant.put("facing="+dir.getName(), JState.model("builtin:"+shulkerBoxStr).x(90).y(rot));
         }
         pack.addBlockState(JState.state(variant), new Identifier(shulkerBoxStr));
+    }
+
+    public static void addDecoratedPotBlockState(EBEPack pack) {
+        pack.addBlockState(JState.state(variantHFacing(JState.variant(), "facing=", "builtin:decorated_pot")), new Identifier("decorated_pot"));
+    }
+
+    public static void addDecoratedPotPatternModels(RegistryKey<String> patternKey, EBEPack pack) {
+        for (Direction dir : EBEUtil.HORIZONTAL_DIRECTIONS) {
+            pack.addModel(JModel.model().parent("block/template_pottery_pattern_" + dir.getName())
+                    .textures(
+                            JModel.textures()
+                                    .var("pattern", DecoratedPotPatterns.getTextureId(patternKey).toString())
+                    ),
+                    new Identifier("block/" + patternKey.getValue().getPath() + "_" + dir.getName())
+            );
+        }
     }
 
     public static void resetBasePack() {

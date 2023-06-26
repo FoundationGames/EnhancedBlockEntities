@@ -8,10 +8,8 @@ import foundationgames.enhancedblockentities.util.EBEUtil;
 import foundationgames.enhancedblockentities.util.ResourceUtil;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
-import net.minecraft.client.item.ModelPredicateProviderRegistry;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.item.Items;
-import net.minecraft.util.Identifier;
+import net.minecraft.client.item.ModelPredicateProviderRegistry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -71,6 +69,11 @@ public final class EnhancedBlockEntities implements ClientModInitializer {
         if(CONFIG.renderEnhancedShulkerBoxes) {
             EBESetup.setupShulkerBoxes();
             EBESetup.setupRRPShulkerBoxes();
+        }
+
+        if(CONFIG.renderEnhancedDecoratedPots) {
+            EBESetup.setupDecoratedPots();
+            EBESetup.setupRRPDecoratedPots();
         }
     }
 }

@@ -22,6 +22,8 @@
     "option.ebe.render_enhanced_beds.comment": "Enables baked bed models, greatly improving performance in areas with lots of beds. Also allows for seeing beds from far distances. Disable if beds appear invisible due to another mod.",
     "option.ebe.render_enhanced_shulker_boxes": "Enhanced Shulker Boxes",
     "option.ebe.render_enhanced_shulker_boxes.comment": "Enables baked shulker box models, greatly improving performance in areas with lots of shulker boxes. Also allows for seeing shulker boxes from far distances. Disable if shulker boxes appear invisible due to another mod.",
+    "option.ebe.render_enhanced_decorated_pots": "Enhanced Decorated Pots",
+    "option.ebe.render_enhanced_decorated_pots.comment": "Enables baked decorated pot models, greatly improving performance in areas with lots of decorated pots. Also allows for seeing decorated pots from far distances. Disable if decorated pots appear invisible, or if modded pottery patterns are not working properly.",
     "option.ebe.chest_ao": "Smooth Chest Lighting",
     "option.ebe.chest_ao.comment": "Allows for chests to use smooth lighting and ambient occlusion. Requires Enhanced Chests to be enabled.",
     "option.ebe.sign_ao": "Smooth Sign Lighting",
@@ -32,6 +34,8 @@
     "option.ebe.bed_ao.comment": "Allows for beds to use smooth lighting and ambient occlusion. Requires Enhanced Beds to be enabled.",
     "option.ebe.shulker_box_ao": "Smooth Shulker Box Lighting",
     "option.ebe.shulker_box_ao.comment": "Allows for shulker boxes to use smooth lighting and ambient occlusion. Requires Enhanced Shulker Boxes to be enabled.",
+    "option.ebe.decorated_pot_ao": "Smooth Decorated Pot Lighting",
+    "option.ebe.decorated_pot_ao.comment": "Allows for decorated pots to use smooth lighting and ambient occlusion. Requires Enhanced Decorated Pots to be enabled.",
     "option.ebe.christmas_chests": "Christmas Chests",
     "option.ebe.christmas_chests.valueComment.allowed": "Allowed - Christmas texture will be applied from December 24th to 26th.",
     "option.ebe.christmas_chests.valueComment.forced": "Forced - Christmas texture will always be applied.",
@@ -64,6 +68,7 @@
     "text.ebe.bell_options": "Bell Options",
     "text.ebe.bed_options": "Bed Options",
     "text.ebe.shulker_box_options": "Shulker Box Options",
+    "text.ebe.decorated_pot_options": "Decorated Pot Options",
     "text.ebe.advanced": "Advanced",
     "text.ebe.option_value_division": ": "
 }

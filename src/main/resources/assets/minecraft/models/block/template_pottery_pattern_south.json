@@ -1,0 +1,12 @@
+{
+	"parent": "block/block",
+	"elements": [
+		{
+			"from": [1, 0, 1],
+			"to": [15, 16, 15],
+			"faces": {
+				"south": {"uv": [1, 0, 15, 16], "texture": "#pattern"}
+			}
+		}
+	]
+}
