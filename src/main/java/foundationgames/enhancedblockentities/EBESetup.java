@@ -80,6 +80,7 @@ public enum EBESetup {;
         ResourceUtil.addSignBlockStates("crimson_sign", "crimson_wall_sign", p);
         ResourceUtil.addSignBlockStates("warped_sign", "warped_wall_sign", p);
         ResourceUtil.addSignBlockStates("bamboo_sign", "bamboo_wall_sign", p);
+        ResourceUtil.addSignBlockStates("cherry_sign", "cherry_wall_sign", p);
 
         ResourceUtil.addHangingSignBlockStates("oak_hanging_sign", "oak_wall_hanging_sign", p);
         ResourceUtil.addHangingSignBlockStates("birch_hanging_sign", "birch_wall_hanging_sign", p);
@@ -92,6 +93,7 @@ public enum EBESetup {;
         ResourceUtil.addHangingSignBlockStates("crimson_hanging_sign", "crimson_wall_hanging_sign", p);
         ResourceUtil.addHangingSignBlockStates("warped_hanging_sign", "warped_wall_hanging_sign", p);
         ResourceUtil.addHangingSignBlockStates("bamboo_hanging_sign", "bamboo_wall_hanging_sign", p);
+        ResourceUtil.addHangingSignBlockStates("cherry_hanging_sign", "cherry_wall_hanging_sign", p);
 
         p = ResourceUtil.getBasePack();
 
@@ -106,6 +108,7 @@ public enum EBESetup {;
         ResourceUtil.addSignTypeModels("crimson", p);
         ResourceUtil.addSignTypeModels("warped", p);
         ResourceUtil.addSignTypeModels("bamboo", p);
+        ResourceUtil.addSignTypeModels("cherry", p);
 
         p.addDirBlockSprites("entity/signs", "entity/signs/");
         p.addDirBlockSprites("entity/signs/hanging", "entity/signs/hanging/");

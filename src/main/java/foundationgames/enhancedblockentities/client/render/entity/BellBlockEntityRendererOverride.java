@@ -8,6 +8,7 @@ import net.minecraft.block.entity.BellBlockEntity;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.VertexConsumerProvider;
+import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.render.model.BakedModel;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.Direction;
@@ -18,7 +19,7 @@ public class BellBlockEntityRendererOverride extends BlockEntityRendererOverride
     private BakedModel bellModel = null;
 
     @Override
-    public void render(BlockEntity blockEntity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
+    public void render(BlockEntityRenderer<BlockEntity> renderer, BlockEntity blockEntity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
         if (bellModel == null) bellModel = getBellModel();
         if (bellModel != null && blockEntity instanceof BellBlockEntity self) {
             float ringTicks = (float)self.ringTicks + tickDelta;

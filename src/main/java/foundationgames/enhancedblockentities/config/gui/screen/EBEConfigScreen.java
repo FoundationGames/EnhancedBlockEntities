@@ -18,6 +18,7 @@ import foundationgames.enhancedblockentities.config.gui.option.EBEOption;
 import foundationgames.enhancedblockentities.config.gui.option.TextPalette;
 import foundationgames.enhancedblockentities.util.EBEUtil;
 import foundationgames.enhancedblockentities.util.GuiUtil;
+
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.RotatingCubeMapRenderer;
 import net.minecraft.client.gui.screen.Screen;
