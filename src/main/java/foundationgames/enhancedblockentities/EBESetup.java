@@ -152,7 +152,7 @@ public enum EBESetup {;
         EBEPack pCompat = ResourceUtil.getPackForCompat();
 
         ResourceUtil.addDecoratedPotBlockState(pCompat);
-        for (RegistryKey<String> patternKey : Registries.DECORATED_POT_PATTERNS.getKeys()) {
+        for (RegistryKey<String> patternKey : Registries.DECORATED_POT_PATTERN.getKeys()) {
             ResourceUtil.addDecoratedPotPatternModels(patternKey, p);
         }
 

@@ -92,7 +92,7 @@ public final class ModelIdentifiers {
         // The order decorated pots store patterns per face
         Direction[] orderedHorizontalDirs = new Direction[] {Direction.NORTH, Direction.WEST, Direction.EAST, Direction.SOUTH};
 
-        for (RegistryKey<String> patternKey : Registries.DECORATED_POT_PATTERNS.getKeys()) {
+        for (RegistryKey<String> patternKey : Registries.DECORATED_POT_PATTERN.getKeys()) {
             var pattern = patternKey.getValue().getPath();
             var ids = new Identifier[orderedHorizontalDirs.length];;
 

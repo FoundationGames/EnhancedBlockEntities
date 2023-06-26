@@ -13,7 +13,6 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 public interface SignBlockEntityRenderAccessor {
     @Invoker("renderText")
     void enhanced_bes$renderText(BlockPos pos, SignText signText, MatrixStack matrices, VertexConsumerProvider verticesProvider, int light, int lineHeight, int lineWidth, boolean front);
-    // void enhanced_bes$renderText(SignBlockEntity blockEntity, MatrixStack matrices, VertexConsumerProvider verticesProvider, int light, float scale);
 
     @Accessor("RENDER_DISTANCE")
     static int enhanced_bes$getRenderDistance() {
