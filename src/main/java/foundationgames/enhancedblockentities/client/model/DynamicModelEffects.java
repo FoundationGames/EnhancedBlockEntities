@@ -27,7 +27,7 @@ public abstract class DynamicModelEffects {
     public static final DynamicModelEffects SHULKER_BOX = new DynamicModelEffects() {
         @Override
         public boolean ambientOcclusion() {
-            return EnhancedBlockEntities.CONFIG.chestAO;
+            return EnhancedBlockEntities.CONFIG.shulkerBoxAO;
         }
     };
 
