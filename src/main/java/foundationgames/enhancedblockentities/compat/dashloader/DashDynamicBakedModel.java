@@ -1,8 +1,8 @@
 package foundationgames.enhancedblockentities.compat.dashloader;
 
 import dev.notalpha.dashloader.api.DashObject;
-import dev.notalpha.dashloader.registry.RegistryReader;
-import dev.notalpha.dashloader.registry.RegistryWriter;
+import dev.notalpha.dashloader.api.registry.RegistryReader;
+import dev.notalpha.dashloader.api.registry.RegistryWriter;
 import foundationgames.enhancedblockentities.client.model.DynamicBakedModel;
 import foundationgames.enhancedblockentities.client.model.DynamicModelEffects;
 import foundationgames.enhancedblockentities.client.model.ModelSelector;
