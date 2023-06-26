@@ -82,7 +82,7 @@ public class EBEConfigScreen extends SpruceScreen {
     }
 
     @Override
-    public void renderBackground(DrawContext context) {
+    public void renderBackgroundTexture(DrawContext context) {
     }
 
     @Override
@@ -92,7 +92,7 @@ public class EBEConfigScreen extends SpruceScreen {
             RenderSystem.setShader(GameRenderer::getPositionTexProgram);
         }
 
-        fillGradient(matrices, 0, 0, width, height, 0x4F141414, 0x4F141414);
+        context.fillGradient(0, 0, width, height, 0x4F141414, 0x4F141414);
         RenderUtil.renderBackgroundTexture(0, 0, this.width, 34, 0);
         RenderUtil.renderBackgroundTexture(0, this.height - 35, this.width, 35, 0);
 
