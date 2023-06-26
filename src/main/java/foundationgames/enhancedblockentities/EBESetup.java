@@ -5,6 +5,7 @@ import foundationgames.enhancedblockentities.client.model.DynamicModelProvider;
 import foundationgames.enhancedblockentities.client.model.DynamicUnbakedModel;
 import foundationgames.enhancedblockentities.client.model.ModelIdentifiers;
 import foundationgames.enhancedblockentities.client.model.ModelSelector;
+import foundationgames.enhancedblockentities.client.model.misc.DecoratedPotModelSelector;
 import foundationgames.enhancedblockentities.client.render.BlockEntityRenderCondition;
 import foundationgames.enhancedblockentities.client.render.BlockEntityRendererOverride;
 import foundationgames.enhancedblockentities.client.render.entity.BellBlockEntityRendererOverride;
@@ -28,6 +29,8 @@ import net.minecraft.block.enums.ChestType;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.model.BakedModel;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.RegistryKey;
 import net.minecraft.resource.ResourceType;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.DyeColor;
@@ -73,6 +76,7 @@ public enum EBESetup {;
         ResourceUtil.addSignBlockStates("acacia_sign", "acacia_wall_sign", p);
         ResourceUtil.addSignBlockStates("dark_oak_sign", "dark_oak_wall_sign", p);
         ResourceUtil.addSignBlockStates("mangrove_sign", "mangrove_wall_sign", p);
+        ResourceUtil.addSignBlockStates("cherry_sign", "cherry_wall_sign", p);
         ResourceUtil.addSignBlockStates("crimson_sign", "crimson_wall_sign", p);
         ResourceUtil.addSignBlockStates("warped_sign", "warped_wall_sign", p);
         ResourceUtil.addSignBlockStates("bamboo_sign", "bamboo_wall_sign", p);
@@ -85,6 +89,7 @@ public enum EBESetup {;
         ResourceUtil.addHangingSignBlockStates("acacia_hanging_sign", "acacia_wall_hanging_sign", p);
         ResourceUtil.addHangingSignBlockStates("dark_oak_hanging_sign", "dark_oak_wall_hanging_sign", p);
         ResourceUtil.addHangingSignBlockStates("mangrove_hanging_sign", "mangrove_wall_hanging_sign", p);
+        ResourceUtil.addHangingSignBlockStates("cherry_hanging_sign", "cherry_wall_hanging_sign", p);
         ResourceUtil.addHangingSignBlockStates("crimson_hanging_sign", "crimson_wall_hanging_sign", p);
         ResourceUtil.addHangingSignBlockStates("warped_hanging_sign", "warped_wall_hanging_sign", p);
         ResourceUtil.addHangingSignBlockStates("bamboo_hanging_sign", "bamboo_wall_hanging_sign", p);
@@ -99,6 +104,7 @@ public enum EBESetup {;
         ResourceUtil.addSignTypeModels("acacia", p);
         ResourceUtil.addSignTypeModels("dark_oak", p);
         ResourceUtil.addSignTypeModels("mangrove", p);
+        ResourceUtil.addSignTypeModels("cherry", p);
         ResourceUtil.addSignTypeModels("crimson", p);
         ResourceUtil.addSignTypeModels("warped", p);
         ResourceUtil.addSignTypeModels("bamboo", p);
@@ -139,6 +145,18 @@ public enum EBESetup {;
         }
 
         p.addDirBlockSprites("entity/shulker", "entity/shulker/");
+    }
+
+    public static void setupRRPDecoratedPots() {
+        EBEPack p = ResourceUtil.getBasePack();
+        EBEPack pCompat = ResourceUtil.getPackForCompat();
+
+        ResourceUtil.addDecoratedPotBlockState(pCompat);
+        for (RegistryKey<String> patternKey : Registries.DECORATED_POT_PATTERNS.getKeys()) {
+            ResourceUtil.addDecoratedPotPatternModels(patternKey, p);
+        }
+
+        p.addDirBlockSprites("entity/decorated_pot", "entity/decorated_pot/");
     }
 
     public static void setupResourceProviders() {
@@ -286,10 +304,20 @@ public enum EBESetup {;
                                     ModelIdentifiers.SHULKER_BOX_BOTTOMS.get(color)
                             },
                             ModelSelector.SHULKER_BOX,
-                            DynamicModelEffects.CHEST
+                            DynamicModelEffects.SHULKER_BOX
                     )
             ));
         }
+
+        DecoratedPotModelSelector decoratedPotSelector = new DecoratedPotModelSelector();
+        ModelLoadingRegistry.INSTANCE.registerResourceProvider(manager -> new DynamicModelProvider(
+                new Identifier("builtin", "decorated_pot"),
+                () -> new DynamicUnbakedModel(
+                        decoratedPotSelector.createModelIDs(),
+                        decoratedPotSelector,
+                        DynamicModelEffects.DECORATED_POT
+                )
+        ));
     }
 
     public static void setupChests() {
@@ -345,6 +373,7 @@ public enum EBESetup {;
                 Blocks.ACACIA_SIGN, Blocks.ACACIA_WALL_SIGN,
                 Blocks.DARK_OAK_SIGN, Blocks.DARK_OAK_WALL_SIGN,
                 Blocks.MANGROVE_SIGN, Blocks.MANGROVE_WALL_SIGN,
+                Blocks.CHERRY_SIGN, Blocks.CHERRY_WALL_SIGN,
                 Blocks.CRIMSON_SIGN, Blocks.CRIMSON_WALL_SIGN,
                 Blocks.WARPED_SIGN, Blocks.WARPED_WALL_SIGN,
                 Blocks.BAMBOO_SIGN, Blocks.BAMBOO_WALL_SIGN,
@@ -363,6 +392,7 @@ public enum EBESetup {;
                 Blocks.ACACIA_HANGING_SIGN, Blocks.ACACIA_WALL_HANGING_SIGN,
                 Blocks.DARK_OAK_HANGING_SIGN, Blocks.DARK_OAK_WALL_HANGING_SIGN,
                 Blocks.MANGROVE_HANGING_SIGN, Blocks.MANGROVE_WALL_HANGING_SIGN,
+                Blocks.CHERRY_HANGING_SIGN, Blocks.CHERRY_WALL_HANGING_SIGN,
                 Blocks.CRIMSON_HANGING_SIGN, Blocks.CRIMSON_WALL_HANGING_SIGN,
                 Blocks.WARPED_HANGING_SIGN, Blocks.WARPED_WALL_HANGING_SIGN,
                 Blocks.BAMBOO_HANGING_SIGN, Blocks.BAMBOO_WALL_HANGING_SIGN,
@@ -413,5 +443,9 @@ public enum EBESetup {;
                     })
             );
         }
+    }
+
+    public static void setupDecoratedPots() {
+        EnhancedBlockEntityRegistry.register(Blocks.DECORATED_POT, BlockEntityType.DECORATED_POT, BlockEntityRenderCondition.NEVER, BlockEntityRendererOverride.NO_OP);
     }
 }

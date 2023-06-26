@@ -18,11 +18,12 @@ public abstract class ModelSelector {
 
     public static final ModelSelector STATE_HOLDER_SELECTOR = new ModelSelector() {
         @Override
-        public int getModelIndex(BlockRenderView view, BlockState state, BlockPos pos, Supplier<Random> rand, @Nullable RenderContext ctx) {
+        public void writeModelIndices(BlockRenderView view, BlockState state, BlockPos pos, Supplier<Random> rand, @Nullable RenderContext ctx, int[] indices) {
             if(view.getBlockEntity(pos) instanceof ModelStateHolder stateHolder) {
-                return stateHolder.getModelState();
+                indices[0] = stateHolder.getModelState();
+                return;
             }
-            return 0;
+            indices[0] = 0;
         }
     };
 
@@ -35,11 +36,12 @@ public abstract class ModelSelector {
         }
 
         @Override
-        public int getModelIndex(BlockRenderView view, BlockState state, BlockPos pos, Supplier<Random> rand, @Nullable RenderContext ctx) {
+        public void writeModelIndices(BlockRenderView view, BlockState state, BlockPos pos, Supplier<Random> rand, @Nullable RenderContext ctx, int[] indices) {
             if(view.getBlockEntity(pos) instanceof ModelStateHolder stateHolder) {
-                return stateHolder.getModelState() + this.getParticleModelIndex();
+                indices[0] = stateHolder.getModelState() + this.getParticleModelIndex();
+                return;
             }
-            return this.getParticleModelIndex();
+            indices[0] = this.getParticleModelIndex();
         }
     };
 
@@ -51,13 +53,19 @@ public abstract class ModelSelector {
         return 0;
     }
 
-    public abstract int getModelIndex(BlockRenderView view, BlockState state, BlockPos pos, Supplier<Random> rand, @Nullable RenderContext ctx);
+    public abstract void writeModelIndices(BlockRenderView view, BlockState state, BlockPos pos, Supplier<Random> rand, @Nullable RenderContext ctx, int[] indices);
 
     public final int id;
+    public final int displayedModelCount;
+
+    public ModelSelector(int displayedModelCount) {
+        this.id = REGISTRY.size();
+        this.displayedModelCount = displayedModelCount;
+        REGISTRY.add(this);
+    }
 
     public ModelSelector() {
-        this.id = REGISTRY.size();
-        REGISTRY.add(this);
+        this(1);
     }
 
     public static ModelSelector fromId(int id) {

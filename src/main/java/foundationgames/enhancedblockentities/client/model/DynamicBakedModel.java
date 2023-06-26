@@ -27,10 +27,16 @@ public class DynamicBakedModel implements BakedModel, FabricBakedModel {
     private final ModelSelector selector;
     private final DynamicModelEffects effects;
 
+    private final int[] activeModelIndices;
+    private final BakedModel[] displayedModels;
+
     public DynamicBakedModel(BakedModel[] models, ModelSelector selector, DynamicModelEffects effects) {
         this.models = models;
         this.selector = selector;
         this.effects = effects;
+
+        this.activeModelIndices = new int[selector.displayedModelCount];
+        this.displayedModels = new BakedModel[selector.displayedModelCount];
     }
 
     @Override
@@ -41,8 +47,18 @@ public class DynamicBakedModel implements BakedModel, FabricBakedModel {
     @Override
     public void emitBlockQuads(BlockRenderView view, BlockState state, BlockPos blockPos, Supplier<Random> rng, RenderContext context) {
         QuadEmitter emitter = context.getEmitter();
-        BakedModel model = models[getSelector().getModelIndex(view, state, blockPos, rng, context)];
         RenderMaterial mat = null;
+
+        getSelector().writeModelIndices(view, state, blockPos, rng, context, this.activeModelIndices);
+        for (int i = 0; i < this.activeModelIndices.length; i++) {
+            int modelIndex = this.activeModelIndices[i];
+
+            if (modelIndex >= 0) {
+                this.displayedModels[i] = this.models[modelIndex];
+            } else {
+                this.displayedModels[i] = null;
+            }
+        }
 
         var renderer = RendererAccess.INSTANCE.getRenderer();
         if (renderer != null) {
@@ -51,9 +67,11 @@ public class DynamicBakedModel implements BakedModel, FabricBakedModel {
 
         for (int i = 0; i <= 6; i++) {
             Direction dir = ModelHelper.faceFromIndex(i);
-            for (BakedQuad quad : model.getQuads(state, dir, rng.get())) {
-                emitter.fromVanilla(quad, mat, dir);
-                emitter.emit();
+            for (BakedModel model : this.displayedModels) if (model != null) {
+                for (BakedQuad quad : model.getQuads(state, dir, rng.get())) {
+                    emitter.fromVanilla(quad, mat, dir);
+                    emitter.emit();
+                }
             }
         }
     }

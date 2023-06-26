@@ -25,8 +25,7 @@
 				"east": {"uv": [0, 3, 3, 6.5], "rotation": 180, "texture": "#bell"},
 				"south": {"uv": [9, 3, 12, 6.5], "rotation": 180, "texture": "#bell"},
 				"west": {"uv": [6, 3, 9, 6.5], "rotation": 180, "texture": "#bell"},
-				"up": {"uv": [3, 0, 6, 3], "rotation": 180, "texture": "#bell"},
-				"down": {"uv": [6, 0, 9, 3], "rotation": 180, "texture": "#bell"}
+				"up": {"uv": [3, 0, 6, 3], "rotation": 180, "texture": "#bell"}
 			}
 		},
 		{
@@ -40,13 +39,6 @@
 				"up": {"uv": [4, 6.5, 8, 10.5], "rotation": 180, "texture": "#bell"},
 				"down": {"uv": [8, 6.5, 12, 10.5], "rotation": 180, "texture": "#bell"}
 			}
-		}
-	],
-	"groups": [0,
-		{
-			"name": "bell_base_DELETETHIS",
-			"origin": [8, 8, 8],
-			"children": [1, 2]
 		}
 	]
 }
