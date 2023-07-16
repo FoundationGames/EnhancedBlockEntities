@@ -13,7 +13,7 @@ import java.util.function.Predicate;
 
 public final class ModelIdentifiers {
     public static final Predicate<EBEConfig> CHEST_PREDICATE = c -> c.renderEnhancedChests;
-    public static final Predicate<EBEConfig> BELL_PREDICATE = c -> c.renderEnhancedChests;
+    public static final Predicate<EBEConfig> BELL_PREDICATE = c -> c.renderEnhancedBells;
     public static final Predicate<EBEConfig> SHULKER_BOX_PREDICATE = c -> c.renderEnhancedShulkerBoxes;
 
     public static final Identifier CHEST_CENTER = of("block/chest_center", CHEST_PREDICATE);

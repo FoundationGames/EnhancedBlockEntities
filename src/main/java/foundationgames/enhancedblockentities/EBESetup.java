@@ -283,7 +283,7 @@ public enum EBESetup {;
                                     ModelIdentifiers.SHULKER_BOX_BOTTOMS.get(color)
                             },
                             ModelSelector.SHULKER_BOX,
-                            DynamicModelEffects.CHEST
+                            DynamicModelEffects.SHULKER_BOX
                     )
             ));
         }
