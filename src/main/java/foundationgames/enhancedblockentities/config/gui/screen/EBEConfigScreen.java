@@ -87,6 +87,10 @@ public class EBEConfigScreen extends SpruceScreen {
     }
 
     @Override
+    public void renderInGameBackground(DrawContext context) {
+    }
+
+    @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
         if (this.client.world == null) {
             this.background.render(delta, 1);
