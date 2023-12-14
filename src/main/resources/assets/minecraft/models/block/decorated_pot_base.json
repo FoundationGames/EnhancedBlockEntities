@@ -10,8 +10,8 @@
 			"from": [1, 0, 1],
 			"to": [15, 16, 15],
 			"faces": {
-				"up": {"uv": [0, 6.5, 7, 13.5], "texture": "#0", "cullface": "up"},
-				"down": {"uv": [7, 6.5, 14, 13.5], "texture": "#0", "cullface": "down"}
+				"up": {"uv": [7, 6.5, 14, 13.5], "texture": "#0", "cullface": "up"},
+				"down": {"uv": [0, 6.5, 7, 13.5], "texture": "#0", "cullface": "down"}
 			}
 		},
 		{
