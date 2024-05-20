@@ -40,7 +40,7 @@ public enum EBEUtil {;
         VertexConsumer vertices = vertexConsumers.getBuffer(RenderLayers.getEntityBlockLayer(state, false));
         for (int i = 0; i <= 6; i++) {
             for(BakedQuad q : model.getQuads(null, ModelHelper.faceFromIndex(i), dummy)) {
-                vertices.quad(matrices.peek(), q, 1, 1, 1, light, overlay);
+                vertices.quad(matrices.peek(), q, 1, 1, 1, 0, light, overlay);
             }
         }
     }

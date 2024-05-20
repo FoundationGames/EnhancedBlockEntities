@@ -3,7 +3,6 @@ package foundationgames.enhancedblockentities.client.resource;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.mojang.serialization.JsonOps;
-import foundationgames.enhancedblockentities.EnhancedBlockEntities;
 import net.minecraft.client.texture.atlas.AtlasSource;
 import net.minecraft.client.texture.atlas.AtlasSourceManager;
 
@@ -21,7 +20,7 @@ public class AtlasResourceBuilder {
 
     public byte[] toBytes() {
         return GSON.toJson(AtlasSourceManager.LIST_CODEC.encode(this.sources, JsonOps.INSTANCE, new JsonObject())
-                .getOrThrow(false, EnhancedBlockEntities.LOG::error))
+                .getOrThrow())
                 .getBytes(StandardCharsets.UTF_8);
     }
 }

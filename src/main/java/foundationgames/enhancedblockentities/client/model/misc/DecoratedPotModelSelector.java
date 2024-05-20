@@ -7,6 +7,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.DecoratedPotPatterns;
 import net.minecraft.block.entity.DecoratedPotBlockEntity;
 import net.minecraft.item.Item;
+import net.minecraft.item.Items;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.util.Identifier;
@@ -55,10 +56,10 @@ public class DecoratedPotModelSelector extends ModelSelector {
         if (view.getBlockEntity(pos) instanceof DecoratedPotBlockEntity pot) {
             var sherds = pot.getSherds();
 
-            indices[1] = 1 + getPatternIndex(sherds.back(), patternCount);
-            indices[2] = 1 + getPatternIndex(sherds.left(), patternCount) + patternCount;
-            indices[3] = 1 + getPatternIndex(sherds.right(), patternCount) + patternCount * 2;
-            indices[4] = 1 + getPatternIndex(sherds.front(), patternCount) + patternCount * 3;
+            indices[1] = 1 + getPatternIndex(sherds.back().orElse(Items.BRICK), patternCount);
+            indices[2] = 1 + getPatternIndex(sherds.left().orElse(Items.BRICK), patternCount) + patternCount;
+            indices[3] = 1 + getPatternIndex(sherds.right().orElse(Items.BRICK), patternCount) + patternCount * 2;
+            indices[4] = 1 + getPatternIndex(sherds.front().orElse(Items.BRICK), patternCount) + patternCount * 3;
 
             return;
         }
