@@ -15,12 +15,6 @@ public abstract class VideoOptionsScreenMixin extends Screen {
         super(title);
     }
 
-    /*  X----------------------------------init()------------------------------------X
-        |   this.list.addSingleOptionEntry(this.gameOptions.getBiomeBlendRadius());  |
-        |---> HERE <---                                                              |
-        |   this.list.addAll(getOptions(this.gameOptions));                          |
-        |   this.addSelectableChild(this.list);                                      |
-        X----------------------------[END: 5 LINES DOWN]-----------------------------X  */
     @ModifyArg(
             method = "init",
             at = @At(

@@ -2,7 +2,6 @@ package foundationgames.enhancedblockentities.util.hacks;
 
 import foundationgames.enhancedblockentities.client.resource.EBEPack;
 import net.minecraft.resource.ResourceManager;
-import net.minecraft.resource.ResourceType;
 import net.minecraft.util.Identifier;
 
 import java.io.IOException;
@@ -19,7 +18,7 @@ public enum ResourceHacks {;
         }
         if (image == null) return;
 
-        TextureHacks.cropImage(image, u0, v0, u1, v1).ifPresent(imgBytes -> pack.addResource(ResourceType.CLIENT_RESOURCES, result, imgBytes));
+        TextureHacks.cropImage(image, u0, v0, u1, v1).ifPresent(imgBytes -> pack.addResource(result, imgBytes));
         image.close();
     }
 

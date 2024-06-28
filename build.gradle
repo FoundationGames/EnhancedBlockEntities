@@ -1,5 +1,5 @@
 plugins {
-	id 'fabric-loom' version '1.2-SNAPSHOT'
+	id 'fabric-loom' version '1.7-SNAPSHOT'
 	id 'maven-publish'
 }
 
@@ -11,10 +11,8 @@ version = project.mod_version
 group = project.maven_group
 
 repositories {
-	maven { url = "https://maven.terraformersmc.com/" }
-	maven { url = "https://ueaj.dev/maven/" }
-	maven { url = "https://api.modrinth.com/maven/" }
-	maven { url = "https://maven.gegy.dev/" }
+	maven { url = 'https://maven.terraformersmc.com/' }
+	maven { url = 'https://api.modrinth.com/maven/' }
 }
 
 dependencies {
@@ -26,22 +24,11 @@ dependencies {
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
-	// ARRP. This is for generating a runtime resource pack (conditionally, as well)
-	modImplementation "net.devtech:arrp:${project.arrp_version}"
-	include "net.devtech:arrp:${project.arrp_version}"
-
 	// Mod Menu because config screen access from another place
 	modApi "com.terraformersmc:modmenu:${project.modmenu_version}"
 
-	// Dashloader (compatibility)
-	modCompileOnly "maven.modrinth:dashloader:${project.dashloader_version}"
-
-	// a bit less load time
-	modLocalRuntime "maven.modrinth:lazydfu:0.1.3"
-
-	// UI library
-	modImplementation "dev.lambdaurora:spruceui:${project.spruceui_version}"
-	include "dev.lambdaurora:spruceui:${project.spruceui_version}"
+	// Sodium for compatibility
+	modCompileOnlyApi "maven.modrinth:sodium:${project.sodium_version}"
 }
 
 processResources {

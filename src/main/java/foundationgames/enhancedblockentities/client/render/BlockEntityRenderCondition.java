@@ -3,25 +3,25 @@ package foundationgames.enhancedblockentities.client.render;
 import foundationgames.enhancedblockentities.EnhancedBlockEntities;
 import foundationgames.enhancedblockentities.config.EBEConfig;
 import foundationgames.enhancedblockentities.mixin.SignBlockEntityRenderAccessor;
-import foundationgames.enhancedblockentities.util.duck.ModelStateHolder;
+import foundationgames.enhancedblockentities.util.duck.AppearanceStateHolder;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.util.math.Vec3d;
 
 @FunctionalInterface
 public interface BlockEntityRenderCondition {
-    BlockEntityRenderCondition STATE_GREATER_THAN_1 = entity -> {
-        if(entity instanceof ModelStateHolder stateHolder) {
-            return stateHolder.getModelState() > 0;
+    BlockEntityRenderCondition NON_ZERO_STATE = entity -> {
+        if (entity instanceof AppearanceStateHolder stateHolder) {
+            return stateHolder.getRenderState() > 0;
         }
         return false;
     };
 
-    BlockEntityRenderCondition CHEST = STATE_GREATER_THAN_1;
+    BlockEntityRenderCondition CHEST = NON_ZERO_STATE;
 
-    BlockEntityRenderCondition BELL = STATE_GREATER_THAN_1;
+    BlockEntityRenderCondition BELL = NON_ZERO_STATE;
 
-    BlockEntityRenderCondition SHULKER_BOX = STATE_GREATER_THAN_1;
+    BlockEntityRenderCondition SHULKER_BOX = NON_ZERO_STATE;
 
     BlockEntityRenderCondition SIGN = entity -> {
         EBEConfig config = EnhancedBlockEntities.CONFIG;

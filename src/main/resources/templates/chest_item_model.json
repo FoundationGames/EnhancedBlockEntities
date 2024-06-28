@@ -1,0 +1,1 @@
+{"parent":"block/![chest]","overrides":[{"predicate":{"ebe:is_christmas":1},"model": "item/christmas_chest"}]}

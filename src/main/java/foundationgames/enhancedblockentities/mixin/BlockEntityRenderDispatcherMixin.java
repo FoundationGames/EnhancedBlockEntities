@@ -24,9 +24,9 @@ public class BlockEntityRenderDispatcherMixin {
             cancellable = true
     )
     private static void enhanced_bes$renderOverrides(BlockEntityRenderer<BlockEntity> renderer, BlockEntity blockEntity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, CallbackInfo ci) {
-        if(EnhancedBlockEntityRegistry.ENTITIES.containsKey(blockEntity.getType()) && EnhancedBlockEntityRegistry.BLOCKS.contains(blockEntity.getCachedState().getBlock())) {
+        if (EnhancedBlockEntityRegistry.ENTITIES.containsKey(blockEntity.getType()) && EnhancedBlockEntityRegistry.BLOCKS.contains(blockEntity.getCachedState().getBlock())) {
             Pair<BlockEntityRenderCondition, BlockEntityRendererOverride> entry = EnhancedBlockEntityRegistry.ENTITIES.get(blockEntity.getType());
-            if(entry.getLeft().shouldRender(blockEntity)) {
+            if (entry.getLeft().shouldRender(blockEntity)) {
                 entry.getRight().render(renderer, blockEntity, tickDelta, matrices, vertexConsumers, WorldRenderer.getLightmapCoordinates(blockEntity.getWorld(), blockEntity.getPos()), OverlayTexture.DEFAULT_UV);
             }
             ci.cancel();

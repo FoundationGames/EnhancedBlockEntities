@@ -1,56 +1,59 @@
 package foundationgames.enhancedblockentities.client.resource;
 
-import net.devtech.arrp.api.RuntimeResourcePack;
-import net.devtech.arrp.json.animation.JAnimation;
-import net.devtech.arrp.json.blockstate.JState;
-import net.devtech.arrp.json.lang.JLang;
-import net.devtech.arrp.json.loot.JLootTable;
-import net.devtech.arrp.json.models.JModel;
-import net.devtech.arrp.json.recipe.JRecipe;
-import net.devtech.arrp.json.tags.JTag;
-import net.devtech.arrp.util.CallableFunction;
+import com.google.gson.JsonObject;
+import foundationgames.enhancedblockentities.client.resource.template.TemplateLoader;
+import foundationgames.enhancedblockentities.client.resource.template.TemplateProvider;
+import net.minecraft.SharedConstants;
 import net.minecraft.client.texture.atlas.AtlasSource;
 import net.minecraft.client.texture.atlas.DirectoryAtlasSource;
 import net.minecraft.client.texture.atlas.SingleAtlasSource;
 import net.minecraft.resource.InputSupplier;
+import net.minecraft.resource.ResourcePack;
 import net.minecraft.resource.ResourceType;
 import net.minecraft.resource.metadata.ResourceMetadataReader;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
 
-import java.awt.image.BufferedImage;
-import java.io.File;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Properties;
 import java.util.Set;
-import java.util.concurrent.Future;
-import java.util.function.BiFunction;
-import java.util.function.Consumer;
-import java.util.function.IntUnaryOperator;
-import java.util.zip.ZipInputStream;
-import java.util.zip.ZipOutputStream;
 
-public class EBEPack implements RuntimeResourcePack {
+public class EBEPack implements ResourcePack {
     public static final Identifier BLOCK_ATLAS = new Identifier("blocks");
 
-    private final RuntimeResourcePack resourcePack;
     private final Map<Identifier, AtlasResourceBuilder> atlases = new HashMap<>();
+    private final Map<Identifier, InputSupplier<InputStream>> resources = new HashMap<>();
+    private final Set<String> namespaces = new HashSet<>();
 
-    public EBEPack(Identifier id) {
-        this.resourcePack = RuntimeResourcePack.create(id);
+    private final TemplateLoader templates;
+
+    private final JsonObject packMeta;
+    private final String name;
+
+    public EBEPack(Identifier id, TemplateLoader templates) {
+        this.templates = templates;
+
+        this.packMeta = new JsonObject();
+        this.packMeta.addProperty("pack_format", SharedConstants.getGameVersion().getResourceVersion(ResourceType.CLIENT_RESOURCES));
+        this.packMeta.addProperty("description", "Enhanced Block Entities Resources");
+
+        this.name = id.toString();
     }
 
     public void addAtlasSprite(Identifier atlas, AtlasSource source) {
         var resource = this.atlases.computeIfAbsent(atlas, id -> new AtlasResourceBuilder());
         resource.put(source);
 
-        this.addLazyResource(ResourceType.CLIENT_RESOURCES,
-                new Identifier(atlas.getNamespace(), "atlases/" + atlas.getPath() + ".json"),
-                (pack, id) -> resource.toBytes());
+        this.addResource(new Identifier(atlas.getNamespace(), "atlases/" + atlas.getPath() + ".json"), resource::toBytes);
     }
 
     public void addSingleBlockSprite(Identifier path) {
@@ -61,166 +64,137 @@ public class EBEPack implements RuntimeResourcePack {
         this.addAtlasSprite(BLOCK_ATLAS, new DirectoryAtlasSource(dir, prefix));
     }
 
-    @Override
-    public void addRecoloredImage(Identifier identifier, InputStream target, IntUnaryOperator pixel) {
-        this.resourcePack.addRecoloredImage(identifier, target, pixel);
+    public void addResource(Identifier id, InputSupplier<byte[]> resource) {
+        this.namespaces.add(id.getNamespace());
+        this.resources.put(id, new LazyBufferedResource(resource));
     }
 
-    @Override
-    public byte[] addLang(Identifier identifier, JLang lang) {
-        return this.resourcePack.addLang(identifier, lang);
+    public void addResource(Identifier id, byte[] resource) {
+        this.namespaces.add(id.getNamespace());
+        this.resources.put(id, () -> new ByteArrayInputStream(resource));
     }
 
-    @Override
-    public void mergeLang(Identifier identifier, JLang lang) {
-        this.resourcePack.mergeLang(identifier, lang);
+    public void addPlainTextResource(Identifier id, String plainText) {
+        this.addResource(id, plainText.getBytes(StandardCharsets.UTF_8));
     }
 
-    @Override
-    public byte[] addLootTable(Identifier identifier, JLootTable table) {
-        return this.resourcePack.addLootTable(identifier, table);
+    public void addTemplateResource(Identifier id, TemplateProvider.TemplateApplyingFunction template) {
+        this.addResource(id, () -> template.getAndApplyTemplate(new TemplateProvider(this.templates)).getBytes(StandardCharsets.UTF_8));
     }
 
-    @Override
-    public Future<byte[]> addAsyncResource(ResourceType type, Identifier identifier, CallableFunction<Identifier, byte[]> data) {
-        return this.resourcePack.addAsyncResource(type, identifier, data);
-    }
-
-    @Override
-    public void addLazyResource(ResourceType type, Identifier path, BiFunction<RuntimeResourcePack, Identifier, byte[]> data) {
-        this.resourcePack.addLazyResource(type, path, data);
-    }
-
-    @Override
-    public byte[] addResource(ResourceType type, Identifier path, byte[] data) {
-        return this.resourcePack.addResource(type, path, data);
-    }
-
-    @Override
-    public Future<byte[]> addAsyncRootResource(String path, CallableFunction<String, byte[]> data) {
-        return this.resourcePack.addAsyncRootResource(path, data);
-    }
-
-    @Override
-    public void addLazyRootResource(String path, BiFunction<RuntimeResourcePack, String, byte[]> data) {
-        this.resourcePack.addLazyRootResource(path, data);
-    }
-
-    @Override
-    public byte[] addRootResource(String path, byte[] data) {
-        return this.resourcePack.addRootResource(path, data);
-    }
-
-    @Override
-    public byte[] addAsset(Identifier path, byte[] data) {
-        return this.resourcePack.addAsset(path, data);
-    }
-
-    @Override
-    public byte[] addData(Identifier path, byte[] data) {
-        return this.resourcePack.addData(path, data);
-    }
-
-    @Override
-    public byte[] addModel(JModel model, Identifier path) {
-        return this.resourcePack.addModel(model, path);
-    }
-
-    @Override
-    public byte[] addBlockState(JState state, Identifier path) {
-        return this.resourcePack.addBlockState(state, path);
-    }
-
-    @Override
-    public byte[] addTexture(Identifier id, BufferedImage image) {
-        return this.resourcePack.addTexture(id, image);
-    }
-
-    @Override
-    public byte[] addAnimation(Identifier id, JAnimation animation) {
-        return this.resourcePack.addAnimation(id, animation);
-    }
-
-    @Override
-    public byte[] addTag(Identifier id, JTag tag) {
-        return this.resourcePack.addTag(id, tag);
-    }
-
-    @Override
-    public byte[] addRecipe(Identifier id, JRecipe recipe) {
-        return this.resourcePack.addRecipe(id, recipe);
-    }
-
-    @Override
-    public Future<?> async(Consumer<RuntimeResourcePack> action) {
-        return this.resourcePack.async(action);
-    }
-
-    @Override
-    public void dumpDirect(Path path) {
-        this.resourcePack.dumpDirect(path);
-    }
-
-    @Override
-    public void load(Path path) throws IOException {
-        this.resourcePack.load(path);
-    }
-
-    @Override
-    public void dump(File file) {
-        this.resourcePack.dump(file);
-    }
-
-    @Override
-    public void dump(ZipOutputStream stream) throws IOException {
-        this.resourcePack.dump(stream);
-    }
-
-    @Override
-    public void load(ZipInputStream stream) throws IOException {
-        this.resourcePack.load(stream);
-    }
-
-    @Override
-    public Identifier getId() {
-        return this.resourcePack.getId();
+    public void addTemplateResource(Identifier id, String templatePath) {
+        this.addTemplateResource(id, t -> t.load(templatePath, d -> {}));
     }
 
     @Nullable
     @Override
     public InputSupplier<InputStream> openRoot(String... segments) {
-        return this.resourcePack.openRoot(segments);
+        return null; // Provide no root resources
     }
 
     @Nullable
     @Override
     public InputSupplier<InputStream> open(ResourceType type, Identifier id) {
-        return this.resourcePack.open(type, id);
+        if (type != ResourceType.CLIENT_RESOURCES) return null;
+
+        return this.resources.get(id);
     }
 
     @Override
     public void findResources(ResourceType type, String namespace, String prefix, ResultConsumer consumer) {
-        this.resourcePack.findResources(type, namespace, prefix, consumer);
+        if (type != ResourceType.CLIENT_RESOURCES) return;
+
+        for (var entry : this.resources.entrySet()) {
+            var id = entry.getKey();
+
+            if (id.getNamespace().startsWith(namespace) && id.getPath().startsWith(prefix)) {
+                consumer.accept(id, entry.getValue());
+            }
+        }
     }
 
     @Override
     public Set<String> getNamespaces(ResourceType type) {
-        return this.resourcePack.getNamespaces(type);
+        if (type != ResourceType.CLIENT_RESOURCES) return Set.of();
+
+        return this.namespaces;
     }
 
     @Nullable
     @Override
-    public <T> T parseMetadata(ResourceMetadataReader<T> metaReader) throws IOException {
-        return this.resourcePack.parseMetadata(metaReader);
+    public <T> T parseMetadata(ResourceMetadataReader<T> meta) throws IOException {
+        if ("pack".equals(meta.getKey())) {
+            return meta.fromJson(this.packMeta);
+        }
+
+        return null;
     }
 
     @Override
     public String getName() {
-        return this.resourcePack.getName();
+        return this.name;
     }
 
     @Override
     public void close() {
-        this.resourcePack.close();
+    }
+
+    public void dump(Path dir) throws IOException {
+        dir = dir.resolve("assets");
+
+        for (var entry : this.resources.entrySet()) {
+            var id = entry.getKey();
+            var file = dir.resolve(id.getNamespace()).resolve(id.getPath());
+
+            Files.createDirectories(file.getParent());
+
+            try (var out = Files.newOutputStream(file)) {
+                var in = entry.getValue().get();
+
+                int i;
+                while ((i = in.read()) >= 0) {
+                    out.write(i);
+                }
+            }
+        }
+    }
+
+    public static class PropertyBuilder {
+        private Properties properties = new Properties();
+
+        private PropertyBuilder() {}
+
+        public PropertyBuilder def(String k, String v) {
+            if (this.properties != null) {
+                this.properties.setProperty(k, v);
+            }
+
+            return this;
+        }
+
+        private Properties build() {
+            var properties = this.properties;
+            this.properties = null;
+
+            return properties;
+        }
+    }
+
+    public static class LazyBufferedResource implements InputSupplier<InputStream> {
+        private final InputSupplier<byte[]> backing;
+        private byte[] buffer = null;
+
+        public LazyBufferedResource(InputSupplier<byte[]> backing) {
+            this.backing = backing;
+        }
+
+        @Override
+        public InputStream get() throws IOException {
+            if (buffer == null) {
+                buffer = backing.get();
+            }
+
+            return new ByteArrayInputStream(buffer);
+        }
     }
 }

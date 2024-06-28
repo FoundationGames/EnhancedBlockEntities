@@ -2,13 +2,10 @@ package foundationgames.enhancedblockentities.util;
 
 import foundationgames.enhancedblockentities.EnhancedBlockEntities;
 import foundationgames.enhancedblockentities.client.resource.EBEPack;
-import net.devtech.arrp.json.blockstate.JState;
-import net.devtech.arrp.json.blockstate.JVariant;
-import net.devtech.arrp.json.models.JModel;
-import net.devtech.arrp.json.models.JTextures;
+import foundationgames.enhancedblockentities.client.resource.template.TemplateProvider;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
-import net.minecraft.block.DecoratedPotPatterns;
+import net.minecraft.client.render.TexturedRenderLayers;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
@@ -28,111 +25,174 @@ public enum ResourceUtil {;
     private static EBEPack BASE_PACK;
     private static EBEPack TOP_LEVEL_PACK;
 
-    public static String createChestItemModelResource(String centerChest) {
-        return "{\"parent\":\"block/"+centerChest+"\",\"overrides\":[{\"predicate\":{\"ebe:is_christmas\":1},\"model\": \"item/christmas_chest\"}]}";
+    public static void addChestItemModel(Identifier id, String centerChest, EBEPack pack) {
+        pack.addTemplateResource(id, t -> t.load("chest_item_model.json", d -> d.def("chest", centerChest)));
     }
 
-    private static JVariant variantRotation16(JVariant variant, String keyPrefix, String modelPrefix) {
-        return variant
-                .put(keyPrefix+"0", JState.model(modelPrefix+"_0").y(180))
-                .put(keyPrefix+"1", JState.model(modelPrefix+"_67_5").y(270))
-                .put(keyPrefix+"2", JState.model(modelPrefix+"_45").y(270))
-                .put(keyPrefix+"3", JState.model(modelPrefix+"_22_5").y(270))
-                .put(keyPrefix+"4", JState.model(modelPrefix+"_0").y(270))
-                .put(keyPrefix+"5", JState.model(modelPrefix+"_67_5"))
-                .put(keyPrefix+"6", JState.model(modelPrefix+"_45"))
-                .put(keyPrefix+"7", JState.model(modelPrefix+"_22_5"))
-                .put(keyPrefix+"8", JState.model(modelPrefix+"_0"))
-                .put(keyPrefix+"9", JState.model(modelPrefix+"_67_5").y(90))
-                .put(keyPrefix+"10", JState.model(modelPrefix+"_45").y(90))
-                .put(keyPrefix+"11", JState.model(modelPrefix+"_22_5").y(90))
-                .put(keyPrefix+"12", JState.model(modelPrefix+"_0").y(90))
-                .put(keyPrefix+"13", JState.model(modelPrefix+"_67_5").y(180))
-                .put(keyPrefix+"14", JState.model(modelPrefix+"_45").y(180))
-                .put(keyPrefix+"15", JState.model(modelPrefix+"_22_5").y(180));
+    private static String list(String ... els) {
+        return String.join(",", els);
     }
 
-    private static JVariant variantHFacing(JVariant variant, String keyPrefix, String model) {
-        return variant
-                .put(keyPrefix+"north", JState.model(model))
-                .put(keyPrefix+"west", JState.model(model).y(270))
-                .put(keyPrefix+"south", JState.model(model).y(180))
-                .put(keyPrefix+"east", JState.model(model).y(90));
+    private static String kv(String k, String v) {
+        return String.format("\""+k+"\":\""+v+"\"");
     }
 
-    public static void addSingleChestModels(String texture, String chestName, EBEPack pack) {
-        pack.addModel(JModel.model().parent("block/template_chest_center").textures(withChestParticle(JModel.textures().var("chest", texture), chestName)), new Identifier("block/" + chestName + "_center"));
-        pack.addModel(JModel.model().parent("block/template_chest_center_lid").textures(withChestParticle(JModel.textures().var("chest", texture), chestName)), new Identifier("block/" + chestName + "_center_lid"));
-        pack.addModel(JModel.model().parent("block/template_chest_center_trunk").textures(withChestParticle(JModel.textures().var("chest", texture), chestName)), new Identifier("block/" + chestName + "_center_trunk"));
+    private static String kv(String k, int v) {
+        return String.format("\""+k+"\":"+v+"");
+    }
+
+    private static String variant(TemplateProvider t, String state, String model) throws IOException {
+        return t.load("blockstate/var.json", d -> d
+                .def("state", state)
+                .def("model", model)
+                .def("extra", ""));
+    }
+
+    private static String variantY(TemplateProvider t, String state, String model, int y) throws IOException {
+        return t.load("blockstate/var.json", d -> d
+                .def("state", state)
+                .def("model", model)
+                .def("extra", kv("y", y) + ","));
+    }
+
+    private static String variantXY(TemplateProvider t, String state, String model, int x, int y) throws IOException {
+        return t.load("blockstate/var.json", d -> d
+                .def("state", state)
+                .def("model", model)
+                .def("extra", list(
+                        kv("x", x),
+                        kv("y", y)
+                ) + ","));
+    }
+
+    private static String variantRotation16(TemplateProvider t, String keyPrefix, String modelPrefix) throws IOException {
+        return list(
+                variantY(t, keyPrefix+"0", modelPrefix+"_0", 180),
+                variantY(t, keyPrefix+"1", modelPrefix+"_67_5", 270),
+                variantY(t, keyPrefix+"2", modelPrefix+"_45", 270),
+                variantY(t, keyPrefix+"3", modelPrefix+"_22_5", 270),
+                variantY(t, keyPrefix+"4", modelPrefix+"_0", 270),
+                variant(t, keyPrefix+"5", modelPrefix+"_67_5"),
+                variant(t, keyPrefix+"6", modelPrefix+"_45"),
+                variant(t, keyPrefix+"7", modelPrefix+"_22_5"),
+                variant(t, keyPrefix+"8", modelPrefix+"_0"),
+                variantY(t, keyPrefix+"9", modelPrefix+"_67_5", 90),
+                variantY(t, keyPrefix+"10", modelPrefix+"_45", 90),
+                variantY(t, keyPrefix+"11", modelPrefix+"_22_5", 90),
+                variantY(t, keyPrefix+"12", modelPrefix+"_0", 90),
+                variantY(t, keyPrefix+"13", modelPrefix+"_67_5", 180),
+                variantY(t, keyPrefix+"14", modelPrefix+"_45", 180),
+                variantY(t, keyPrefix+"15", modelPrefix+"_22_5", 180)
+        );
+    }
+
+    private static String variantHFacing(TemplateProvider t, String keyPrefix, String model) throws IOException {
+        return list(
+                variant(t, keyPrefix+"north", model),
+                variantY(t, keyPrefix+"west", model, 270),
+                variantY(t, keyPrefix+"south", model, 180),
+                variantY(t, keyPrefix+"east", model, 90)
+        );
+    }
+
+    private static void addChestLikeModel(String parent, String chestTex, String chestName, Identifier id, EBEPack pack) {
+        pack.addTemplateResource(new Identifier(id.getNamespace(), "models/" + id.getPath() + ".json"),
+                t -> t.load("model/chest_like.json", d -> d
+                        .def("parent", parent)
+                        .def("chest_tex", chestTex)
+                        .def("particle", chestParticle(chestName))
+                )
+        );
+    }
+
+    public static void addSingleChestModels(String chestTex, String chestName, EBEPack pack) {
+        addChestLikeModel("template_chest_center", chestTex, chestName, new Identifier("block/" + chestName + "_center"), pack);
+        addChestLikeModel("template_chest_center_lid", chestTex, chestName, new Identifier("block/" + chestName + "_center_lid"), pack);
+        addChestLikeModel("template_chest_center_trunk", chestTex, chestName, new Identifier("block/" + chestName + "_center_trunk"), pack);
     }
 
     public static void addDoubleChestModels(String leftTex, String rightTex, String chestName, EBEPack pack) {
-        pack.addModel(JModel.model().parent("block/template_chest_left").textures(withChestParticle(JModel.textures().var("chest", leftTex), chestName)), new Identifier("block/" + chestName + "_left"));
-        pack.addModel(JModel.model().parent("block/template_chest_left_lid").textures(withChestParticle(JModel.textures().var("chest", leftTex), chestName)), new Identifier("block/" + chestName + "_left_lid"));
-        pack.addModel(JModel.model().parent("block/template_chest_left_trunk").textures(withChestParticle(JModel.textures().var("chest", leftTex), chestName)), new Identifier("block/" + chestName + "_left_trunk"));
-        pack.addModel(JModel.model().parent("block/template_chest_right").textures(withChestParticle(JModel.textures().var("chest", rightTex), chestName)), new Identifier("block/" + chestName + "_right"));
-        pack.addModel(JModel.model().parent("block/template_chest_right_lid").textures(withChestParticle(JModel.textures().var("chest", rightTex), chestName)), new Identifier("block/" + chestName + "_right_lid"));
-        pack.addModel(JModel.model().parent("block/template_chest_right_trunk").textures(withChestParticle(JModel.textures().var("chest", rightTex), chestName)), new Identifier("block/" + chestName + "_right_trunk"));
+        addChestLikeModel("template_chest_left", leftTex, chestName, new Identifier("block/" + chestName + "_left"), pack);
+        addChestLikeModel("template_chest_left_lid", leftTex, chestName, new Identifier("block/" + chestName + "_left_lid"), pack);
+        addChestLikeModel("template_chest_left_trunk", leftTex, chestName, new Identifier("block/" + chestName + "_left_trunk"), pack);
+        addChestLikeModel("template_chest_right", rightTex, chestName, new Identifier("block/" + chestName + "_right"), pack);
+        addChestLikeModel("template_chest_right_lid", rightTex, chestName, new Identifier("block/" + chestName + "_right_lid"), pack);
+        addChestLikeModel("template_chest_right_trunk", rightTex, chestName, new Identifier("block/" + chestName + "_right_trunk"), pack);
     }
 
-    private static JTextures withChestParticle(JTextures textures, String chestName) {
-        if (EnhancedBlockEntities.CONFIG.experimentalChests) textures.var("particle", "block/"+chestName+"_particle");
-        return textures;
+    private static String chestParticle(String chestName) {
+        if (EnhancedBlockEntities.CONFIG.experimentalChests) return kv("particle", "block/"+chestName+"_particle") + ",";
+        return "";
     }
 
-    private static JTextures withBedParticle(JTextures textures, String bedColor) {
-        if (EnhancedBlockEntities.CONFIG.experimentalBeds) textures.var("particle", "block/"+bedColor+"_bed_particle");
-        return textures;
+    private static String bedParticle(String bedColor) {
+        if (EnhancedBlockEntities.CONFIG.experimentalBeds) return kv("particle", "block/"+bedColor+"_bed_particle") + ",";
+        return "";
     }
 
-    private static JTextures withSignParticle(JTextures textures, String signName) {
-        if (EnhancedBlockEntities.CONFIG.experimentalSigns) textures.var("particle", "block/"+signName+"_particle");
-        return textures;
+    private static String signParticle(String signName) {
+        if (EnhancedBlockEntities.CONFIG.experimentalSigns) return kv("particle", "block/"+signName+"_particle") + ",";
+        return "";
+    }
+
+    private static void addBlockState(Identifier id, TemplateProvider.TemplateApplyingFunction vars, EBEPack pack) {
+        pack.addTemplateResource(new Identifier(id.getNamespace(), "blockstates/" + id.getPath() + ".json"),
+                t -> t.load("blockstate/base.json", d -> d.def("vars", vars)));
     }
 
     public static void addChestBlockStates(String chestName, EBEPack pack) {
-        var variant = JState.variant();
-        variantHFacing(variant, "type=single,facing=", "builtin:"+chestName+"_center");
-        variantHFacing(variant, "type=left,facing=", "builtin:"+chestName+"_left");
-        variantHFacing(variant, "type=right,facing=", "builtin:"+chestName+"_right");
-
-        pack.addBlockState(JState.state(variant), new Identifier(chestName));
+        addBlockState(new Identifier(chestName),
+                t0 -> list(
+                        variantHFacing(t0, "type=single,facing=", "builtin:"+chestName+"_center"),
+                        variantHFacing(t0, "type=left,facing=", "builtin:"+chestName+"_left"),
+                        variantHFacing(t0, "type=right,facing=", "builtin:"+chestName+"_right")
+                ), pack);
     }
 
     public static void addSingleChestOnlyBlockStates(String chestName, EBEPack pack) {
-        pack.addBlockState(
-                JState.state(
-                        variantHFacing(JState.variant(), "facing=", "builtin:"+chestName+"_center")
-                ), new Identifier(chestName)
-        );
+        addBlockState(new Identifier(chestName),
+                t0 -> list(
+                        variantHFacing(t0, "facing=", "builtin:"+chestName+"_center")
+                ), pack);
+    }
+
+    public static void addParentModel(String parent, Identifier id, EBEPack pack) {
+        pack.addTemplateResource(new Identifier(id.getNamespace(), "models/" + id.getPath() + ".json"), t ->
+                "{" + kv("parent", parent) + "}");
+    }
+
+    public static void addParentTexModel(String parent, String textures, Identifier id, EBEPack pack) {
+        pack.addTemplateResource(new Identifier(id.getNamespace(), "models/" + id.getPath() + ".json"), t ->
+                t.load("model/parent_and_tex.json", d -> d.def("parent", parent).def("textures", textures)));
     }
 
     public static void addSignTypeModels(String signType, EBEPack pack) {
         var signName = signType+"_sign";
         var signTex = "entity/signs/"+signType;
         addRotation16Models(
-                withSignParticle(new JTextures().var("sign", signTex), signName),
+                signParticle(signName) + kv("sign", signTex),
                 "block/template_sign", "block/"+signName, ResourceUtil::signAOSuffix, pack);
 
-        var hangingTexDef = new JTextures()
-                .var("sign", "entity/signs/hanging/"+signType)
-                .var("particle", "block/particle_hanging_sign_"+signType);
+        var hangingTexDef = list(
+                kv("sign", "entity/signs/hanging/"+signType),
+                kv("particle", "block/particle_hanging_sign_"+signType)
+        );
         addRotation16Models(hangingTexDef, "block/template_hanging_sign", "block/"+signType+"_hanging_sign",
                 ResourceUtil::signAOSuffix, pack);
         addRotation16Models(hangingTexDef, "block/template_hanging_sign_attached", "block/"+signType+"_hanging_sign_attached",
                 ResourceUtil::signAOSuffix, pack);
 
-        pack.addModel(JModel.model().parent(signAOSuffix("block/template_wall_sign"))
-                .textures(withSignParticle(JModel.textures().var("sign", signTex), signName)), new Identifier("block/"+signType+"_wall_sign"));
-        pack.addModel(JModel.model().parent(signAOSuffix("block/template_wall_hanging_sign"))
-                .textures(hangingTexDef), new Identifier("block/"+signType+"_wall_hanging_sign"));
+        addParentTexModel(signAOSuffix("block/template_wall_sign"),
+                signParticle(signName) + kv("sign", signTex), new Identifier("block/"+signType+"_wall_sign"), pack);
+        addParentTexModel(signAOSuffix("block/template_wall_hanging_sign"),
+                hangingTexDef, new Identifier("block/"+signType+"_wall_hanging_sign"), pack);
     }
 
-    public static void addRotation16Models(JTextures textures, String templatePrefix, String modelPrefix, Function<String, String> suffix, EBEPack pack) {
-        pack.addModel(JModel.model().parent(suffix.apply(templatePrefix+"_0")).textures(textures), new Identifier(modelPrefix + "_0"));
-        pack.addModel(JModel.model().parent(suffix.apply(templatePrefix+"_22_5")).textures(textures), new Identifier(modelPrefix + "_22_5"));
-        pack.addModel(JModel.model().parent(suffix.apply(templatePrefix+"_45")).textures(textures), new Identifier(modelPrefix + "_45"));
-        pack.addModel(JModel.model().parent(suffix.apply(templatePrefix+"_67_5")).textures(textures), new Identifier(modelPrefix + "_67_5"));
+    public static void addRotation16Models(String textures, String templatePrefix, String modelPrefix, Function<String, String> suffix, EBEPack pack) {
+        addParentTexModel(suffix.apply(templatePrefix+"_0"), textures, new Identifier(modelPrefix + "_0"), pack);
+        addParentTexModel(suffix.apply(templatePrefix+"_22_5"), textures, new Identifier(modelPrefix + "_22_5"), pack);
+        addParentTexModel(suffix.apply(templatePrefix+"_45"), textures, new Identifier(modelPrefix + "_45"), pack);
+        addParentTexModel(suffix.apply(templatePrefix+"_67_5"), textures, new Identifier(modelPrefix + "_67_5"), pack);
     }
 
     private static String signAOSuffix(String model) {
@@ -141,71 +201,63 @@ public enum ResourceUtil {;
     }
 
     public static void addSignBlockStates(String signName, String wallSignName, EBEPack pack) {
-        pack.addBlockState(
-                JState.state(
-                        variantRotation16(JState.variant(), "rotation=", "block/"+signName)
-                ), new Identifier(signName)
-        );
-        pack.addBlockState(
-                JState.state(
-                        variantHFacing(JState.variant(), "facing=", "block/"+wallSignName)
-                ), new Identifier(wallSignName)
-        );
+        addBlockState(new Identifier(signName),
+                t -> variantRotation16(t, "rotation=", "block/"+signName), pack);
+        addBlockState(new Identifier(wallSignName),
+                t -> variantHFacing(t, "facing=", "block/"+wallSignName), pack);
     }
 
     public static void addHangingSignBlockStates(String signName, String wallSignName, EBEPack pack) {
-        var variant = JState.variant();
-        variantRotation16(variant, "attached=false,rotation=", "block/"+signName);
-        variantRotation16(variant, "attached=true,rotation=", "block/"+signName+"_attached");
+        addBlockState(new Identifier(signName),
+                t -> list(
+                        variantRotation16(t, "attached=false,rotation=", "block/"+signName),
+                        variantRotation16(t, "attached=true,rotation=", "block/"+signName+"_attached")
+                ), pack);
 
-        pack.addBlockState(JState.state(variant), new Identifier(signName));
-        pack.addBlockState(
-                JState.state(
-                        variantHFacing(JState.variant(), "facing=", "block/"+wallSignName)
-                ), new Identifier(wallSignName)
-        );
+        addBlockState(new Identifier(wallSignName),
+                t -> variantHFacing(t, "facing=", "block/"+wallSignName), pack);
     }
 
     public static void addBellBlockState(EBEPack pack) {
-        JVariant variant = JState.variant();
-        for (Direction dir : EBEUtil.HORIZONTAL_DIRECTIONS) {
-            int rot = (int)dir.asRotation() + 90;
-            variant
-                    .put("attachment=double_wall,facing="+dir.getName(), JState.model("builtin:bell_between_walls").y(rot))
-                    .put("attachment=ceiling,facing="+dir.getName(), JState.model("builtin:bell_ceiling").y(rot + 90)) // adding 90 here and below to maintain Parity with vanilla's weird choice of rotations
-                    .put("attachment=floor,facing="+dir.getName(), JState.model("builtin:bell_floor").y(rot + 90))
-                    .put("attachment=single_wall,facing="+dir.getName(), JState.model("builtin:bell_wall").y(rot))
-            ;
-        }
-        pack.addBlockState(JState.state(variant), new Identifier("bell"));
+        addBlockState(new Identifier("bell"),
+                t -> {
+                    var vars = new DelimitedAppender(",");
+                    for (Direction dir : EBEUtil.HORIZONTAL_DIRECTIONS) {
+                        int rot = (int)dir.asRotation() + 90;
+                        vars
+                                .append(variantY(t, "attachment=double_wall,facing="+dir.getName(), "builtin:bell_between_walls", rot))
+                                .append(variantY(t, "attachment=ceiling,facing="+dir.getName(), "builtin:bell_ceiling", rot + 90)) // adding 90 here and below to maintain Parity with vanilla's weird choice of rotations
+                                .append(variantY(t, "attachment=floor,facing="+dir.getName(), "builtin:bell_floor", rot + 90))
+                                .append(variantY(t, "attachment=single_wall,facing="+dir.getName(), "builtin:bell_wall", rot));
+                    }
+                    return vars.get();
+                }, pack);
     }
 
     public static void addBedModels(DyeColor bedColor, EBEPack pack) {
         String color = bedColor.getName();
-        pack.addModel(
-                JModel.model()
-                        .parent(bedAOSuffix("block/template_bed_head"))
-                        .textures(withBedParticle(JModel.textures().var("bed", "entity/bed/" + color), color)),
-                new Identifier("block/" + color + "_bed_head")
-        );
-        pack.addModel(
-                JModel.model()
-                        .parent(bedAOSuffix("block/template_bed_foot"))
-                        .textures(withBedParticle(JModel.textures().var("bed", "entity/bed/" + color), color)),
-                new Identifier("block/" + color + "_bed_foot")
-        );
+
+        addParentTexModel(bedAOSuffix("block/template_bed_head"),
+                bedParticle(color) + kv("bed", "entity/bed/" + color),
+                new Identifier("block/" + color + "_bed_head"), pack);
+        addParentTexModel(bedAOSuffix("block/template_bed_foot"),
+                bedParticle(color) + kv("bed", "entity/bed/" + color),
+                new Identifier("block/" + color + "_bed_foot"), pack);
     }
 
     public static void addBedBlockState(DyeColor bedColor, EBEPack pack) {
         String color = bedColor.getName();
-        JVariant variant = JState.variant();
-        for (Direction dir : EBEUtil.HORIZONTAL_DIRECTIONS) {
-            int rot = (int)dir.asRotation() + 180;
-            variant
-                    .put("part=head,facing="+dir.getName(), JState.model("block/" + bedColor + "_bed_head").y(rot))
-                    .put("part=foot,facing="+dir.getName(), JState.model("block/" + bedColor + "_bed_foot").y(rot));
-        }
-        pack.addBlockState(JState.state(variant), new Identifier(color + "_bed"));
+        addBlockState(new Identifier(color + "_bed"),
+                t -> {
+                    var vars = new DelimitedAppender(",");
+                    for (Direction dir : EBEUtil.HORIZONTAL_DIRECTIONS) {
+                        int rot = (int)dir.asRotation() + 180;
+                        vars
+                                .append(variantY(t, "part=head,facing="+dir.getName(), "block/" + bedColor + "_bed_head", rot))
+                                .append(variantY(t, "part=foot,facing="+dir.getName(), "block/" + bedColor + "_bed_foot", rot));
+                    }
+                    return vars.get();
+                }, pack);
     }
 
     private static String bedAOSuffix(String model) {
@@ -217,45 +269,53 @@ public enum ResourceUtil {;
         var texture = color != null ? "entity/shulker/shulker_"+color.getName() : "entity/shulker/shulker";
         var shulkerBoxStr = color != null ? color.getName()+"_shulker_box" : "shulker_box";
         var particle = "block/"+shulkerBoxStr;
-        pack.addModel(JModel.model().parent("block/template_shulker_box").textures(JModel.textures().var("shulker", texture).var("particle", particle)), new Identifier("block/"+shulkerBoxStr));
-        pack.addModel(JModel.model().parent("block/template_shulker_box_bottom").textures(JModel.textures().var("shulker", texture).var("particle", particle)), new Identifier("block/"+shulkerBoxStr+"_bottom"));
-        pack.addModel(JModel.model().parent("block/template_shulker_box_lid").textures(JModel.textures().var("shulker", texture).var("particle", particle)), new Identifier("block/"+shulkerBoxStr+"_lid"));
+        addParentTexModel("block/template_shulker_box",
+                list(kv("shulker", texture), kv("particle", particle)),
+                new Identifier("block/"+shulkerBoxStr), pack);
+        addParentTexModel("block/template_shulker_box_bottom",
+                list(kv("shulker", texture), kv("particle", particle)),
+                new Identifier("block/"+shulkerBoxStr+"_bottom"), pack);
+        addParentTexModel("block/template_shulker_box_lid",
+                list(kv("shulker", texture), kv("particle", particle)),
+                new Identifier("block/"+shulkerBoxStr+"_lid"), pack);
     }
 
     public static void addShulkerBoxBlockStates(@Nullable DyeColor color, EBEPack pack) {
         var shulkerBoxStr = color != null ? color.getName()+"_shulker_box" : "shulker_box";
-        var variant = JState.variant()
-                .put("facing=up", JState.model("builtin:"+shulkerBoxStr))
-                .put("facing=down", JState.model("builtin:"+shulkerBoxStr).x(180));
-        for (Direction dir : EBEUtil.HORIZONTAL_DIRECTIONS) {
-            int rot = (int)dir.asRotation() + 180;
-            variant.put("facing="+dir.getName(), JState.model("builtin:"+shulkerBoxStr).x(90).y(rot));
-        }
-        pack.addBlockState(JState.state(variant), new Identifier(shulkerBoxStr));
+        addBlockState(new Identifier(shulkerBoxStr),
+                t -> {
+                    var vars = new DelimitedAppender(",");
+                    vars
+                            .append(variant(t, "facing=up", "builtin:"+shulkerBoxStr))
+                            .append(variantXY(t, "facing=down", "builtin:"+shulkerBoxStr, 180, 0));
+                    for (Direction dir : EBEUtil.HORIZONTAL_DIRECTIONS) {
+                        int rot = (int)dir.asRotation() + 180;
+                        vars.append(variantXY(t, "facing="+dir.getName(), "builtin:"+shulkerBoxStr, 90, rot));
+                    }
+                    return vars.get();
+                }, pack);
     }
 
     public static void addDecoratedPotBlockState(EBEPack pack) {
-        pack.addBlockState(JState.state(variantHFacing(JState.variant(), "facing=", "builtin:decorated_pot")), new Identifier("decorated_pot"));
+        addBlockState(new Identifier("decorated_pot"),
+                t -> variantHFacing(t, "facing=", "builtin:decorated_pot"), pack);
     }
 
     public static void addDecoratedPotPatternModels(RegistryKey<String> patternKey, EBEPack pack) {
         for (Direction dir : EBEUtil.HORIZONTAL_DIRECTIONS) {
-            pack.addModel(JModel.model().parent("block/template_pottery_pattern_" + dir.getName())
-                    .textures(
-                            JModel.textures()
-                                    .var("pattern", DecoratedPotPatterns.getTextureId(patternKey).toString())
-                    ),
-                    new Identifier("block/" + patternKey.getValue().getPath() + "_" + dir.getName())
-            );
+            addParentTexModel("block/template_pottery_pattern_" + dir.getName(),
+                    kv("pattern", TexturedRenderLayers.getDecoratedPotPatternTextureId(patternKey).getTextureId().toString()),
+                    new Identifier("block/" + patternKey.getValue().getPath() + "_" + dir.getName()),
+                    pack);
         }
     }
 
     public static void resetBasePack() {
-        BASE_PACK = new EBEPack(EBEUtil.id("base_resources"));
+        BASE_PACK = new EBEPack(EBEUtil.id("base_resources"), EnhancedBlockEntities.TEMPLATE_LOADER);
     }
 
     public static void resetTopLevelPack() {
-        TOP_LEVEL_PACK = new EBEPack(EBEUtil.id("top_level_resources"));
+        TOP_LEVEL_PACK = new EBEPack(EBEUtil.id("top_level_resources"), EnhancedBlockEntities.TEMPLATE_LOADER);
     }
 
     public static EBEPack getBasePack() {
@@ -296,9 +356,29 @@ public enum ResourceUtil {;
     }
 
     public static void dumpAllPacks(Path dest) throws IOException {
-        getBasePack().dumpDirect(dest);
-        getTopLevelPack().dumpDirect(dest);
+        getBasePack().dump(dest);
+        getTopLevelPack().dump(dest);
         dumpModAssets(dest);
+    }
+
+    private static class DelimitedAppender {
+        private final StringBuilder builder = new StringBuilder();
+        private final CharSequence delimiter;
+
+        private DelimitedAppender(CharSequence delimiter) {
+            this.delimiter = delimiter;
+        }
+
+        public DelimitedAppender append(CharSequence seq) {
+            if (!this.builder.isEmpty()) this.builder.append(this.delimiter);
+
+            this.builder.append(seq);
+            return this;
+        }
+
+        public String get() {
+            return this.builder.toString();
+        }
     }
 
     static {

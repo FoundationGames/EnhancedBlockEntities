@@ -1,7 +1,7 @@
 package foundationgames.enhancedblockentities.mixin;
 
 import foundationgames.enhancedblockentities.EnhancedBlockEntities;
-import foundationgames.enhancedblockentities.util.duck.ModelStateHolder;
+import foundationgames.enhancedblockentities.util.duck.AppearanceStateHolder;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BellBlockEntity;
 import net.minecraft.block.entity.BlockEntity;
@@ -14,8 +14,9 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
 @Mixin(BellBlockEntity.class)
-public class BellBlockEntityMixin extends BlockEntity implements ModelStateHolder {
+public class BellBlockEntityMixin extends BlockEntity implements AppearanceStateHolder {
     @Unique private int enhanced_bes$modelState = 0;
+    @Unique private int enhanced_bes$renderState = 0;
 
     public BellBlockEntityMixin(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
@@ -28,8 +29,8 @@ public class BellBlockEntityMixin extends BlockEntity implements ModelStateHolde
     ), index = 3)
     private static BellBlockEntity enhanced_bes$listenForStopRinging(BellBlockEntity blockEntity) {
         int mState = blockEntity.ringTicks > 0 ? 1 : 0;
-        if (EnhancedBlockEntities.CONFIG.renderEnhancedBells && ((ModelStateHolder)blockEntity).getModelState() != mState) {
-            ((ModelStateHolder)blockEntity).setModelState(mState, blockEntity.getWorld(), blockEntity.getPos());
+        if (EnhancedBlockEntities.CONFIG.renderEnhancedBells && ((AppearanceStateHolder)blockEntity).getModelState() != mState) {
+            ((AppearanceStateHolder)blockEntity).updateAppearanceState(mState, blockEntity.getWorld(), blockEntity.getPos());
         }
         return blockEntity;
     }
@@ -40,7 +41,17 @@ public class BellBlockEntityMixin extends BlockEntity implements ModelStateHolde
     }
 
     @Override
-    public void applyModelState(int state) {
+    public void setModelState(int state) {
         this.enhanced_bes$modelState = state;
+    }
+
+    @Override
+    public int getRenderState() {
+        return enhanced_bes$renderState;
+    }
+
+    @Override
+    public void setRenderState(int state) {
+        this.enhanced_bes$renderState = state;
     }
 }

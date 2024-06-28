@@ -2,3 +2,5 @@ accessWidener   v2      named
 
 accessible      class   net/minecraft/client/option/SimpleOption$Callbacks
 accessible      class   net/minecraft/client/render/model/BakedModelManager$BakingResult
+
+accessible field net/minecraft/block/DecoratedPotPatterns DECORATED_POT_SIDE_KEY Lnet/minecraft/registry/RegistryKey;

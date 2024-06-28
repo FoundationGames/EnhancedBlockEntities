@@ -5,19 +5,23 @@
   "compatibilityLevel": "JAVA_17",
   "client": [
     "AbstractBlockStateMixin",
-    "BakedModelManagerMixin",
     "BellBlockEntityMixin",
     "BlockEntityRenderDispatcherMixin",
+    "BuiltChunkMixin",
     "BuiltinModelItemRendererMixin",
     "ChestBlockEntityMixin",
+    "ClickableWidgetAccessor",
     "DecoratedPotBlockEntityMixin",
     "EnderChestBlockEntityMixin",
     "LifecycledResourceManagerImplMixin",
+    "MinecraftClientMixin",
     "ShulkerBoxBlockEntityMixin",
     "SignBlockEntityRenderAccessor",
     "SignEditScreenMixin",
     "VideoOptionsScreenMixin",
-    "WorldRendererMixin"
+    "WorldRendererMixin",
+    "compat.sodium.RenderSectionManagerMixin",
+    "compat.sodium.RenderSectionMixin"
   ],
   "injectors": {
     "defaultRequire": 1

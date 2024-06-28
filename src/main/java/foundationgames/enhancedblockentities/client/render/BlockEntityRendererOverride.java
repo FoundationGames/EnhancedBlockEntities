@@ -13,7 +13,7 @@ public abstract class BlockEntityRendererOverride {
     };
 
     public BlockEntityRendererOverride() {
-        EBEEvents.RELOAD_MODELS.register((loader, manager, profiler) -> this.onModelsReload());
+        EBEEvents.RESOURCE_RELOAD.register(this::onModelsReload);
     }
 
     public abstract void render(BlockEntityRenderer<BlockEntity> renderer, BlockEntity blockEntity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay);

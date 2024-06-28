@@ -3,7 +3,6 @@ package foundationgames.enhancedblockentities.client.render.entity;
 import foundationgames.enhancedblockentities.client.model.ModelIdentifiers;
 import foundationgames.enhancedblockentities.client.render.BlockEntityRendererOverride;
 import foundationgames.enhancedblockentities.util.EBEUtil;
-import foundationgames.enhancedblockentities.util.duck.BakedModelManagerAccess;
 import net.minecraft.block.entity.BellBlockEntity;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.MinecraftClient;
@@ -49,8 +48,7 @@ public class BellBlockEntityRendererOverride extends BlockEntityRendererOverride
     }
 
     private BakedModel getBellModel() {
-        BakedModelManagerAccess manager = (BakedModelManagerAccess)MinecraftClient.getInstance().getBakedModelManager();
-        return manager.getModel(ModelIdentifiers.BELL_BODY);
+        return MinecraftClient.getInstance().getBakedModelManager().getModel(ModelIdentifiers.BELL_BODY);
     }
 
     @Override

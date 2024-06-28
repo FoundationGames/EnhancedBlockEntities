@@ -1,7 +1,7 @@
 package foundationgames.enhancedblockentities.client.model;
 
 import foundationgames.enhancedblockentities.util.DateUtil;
-import foundationgames.enhancedblockentities.util.duck.ModelStateHolder;
+import foundationgames.enhancedblockentities.util.duck.AppearanceStateHolder;
 import net.fabricmc.fabric.api.renderer.v1.render.RenderContext;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
@@ -19,7 +19,7 @@ public abstract class ModelSelector {
     public static final ModelSelector STATE_HOLDER_SELECTOR = new ModelSelector() {
         @Override
         public void writeModelIndices(BlockRenderView view, BlockState state, BlockPos pos, Supplier<Random> rand, @Nullable RenderContext ctx, int[] indices) {
-            if(view.getBlockEntity(pos) instanceof ModelStateHolder stateHolder) {
+            if (view.getBlockEntity(pos) instanceof AppearanceStateHolder stateHolder) {
                 indices[0] = stateHolder.getModelState();
                 return;
             }
@@ -37,7 +37,7 @@ public abstract class ModelSelector {
 
         @Override
         public void writeModelIndices(BlockRenderView view, BlockState state, BlockPos pos, Supplier<Random> rand, @Nullable RenderContext ctx, int[] indices) {
-            if(view.getBlockEntity(pos) instanceof ModelStateHolder stateHolder) {
+            if (view.getBlockEntity(pos) instanceof AppearanceStateHolder stateHolder) {
                 indices[0] = stateHolder.getModelState() + this.getParticleModelIndex();
                 return;
             }

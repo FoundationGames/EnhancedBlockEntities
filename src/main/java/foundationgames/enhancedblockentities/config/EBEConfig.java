@@ -77,14 +77,14 @@ public class EBEConfig {
         this.renderEnhancedShulkerBoxes = ConvUtil.defaultedBool(properties.getProperty(RENDER_ENHANCED_SHULKER_BOXES_KEY), true);
         this.renderEnhancedDecoratedPots = ConvUtil.defaultedBool(properties.getProperty(RENDER_ENHANCED_DECORATED_POTS_KEY), true);
         String pCC = properties.getProperty(CHRISTMAS_CHESTS_KEY);
-        if(pCC != null && (pCC.equals("allowed") || pCC.equals("forced") || pCC.equals("disabled"))) {
+        if (pCC != null && (pCC.equals("allowed") || pCC.equals("forced") || pCC.equals("disabled"))) {
             this.christmasChests = pCC;
         } else {
             EnhancedBlockEntities.LOG.warn("Configuration option 'christmas_chests' must be one of: 'allowed', 'forced', 'disabled'");
             this.christmasChests = "allowed";
         }
         String sST = properties.getProperty(SIGN_TEXT_RENDERING_KEY);
-        if(sST != null && (sST.equals("smart") || sST.equals("all") || sST.equals("most") || sST.equals("some") || sST.equals("few"))) {
+        if (sST != null && (sST.equals("smart") || sST.equals("all") || sST.equals("most") || sST.equals("some") || sST.equals("few"))) {
             this.signTextRendering = sST;
         } else {
             EnhancedBlockEntities.LOG.warn("Configuration option 'sign_text_rendering' must be one of: 'smart', 'all', 'most', 'some', 'few'");
@@ -106,7 +106,7 @@ public class EBEConfig {
         Properties properties = new Properties();
         writeTo(properties);
         Path configPath = FabricLoader.getInstance().getConfigDir().resolve("enhanced_bes.properties");
-        if(!Files.exists(configPath)) {
+        if (!Files.exists(configPath)) {
             try {
                 Files.createFile(configPath);
             } catch (IOException e) {
@@ -126,7 +126,7 @@ public class EBEConfig {
     public void load() {
         Properties properties = new Properties();
         Path configPath = FabricLoader.getInstance().getConfigDir().resolve("enhanced_bes.properties");
-        if(!Files.exists(configPath)) {
+        if (!Files.exists(configPath)) {
             try {
                 Files.createFile(configPath);
                 save();

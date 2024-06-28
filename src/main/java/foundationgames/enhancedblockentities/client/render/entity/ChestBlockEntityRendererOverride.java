@@ -34,7 +34,7 @@ public class ChestBlockEntityRendererOverride extends BlockEntityRendererOverrid
         if (blockEntity instanceof LidOpenable) {
             matrices.push();
 
-            LidOpenable chest = getAnimationProgress(blockEntity, tickDelta);
+            LidOpenable chest = getLidAnimationHolder(blockEntity, tickDelta);
             matrices.translate(0.5f, 0, 0.5f);
             Direction dir = blockEntity.getCachedState().get(ChestBlock.FACING);
             matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(180 - dir.asRotation()));
@@ -53,7 +53,7 @@ public class ChestBlockEntityRendererOverride extends BlockEntityRendererOverrid
         }
     }
 
-    public static LidOpenable getAnimationProgress(BlockEntity blockEntity, float tickDelta) {
+    public static LidOpenable getLidAnimationHolder(BlockEntity blockEntity, float tickDelta) {
         LidOpenable chest = (LidOpenable)blockEntity;
 
         BlockState state = blockEntity.getCachedState();
