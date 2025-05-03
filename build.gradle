@@ -1,6 +1,6 @@
 plugins {
-	id 'fabric-loom' version '1.10.1'
-	id 'maven-publish'
+    id 'fabric-loom' version '1.10.1'
+    id 'maven-publish'
 }
 
 sourceCompatibility = JavaVersion.VERSION_21
@@ -11,70 +11,65 @@ version = project.mod_version
 group = project.maven_group
 
 repositories {
-	maven { url = 'https://maven.terraformersmc.com/' }
-	maven { url = 'https://api.modrinth.com/maven/' }
+    maven { url = 'https://maven.terraformersmc.com/' }
+    maven { url = 'https://api.modrinth.com/maven/' }
+    mavenCentral()
 }
 
 dependencies {
-	// To change the versions see the gradle.properties file
-	minecraft "com.mojang:minecraft:${project.minecraft_version}"
-	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
-	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+    // To change the versions, see the gradle.properties file
+    minecraft "com.mojang:minecraft:${project.minecraft_version}"
+    mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
+    modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
-	// Fabric API. This is technically optional, but you probably want it anyway.
-	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+    // Fabric API. This is technically optional, but you probably want it anyway.
+    modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
-	// Mod Menu because config screen access from another place
-	modApi "com.terraformersmc:modmenu:${project.modmenu_version}"
+    // Mod Menu because config screen access from another place
+    modApi "com.terraformersmc:modmenu:${project.modmenu_version}"
 
-	// Sodium for compatibility
-	modCompileOnlyApi "maven.modrinth:sodium:${project.sodium_version}"
+    // Sodium for compatibility
+    modCompileOnlyApi "maven.modrinth:sodium:${project.sodium_version}"
 }
 
 processResources {
-	inputs.property "version", project.version
+    inputs.property "version", project.version
 
-	filesMatching("fabric.mod.json") {
-		expand "version": project.version
-	}
+    filesMatching("fabric.mod.json") {
+        expand "version": project.version
+    }
 }
 
 tasks.withType(JavaCompile).configureEach {
-	// ensure that the encoding is set to UTF-8, no matter what the system default is
-	// this fixes some edge cases with special characters not displaying correctly
-	// see http://yodaconditions.net/blog/fix-for-java-file-encoding-problems-with-gradle.html
-	// If Javadoc is generated, this must be specified in that task too.
-	it.options.encoding = "UTF-8"
+    // Ensure that the encoding is set to UTF-8, no matter what the system default is
+    it.options.encoding = "UTF-8"
 }
 
 java {
-	// Loom will automatically attach sourcesJar to a RemapSourcesJar task and to the "build" task
-	// if it is present.
-	// If you remove this line, sources will not be generated.
-	withSourcesJar()
+    // Loom will automatically attach sourcesJar to a RemapSourcesJar task and to the "build" task
+    withSourcesJar()
 }
 
 jar {
-	from("LICENSE") {
-		rename { "${it}_${project.archivesBaseName}"}
-	}
+    from("LICENSE") {
+        rename { "${it}_${project.archivesBaseName}"}
+    }
 }
 
 loom {
-	accessWidenerPath = file("src/main/resources/enhancedblockentities.accesswidener")
+    accessWidenerPath = file("src/main/resources/enhancedblockentities.accesswidener")
 }
 
-// configure the maven publication
+// Configure the Maven publication
 publishing {
-	publications {
-		mavenJava(MavenPublication) {
-			from components.java
-		}
-	}
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+        }
+    }
 
-	// Select the repositories you want to publish to
-	// To publish to maven local, no extra repositories are necessary. Just use the task `publishToMavenLocal`.
-	repositories {
-		// See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
-	}
+    // Select the repositories you want to publish to
+    repositories {
+        mavenLocal()  // Publish to your local Maven repository
+    }
 }
