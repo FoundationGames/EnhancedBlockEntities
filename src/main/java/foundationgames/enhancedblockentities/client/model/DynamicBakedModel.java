@@ -1,43 +1,31 @@
 package foundationgames.enhancedblockentities.client.model;
 
-import net.fabricmc.fabric.api.renderer.v1.Renderer;
-import net.fabricmc.fabric.api.renderer.v1.material.RenderMaterial;
-import net.fabricmc.fabric.api.renderer.v1.mesh.QuadEmitter;
-import net.fabricmc.fabric.api.renderer.v1.model.FabricBakedModel;
-import net.fabricmc.fabric.api.renderer.v1.model.ModelHelper;
-import net.minecraft.block.BlockState;
-import net.minecraft.client.render.model.BakedModel;
-import net.minecraft.client.render.model.BakedQuad;
-import net.minecraft.client.render.model.json.ModelTransformation;
+import net.fabricmc.fabric.api.renderer.v1.model.FabricBlockStateModel;
+import net.minecraft.client.render.model.BlockModelPart;
+import net.minecraft.client.render.model.BlockStateModel;
 import net.minecraft.client.texture.Sprite;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.random.Random;
-import net.minecraft.world.BlockRenderView;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
-import java.util.function.Predicate;
-import java.util.function.Supplier;
 
-public class DynamicBakedModel implements BakedModel, FabricBakedModel {
-    private final BakedModel[] models;
+public class DynamicBakedModel implements BlockStateModel, FabricBlockStateModel {
+    private final BlockStateModel[] models;
     private final ModelSelector selector;
     private final DynamicModelEffects effects;
 
     private final ThreadLocal<int[]> activeModelIndices;
-    private final ThreadLocal<BakedModel[]> displayedModels;
+    private final ThreadLocal<BlockStateModel[]> displayedModels;
 
-    public DynamicBakedModel(BakedModel[] models, ModelSelector selector, DynamicModelEffects effects) {
+    public DynamicBakedModel(BlockStateModel[] models, ModelSelector selector, DynamicModelEffects effects) {
         this.models = models;
         this.selector = selector;
         this.effects = effects;
 
         this.activeModelIndices = ThreadLocal.withInitial(() -> new int[selector.displayedModelCount]);
-        this.displayedModels = ThreadLocal.withInitial(() -> new BakedModel[selector.displayedModelCount]);
+        this.displayedModels = ThreadLocal.withInitial(() -> new BlockStateModel[selector.displayedModelCount]);
     }
 
-    @Override
+/*    @Override
     public boolean isVanillaAdapter() {
         return false;
     }
@@ -67,16 +55,16 @@ public class DynamicBakedModel implements BakedModel, FabricBakedModel {
 
         for (int i = 0; i <= 6; i++) {
             Direction dir = ModelHelper.faceFromIndex(i);
-            for (BakedModel model : models) if (model != null) {
+            for (BlockStateModel model : models) if (model != null) {
                 for (BakedQuad quad : model.getQuads(state, dir, rng.get())) {
                     emitter.fromVanilla(quad, mat, dir);
                     emitter.emit();
                 }
             }
         }
-    }
+    }*/
 
-    @Override
+/*    @Override
     public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction face, Random random) {
         return models[0].getQuads(state, face, random);
     }
@@ -96,17 +84,14 @@ public class DynamicBakedModel implements BakedModel, FabricBakedModel {
         return false;
     }
 
-    @Override
-    public Sprite getParticleSprite() {
-        return models[getSelector().getParticleModelIndex()].getParticleSprite();
-    }
+
 
     @Override
     public ModelTransformation getTransformation() {
         return null;
-    }
+    }*/
 
-    public BakedModel[] getModels() {
+    public BlockStateModel[] getModels() {
         return models;
     }
 
@@ -116,5 +101,20 @@ public class DynamicBakedModel implements BakedModel, FabricBakedModel {
 
     public DynamicModelEffects getEffects() {
         return effects;
+    }
+
+    @Override
+    public void addParts(Random random, List<BlockModelPart> parts) {
+
+    }
+
+    /**
+     * {@return a texture that represents the model}
+     *
+     * <p>This is primarily used in particles. For example, block break particles use this sprite.
+     */
+    @Override
+    public Sprite particleSprite() {
+        return models[getSelector().getParticleModelIndex()].particleSprite();
     }
 }

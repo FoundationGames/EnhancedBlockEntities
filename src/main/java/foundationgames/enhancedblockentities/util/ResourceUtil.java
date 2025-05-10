@@ -238,17 +238,17 @@ public enum ResourceUtil {;
                     for (Direction dir : EBEUtil.HORIZONTAL_DIRECTIONS) {
                         int rot = EBEUtil.angle(dir) + 90;
                         vars
-                                .append(variantY(t, "attachment=double_wall,facing="+dir.getName(), "builtin:bell_between_walls", rot))
-                                .append(variantY(t, "attachment=ceiling,facing="+dir.getName(), "builtin:bell_ceiling", rot + 90)) // adding 90 here and below to maintain Parity with vanilla's weird choice of rotations
-                                .append(variantY(t, "attachment=floor,facing="+dir.getName(), "builtin:bell_floor", rot + 90))
-                                .append(variantY(t, "attachment=single_wall,facing="+dir.getName(), "builtin:bell_wall", rot));
+                                .append(variantY(t, "attachment=double_wall,facing="+dir.name().toLowerCase(), "builtin:bell_between_walls", rot))
+                                .append(variantY(t, "attachment=ceiling,facing="+dir.name().toLowerCase(), "builtin:bell_ceiling", rot + 90)) // adding 90 here and below to maintain Parity with vanilla's weird choice of rotations
+                                .append(variantY(t, "attachment=floor,facing="+dir.name().toLowerCase(), "builtin:bell_floor", rot + 90))
+                                .append(variantY(t, "attachment=single_wall,facing="+dir.name().toLowerCase(), "builtin:bell_wall", rot));
                     }
                     return vars.get();
                 }, pack);
     }
 
     public static void addBedModels(DyeColor bedColor, EBEPack pack) {
-        String color = bedColor.getName();
+        String color = bedColor.name().toLowerCase();
 
         addParentTexModel(bedAOSuffix("block/template_bed_head"),
                 bedParticle(color) + kv("bed", "entity/bed/" + color),
@@ -261,15 +261,15 @@ public enum ResourceUtil {;
     }
 
     public static void addBedBlockState(DyeColor bedColor, EBEPack pack) {
-        String color = bedColor.getName();
+        String color = bedColor.name().toLowerCase();
         addBlockState(Identifier.of(color + "_bed"),
                 t -> {
                     var vars = new DelimitedAppender(",");
                     for (Direction dir : EBEUtil.HORIZONTAL_DIRECTIONS) {
                         int rot = EBEUtil.angle(dir) + 180;
                         vars
-                                .append(variantY(t, "part=head,facing="+dir.getName(), "block/" + bedColor + "_bed_head", rot))
-                                .append(variantY(t, "part=foot,facing="+dir.getName(), "block/" + bedColor + "_bed_foot", rot));
+                                .append(variantY(t, "part=head,facing="+dir.name().toLowerCase(), "block/" + bedColor + "_bed_head", rot))
+                                .append(variantY(t, "part=foot,facing="+dir.name().toLowerCase(), "block/" + bedColor + "_bed_foot", rot));
                     }
                     return vars.get();
                 }, pack);
@@ -281,8 +281,8 @@ public enum ResourceUtil {;
     }
 
     public static void addShulkerBoxModels(@Nullable DyeColor color, EBEPack pack) {
-        var texture = color != null ? "entity/shulker/shulker_"+color.getName() : "entity/shulker/shulker";
-        var shulkerBoxStr = color != null ? color.getName()+"_shulker_box" : "shulker_box";
+        var texture = color != null ? "entity/shulker/shulker_"+color.name().toLowerCase() : "entity/shulker/shulker";
+        var shulkerBoxStr = color != null ? color.name().toLowerCase()+"_shulker_box" : "shulker_box";
         var particle = "block/"+shulkerBoxStr;
         addParentTexModel("block/template_shulker_box",
                 list(kv("shulker", texture), kv("particle", particle)),
@@ -296,7 +296,7 @@ public enum ResourceUtil {;
     }
 
     public static void addShulkerBoxBlockStates(@Nullable DyeColor color, EBEPack pack) {
-        var shulkerBoxStr = color != null ? color.getName()+"_shulker_box" : "shulker_box";
+        var shulkerBoxStr = color != null ? color.name().toLowerCase()+"_shulker_box" : "shulker_box";
         addBlockState(Identifier.of(shulkerBoxStr),
                 t -> {
                     var vars = new DelimitedAppender(",");
@@ -305,7 +305,7 @@ public enum ResourceUtil {;
                             .append(variantXY(t, "facing=down", "builtin:"+shulkerBoxStr, 180, 0));
                     for (Direction dir : EBEUtil.HORIZONTAL_DIRECTIONS) {
                         int rot = EBEUtil.angle(dir) + 180;
-                        vars.append(variantXY(t, "facing="+dir.getName(), "builtin:"+shulkerBoxStr, 90, rot));
+                        vars.append(variantXY(t, "facing="+dir.name().toLowerCase(), "builtin:"+shulkerBoxStr, 90, rot));
                     }
                     return vars.get();
                 }, pack);
@@ -318,9 +318,9 @@ public enum ResourceUtil {;
 
     public static void addDecoratedPotPatternModels(RegistryKey<DecoratedPotPattern> patternKey, EBEPack pack) {
         for (Direction dir : EBEUtil.HORIZONTAL_DIRECTIONS) {
-            addParentTexModel("block/template_pottery_pattern_" + dir.getName(),
+            addParentTexModel("block/template_pottery_pattern_" + dir.name().toLowerCase(),
                     kv("pattern", TexturedRenderLayers.getDecoratedPotPatternTextureId(patternKey).getTextureId().toString()),
-                    Identifier.of("block/" + patternKey.getValue().getPath() + "_" + dir.getName()),
+                    Identifier.of("block/" + patternKey.getValue().getPath() + "_" + dir.name().toLowerCase()),
                     pack);
         }
     }

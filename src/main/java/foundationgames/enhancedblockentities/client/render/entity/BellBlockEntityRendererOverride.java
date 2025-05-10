@@ -3,19 +3,20 @@ package foundationgames.enhancedblockentities.client.render.entity;
 import foundationgames.enhancedblockentities.client.model.ModelIdentifiers;
 import foundationgames.enhancedblockentities.client.render.BlockEntityRendererOverride;
 import foundationgames.enhancedblockentities.util.EBEUtil;
+import net.fabricmc.fabric.api.client.model.loading.v1.ExtraModelKey;
 import net.minecraft.block.entity.BellBlockEntity;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
-import net.minecraft.client.render.model.BakedModel;
+import net.minecraft.client.render.model.BlockStateModel;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RotationAxis;
 
 public class BellBlockEntityRendererOverride extends BlockEntityRendererOverride {
-    private BakedModel bellModel = null;
+    private BlockStateModel bellModel = null;
 
     @Override
     public void render(BlockEntityRenderer<BlockEntity> renderer, BlockEntity blockEntity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
@@ -47,8 +48,8 @@ public class BellBlockEntityRendererOverride extends BlockEntityRendererOverride
         }
     }
 
-    private BakedModel getBellModel() {
-        return MinecraftClient.getInstance().getBakedModelManager().getModel(ModelIdentifiers.BELL_BODY);
+    private BlockStateModel getBellModel() {
+        return MinecraftClient.getInstance().getBakedModelManager().getModel(ExtraModelKey.create(ModelIdentifiers.BELL_BODY::toString));
     }
 
     @Override

@@ -3,7 +3,9 @@ package foundationgames.enhancedblockentities.client.model;
 import foundationgames.enhancedblockentities.EnhancedBlockEntities;
 import foundationgames.enhancedblockentities.config.EBEConfig;
 import foundationgames.enhancedblockentities.util.EBEUtil;
+import net.fabricmc.fabric.api.client.model.loading.v1.ExtraModelKey;
 import net.fabricmc.fabric.api.client.model.loading.v1.ModelLoadingPlugin;
+import net.fabricmc.fabric.api.client.model.loading.v1.SimpleUnbakedExtraModel;
 import net.minecraft.block.DecoratedPotPattern;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryKey;
@@ -80,7 +82,7 @@ public final class ModelIdentifiers implements ModelLoadingPlugin {
 
     static {
         for (DyeColor color : EBEUtil.DEFAULTED_DYE_COLORS) {
-            var id = color != null ? "block/"+color.getName()+"_shulker_box" : "block/shulker_box";
+            var id = color != null ? "block/"+color.name().toLowerCase()+"_shulker_box" : "block/shulker_box";
             SHULKER_BOXES.put(color, of(id, SHULKER_BOX_PREDICATE));
             SHULKER_BOX_BOTTOMS.put(color, of(id+"_bottom", SHULKER_BOX_PREDICATE));
             SHULKER_BOX_LIDS.put(color, of(id+"_lid", SHULKER_BOX_PREDICATE));
@@ -104,7 +106,7 @@ public final class ModelIdentifiers implements ModelLoadingPlugin {
             var ids = new Identifier[orderedHorizontalDirs.length];;
 
             for (int i = 0; i < 4; i++) {
-                ids[i] = of("block/" + pattern + "_" + orderedHorizontalDirs[i].getName(),
+                ids[i] = of("block/" + pattern + "_" + orderedHorizontalDirs[i].name().toLowerCase(),
                         DECORATED_POT_PREDICATE);
             }
 
@@ -124,7 +126,9 @@ public final class ModelIdentifiers implements ModelLoadingPlugin {
 
         for (var entry : modelLoaders.entrySet()) {
             if (entry.getKey().test(config)) {
-                ctx.addModels(entry.getValue());
+                for (var id : entry.getValue()) {
+                    ctx.addModel(ExtraModelKey.create(entry.getValue()::toString), SimpleUnbakedExtraModel.blockStateModel(id));
+                }
             }
         }
     }

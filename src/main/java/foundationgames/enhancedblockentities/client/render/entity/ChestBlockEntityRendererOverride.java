@@ -9,7 +9,7 @@ import net.minecraft.block.entity.LidOpenable;
 import net.minecraft.block.enums.ChestType;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
-import net.minecraft.client.render.model.BakedModel;
+import net.minecraft.client.render.model.BlockStateModel;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -19,11 +19,11 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 public class ChestBlockEntityRendererOverride extends BlockEntityRendererOverride {
-    private BakedModel[] models = null;
-    private final Supplier<BakedModel[]> modelGetter;
+    private BlockStateModel[] models = null;
+    private final Supplier<BlockStateModel[]> modelGetter;
     private final Function<BlockEntity, Integer> modelSelector;
 
-    public ChestBlockEntityRendererOverride(Supplier<BakedModel[]> modelGetter, Function<BlockEntity, Integer> modelSelector) {
+    public ChestBlockEntityRendererOverride(Supplier<BlockStateModel[]> modelGetter, Function<BlockEntity, Integer> modelSelector) {
         this.modelGetter = modelGetter;
         this.modelSelector = modelSelector;
     }
@@ -47,6 +47,7 @@ public class ChestBlockEntityRendererOverride extends BlockEntityRendererOverrid
             rot = 1f - (rot * rot * rot);
             matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(rot * 90));
             matrices.translate(0, -yPiv, -zPiv);
+
             EBEUtil.renderBakedModel(vertexConsumers, blockEntity.getCachedState(), matrices, models[modelSelector.apply(blockEntity)], light, overlay);
 
             matrices.pop();

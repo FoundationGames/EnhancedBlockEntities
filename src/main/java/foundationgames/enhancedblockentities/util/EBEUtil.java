@@ -1,14 +1,16 @@
 package foundationgames.enhancedblockentities.util;
 
 import foundationgames.enhancedblockentities.EnhancedBlockEntities;
+import net.caffeinemc.mods.sodium.client.services.PlatformModelAccess;
+import net.caffeinemc.mods.sodium.client.util.DirectionUtil;
 import net.fabricmc.fabric.api.renderer.v1.model.ModelHelper;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.block.BlockState;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.RenderLayers;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.render.model.BakedModel;
-import net.minecraft.client.render.model.BakedQuad;
+import net.minecraft.client.render.model.*;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.resource.DefaultResourcePack;
 import net.minecraft.resource.ResourcePack;
@@ -16,9 +18,11 @@ import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.random.Random;
+import net.minecraft.world.BlockView;
 
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.List;
 
 public enum EBEUtil {;
     private static final Random dummy = Random.create();
@@ -41,11 +45,20 @@ public enum EBEUtil {;
         return h >= 0 ? h * 90 : 0;
     }
 
-    public static void renderBakedModel(VertexConsumerProvider vertexConsumers, BlockState state, MatrixStack matrices, BakedModel model, int light, int overlay) {
+    private static final ThreadLocal<Random> RANDOM = ThreadLocal.withInitial(() -> Random.create(42L));
+
+    public static void renderBakedModel(VertexConsumerProvider vertexConsumers, BlockState state, MatrixStack matrices, BlockStateModel model, int light, int overlay) {
         VertexConsumer vertices = vertexConsumers.getBuffer(RenderLayers.getEntityBlockLayer(state));
-        for (int i = 0; i <= 6; i++) {
-            for (BakedQuad q : model.getQuads(null, ModelHelper.faceFromIndex(i), dummy)) {
-                vertices.quad(matrices.peek(), q, 1, 1, 1, 1, light, overlay);
+
+        if (model == null) return;
+        var list = model.getParts(RANDOM.get());
+
+        for (BlockModelPart part : list) {
+            for (Direction direction : Direction.values()) {
+                List<BakedQuad> quads = part.getQuads(direction);
+                for (BakedQuad quad : quads) {
+                    vertices.quad(matrices.peek(), quad, 1, 1, 1, 1, light, overlay);
+                }
             }
         }
     }

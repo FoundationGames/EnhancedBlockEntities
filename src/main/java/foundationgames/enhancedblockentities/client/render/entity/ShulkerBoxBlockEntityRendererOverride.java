@@ -8,7 +8,7 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.ShulkerBoxBlockEntity;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
-import net.minecraft.client.render.model.BakedModel;
+import net.minecraft.client.render.model.BlockStateModel;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.math.Direction;
@@ -19,10 +19,10 @@ import java.util.Map;
 import java.util.function.Consumer;
 
 public class ShulkerBoxBlockEntityRendererOverride extends BlockEntityRendererOverride {
-    private final Map<DyeColor, BakedModel> models = new HashMap<>();
-    private final Consumer<Map<DyeColor, BakedModel>> modelMapFiller;
+    private final Map<DyeColor, BlockStateModel> models = new HashMap<>();
+    private final Consumer<Map<DyeColor, BlockStateModel>> modelMapFiller;
 
-    public ShulkerBoxBlockEntityRendererOverride(Consumer<Map<DyeColor, BakedModel>> modelMapFiller) {
+    public ShulkerBoxBlockEntityRendererOverride(Consumer<Map<DyeColor, BlockStateModel>> modelMapFiller) {
         this.modelMapFiller = modelMapFiller;
     }
 

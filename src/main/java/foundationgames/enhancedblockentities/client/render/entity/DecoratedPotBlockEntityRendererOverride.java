@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableMap;
 import foundationgames.enhancedblockentities.client.model.ModelIdentifiers;
 import foundationgames.enhancedblockentities.client.render.BlockEntityRendererOverride;
 import foundationgames.enhancedblockentities.util.EBEUtil;
+import net.fabricmc.fabric.api.client.model.loading.v1.ExtraModelKey;
 import net.minecraft.block.DecoratedPotPattern;
 import net.minecraft.block.DecoratedPotPatterns;
 import net.minecraft.block.entity.BlockEntity;
@@ -11,7 +12,7 @@ import net.minecraft.block.entity.DecoratedPotBlockEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
-import net.minecraft.client.render.model.BakedModel;
+import net.minecraft.client.render.model.BlockStateModel;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryKey;
@@ -23,25 +24,25 @@ import java.util.Map;
 public class DecoratedPotBlockEntityRendererOverride extends BlockEntityRendererOverride {
     public static final float WOBBLE_STRENGTH = 1f / 64;
 
-    private BakedModel baseModel = null;
-    private Map<RegistryKey<DecoratedPotPattern>, BakedModel[]> potPatternModels = null;
+    private BlockStateModel baseModel = null;
+    private Map<RegistryKey<DecoratedPotPattern>, BlockStateModel[]> potPatternModels = null;
 
     private void tryGetModels() {
         var models = MinecraftClient.getInstance().getBakedModelManager();
 
         if (this.baseModel == null) {
-            this.baseModel = models.getModel(ModelIdentifiers.DECORATED_POT_BASE);
+            this.baseModel = models.getModel(ExtraModelKey.create(ModelIdentifiers.DECORATED_POT_BASE::toString));
         }
 
         if (this.potPatternModels == null) {
-            var builder = ImmutableMap.<RegistryKey<DecoratedPotPattern>, BakedModel[]>builder();
+            var builder = ImmutableMap.<RegistryKey<DecoratedPotPattern>, BlockStateModel[]>builder();
 
             Registries.DECORATED_POT_PATTERN.getKeys().forEach(k -> {
                 var patternModelIDs = ModelIdentifiers.POTTERY_PATTERNS.get(k);
-                BakedModel[] patternPerFaceModels = new BakedModel[patternModelIDs.length];
+                BlockStateModel[] patternPerFaceModels = new BlockStateModel[patternModelIDs.length];
 
                 for (int i = 0; i < patternModelIDs.length; i++) {
-                    patternPerFaceModels[i] = models.getModel(patternModelIDs[i]);
+                    patternPerFaceModels[i] = models.getModel(ExtraModelKey.create(patternModelIDs[i]::toString));
                 }
 
                 builder.put(k, patternPerFaceModels);

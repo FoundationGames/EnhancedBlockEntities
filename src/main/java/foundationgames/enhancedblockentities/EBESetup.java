@@ -18,6 +18,7 @@ import foundationgames.enhancedblockentities.util.DateUtil;
 import foundationgames.enhancedblockentities.util.EBEUtil;
 import foundationgames.enhancedblockentities.util.ResourceUtil;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
+import net.fabricmc.fabric.api.client.model.loading.v1.ExtraModelKey;
 import net.fabricmc.fabric.api.client.model.loading.v1.FabricBakedModelManager;
 import net.fabricmc.fabric.api.client.model.loading.v1.ModelLoadingPlugin;
 import net.minecraft.block.Block;
@@ -28,7 +29,7 @@ import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.block.enums.ChestType;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.RenderLayer;
-import net.minecraft.client.render.model.BakedModel;
+import net.minecraft.client.render.model.BlockStateModel;
 import net.minecraft.registry.Registries;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.DyeColor;
@@ -131,7 +132,7 @@ public enum EBESetup {;
         EBEPack pCompat = ResourceUtil.getPackForCompat();
 
         for (DyeColor color : EBEUtil.DEFAULTED_DYE_COLORS) {
-            var id = color != null ? color.getName()+"_shulker_box" : "shulker_box";
+            var id = color != null ? color.name().toLowerCase()+"_shulker_box" : "shulker_box";
             ResourceUtil.addShulkerBoxBlockStates(color, pCompat);
             ResourceUtil.addShulkerBoxModels(color, p);
             ResourceUtil.addParentModel("block/"+id, Identifier.of("item/"+id), p);
@@ -290,7 +291,7 @@ public enum EBESetup {;
         ));
         for (DyeColor color : EBEUtil.DEFAULTED_DYE_COLORS) {
             ModelLoadingPlugin.register(new DynamicModelProvidingPlugin(
-                    Identifier.of("builtin", color != null ? color.getName()+"_shulker_box" : "shulker_box"),
+                    Identifier.of("builtin", color != null ? color.name().toLowerCase()+"_shulker_box" : "shulker_box"),
                     () -> new DynamicUnbakedModel(
                             new Identifier[] {
                                     ModelIdentifiers.SHULKER_BOXES.get(color),
@@ -326,33 +327,33 @@ public enum EBESetup {;
         EnhancedBlockEntityRegistry.register(Blocks.CHEST, BlockEntityType.CHEST, BlockEntityRenderCondition.CHEST,
                 new ChestBlockEntityRendererOverride(() -> {
                     FabricBakedModelManager manager =  MinecraftClient.getInstance().getBakedModelManager();
-                    return new BakedModel[] {
-                            manager.getModel(ModelIdentifiers.CHEST_CENTER_LID),
-                            manager.getModel(ModelIdentifiers.CHEST_LEFT_LID),
-                            manager.getModel(ModelIdentifiers.CHEST_RIGHT_LID),
-                            manager.getModel(ModelIdentifiers.CHRISTMAS_CHEST_CENTER_LID),
-                            manager.getModel(ModelIdentifiers.CHRISTMAS_CHEST_LEFT_LID),
-                            manager.getModel(ModelIdentifiers.CHRISTMAS_CHEST_RIGHT_LID)
+                    return new BlockStateModel[] {
+                            manager.getModel(ExtraModelKey.create(ModelIdentifiers.CHEST_CENTER_LID::toString)),
+                            manager.getModel(ExtraModelKey.create(ModelIdentifiers.CHEST_LEFT_LID::toString)),
+                            manager.getModel(ExtraModelKey.create(ModelIdentifiers.CHEST_RIGHT_LID::toString)),
+                            manager.getModel(ExtraModelKey.create(ModelIdentifiers.CHRISTMAS_CHEST_CENTER_LID::toString)),
+                            manager.getModel(ExtraModelKey.create(ModelIdentifiers.CHRISTMAS_CHEST_LEFT_LID::toString)),
+                            manager.getModel(ExtraModelKey.create(ModelIdentifiers.CHRISTMAS_CHEST_RIGHT_LID::toString))
                     };
                 }, christmasChestSelector)
         );
         EnhancedBlockEntityRegistry.register(Blocks.TRAPPED_CHEST, BlockEntityType.TRAPPED_CHEST, BlockEntityRenderCondition.CHEST,
                 new ChestBlockEntityRendererOverride(() -> {
                     FabricBakedModelManager manager = MinecraftClient.getInstance().getBakedModelManager();
-                    return new BakedModel[] {
-                            manager.getModel(ModelIdentifiers.TRAPPED_CHEST_CENTER_LID),
-                            manager.getModel(ModelIdentifiers.TRAPPED_CHEST_LEFT_LID),
-                            manager.getModel(ModelIdentifiers.TRAPPED_CHEST_RIGHT_LID),
-                            manager.getModel(ModelIdentifiers.CHRISTMAS_CHEST_CENTER_LID),
-                            manager.getModel(ModelIdentifiers.CHRISTMAS_CHEST_LEFT_LID),
-                            manager.getModel(ModelIdentifiers.CHRISTMAS_CHEST_RIGHT_LID)
+                    return new BlockStateModel[] {
+                            manager.getModel(ExtraModelKey.create(ModelIdentifiers.TRAPPED_CHEST_CENTER_LID::toString)),
+                            manager.getModel(ExtraModelKey.create(ModelIdentifiers.TRAPPED_CHEST_LEFT_LID::toString)),
+                            manager.getModel(ExtraModelKey.create(ModelIdentifiers.TRAPPED_CHEST_RIGHT_LID::toString)),
+                            manager.getModel(ExtraModelKey.create(ModelIdentifiers.CHRISTMAS_CHEST_CENTER_LID::toString)),
+                            manager.getModel(ExtraModelKey.create(ModelIdentifiers.CHRISTMAS_CHEST_LEFT_LID::toString)),
+                            manager.getModel(ExtraModelKey.create(ModelIdentifiers.CHRISTMAS_CHEST_RIGHT_LID::toString))
                     };
                 }, christmasChestSelector)
         );
         EnhancedBlockEntityRegistry.register(Blocks.ENDER_CHEST, BlockEntityType.ENDER_CHEST, BlockEntityRenderCondition.CHEST,
                 new ChestBlockEntityRendererOverride(() -> {
                     FabricBakedModelManager manager = MinecraftClient.getInstance().getBakedModelManager();
-                    return new BakedModel[] { manager.getModel(ModelIdentifiers.ENDER_CHEST_CENTER_LID) };
+                    return new BlockStateModel[] { manager.getModel(ExtraModelKey.create(ModelIdentifiers.ENDER_CHEST_CENTER_LID::toString)) };
                 }, entity -> 0)
         );
     }
@@ -429,7 +430,7 @@ public enum EBESetup {;
                     new ShulkerBoxBlockEntityRendererOverride((map) -> {
                         var models =  MinecraftClient.getInstance().getBakedModelManager();
                         for (DyeColor dc : EBEUtil.DEFAULTED_DYE_COLORS) {
-                            map.put(dc, models.getModel(ModelIdentifiers.SHULKER_BOX_LIDS.get(dc)));
+                            map.put(dc, models.getModel(ExtraModelKey.create(ModelIdentifiers.SHULKER_BOX_LIDS.get(dc)::toString)));
                         }
                     })
             );
