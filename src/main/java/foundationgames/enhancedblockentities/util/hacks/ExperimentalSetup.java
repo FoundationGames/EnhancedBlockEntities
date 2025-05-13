@@ -57,7 +57,7 @@ public enum ExperimentalSetup {;
         EBEPack p = ResourceUtil.getTopLevelPack();
 
         for (var color : DyeColor.values()) {
-            ResourceHacks.addBedParticleTexture(color.name().toLowerCase(), "entity/bed/"+color.name().toLowerCase(), manager, p);
+            ResourceHacks.addBedParticleTexture(color.getId(), "entity/bed/"+color.getId(), manager, p);
         }
     }
 

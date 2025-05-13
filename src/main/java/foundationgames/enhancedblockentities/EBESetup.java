@@ -132,7 +132,7 @@ public enum EBESetup {;
         EBEPack pCompat = ResourceUtil.getPackForCompat();
 
         for (DyeColor color : EBEUtil.DEFAULTED_DYE_COLORS) {
-            var id = color != null ? color.name().toLowerCase()+"_shulker_box" : "shulker_box";
+            var id = color != null ? color.getId()+"_shulker_box" : "shulker_box";
             ResourceUtil.addShulkerBoxBlockStates(color, pCompat);
             ResourceUtil.addShulkerBoxModels(color, p);
             ResourceUtil.addParentModel("block/"+id, Identifier.of("item/"+id), p);
@@ -291,7 +291,7 @@ public enum EBESetup {;
         ));
         for (DyeColor color : EBEUtil.DEFAULTED_DYE_COLORS) {
             ModelLoadingPlugin.register(new DynamicModelProvidingPlugin(
-                    Identifier.of("builtin", color != null ? color.name().toLowerCase()+"_shulker_box" : "shulker_box"),
+                    Identifier.of("builtin", color != null ? color.getId()+"_shulker_box" : "shulker_box"),
                     () -> new DynamicUnbakedModel(
                             new Identifier[] {
                                     ModelIdentifiers.SHULKER_BOXES.get(color),
