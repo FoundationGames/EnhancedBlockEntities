@@ -35,8 +35,8 @@ public final class EnhancedBlockEntities implements ClientModInitializer {
         FabricLoader.getInstance().getModContainer(ID).ifPresent(mod -> {
             var roots = mod.getRootPaths();
 
-            if (roots.size() > 0) {
-                TEMPLATE_LOADER.setRoot(roots.get(0).resolve("templates"));
+            if (!roots.isEmpty()) {
+                TEMPLATE_LOADER.setRoot(roots.getFirst().resolve("templates"));
             }
         });
 

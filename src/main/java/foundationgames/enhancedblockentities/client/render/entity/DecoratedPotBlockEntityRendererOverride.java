@@ -31,7 +31,7 @@ public class DecoratedPotBlockEntityRendererOverride extends BlockEntityRenderer
         var models = MinecraftClient.getInstance().getBakedModelManager();
 
         if (this.baseModel == null) {
-            this.baseModel = models.getModel(ExtraModelKey.create(ModelIdentifiers.DECORATED_POT_BASE::toString));
+            this.baseModel = models.getModel(ModelIdentifiers.DECORATED_POT_BASE_KEY);
         }
 
         if (this.potPatternModels == null) {
@@ -42,7 +42,7 @@ public class DecoratedPotBlockEntityRendererOverride extends BlockEntityRenderer
                 BlockStateModel[] patternPerFaceModels = new BlockStateModel[patternModelIDs.length];
 
                 for (int i = 0; i < patternModelIDs.length; i++) {
-                    patternPerFaceModels[i] = models.getModel(ExtraModelKey.create(patternModelIDs[i]::toString));
+                    patternPerFaceModels[i] = models.getModel(patternModelIDs[i]);
                 }
 
                 builder.put(k, patternPerFaceModels);

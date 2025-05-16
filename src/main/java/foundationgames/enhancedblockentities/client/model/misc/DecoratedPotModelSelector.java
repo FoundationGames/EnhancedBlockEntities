@@ -3,10 +3,12 @@ package foundationgames.enhancedblockentities.client.model.misc;
 import foundationgames.enhancedblockentities.client.model.ModelIdentifiers;
 import foundationgames.enhancedblockentities.client.model.ModelSelector;
 import foundationgames.enhancedblockentities.util.duck.AppearanceStateHolder;
+import net.fabricmc.fabric.api.client.model.loading.v1.ExtraModelKey;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.DecoratedPotPattern;
 import net.minecraft.block.DecoratedPotPatterns;
 import net.minecraft.block.entity.DecoratedPotBlockEntity;
+import net.minecraft.client.render.model.BlockStateModel;
 import net.minecraft.item.Item;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryKey;
@@ -36,12 +38,12 @@ public class DecoratedPotModelSelector extends ModelSelector {
         this.potteryPatterns = new ArrayList<>(Registries.DECORATED_POT_PATTERN.getKeys());
     }
 
-    public Identifier[] createModelIDs() {
+    public ExtraModelKey<BlockStateModel>[] createModelIDs() {
         ModelIdentifiers.refreshPotteryPatterns();
 
-        var ids = new Identifier[BUILTIN_MODEL_COUNT + potteryPatterns.size() * 4];
-        ids[IDX_EMPTY] = ModelIdentifiers.DECORATED_POT_SHAKING;
-        ids[IDX_BASE_POT] = ModelIdentifiers.DECORATED_POT_BASE;
+        var ids = new ExtraModelKey[BUILTIN_MODEL_COUNT + potteryPatterns.size() * 4];
+        ids[IDX_EMPTY] = ModelIdentifiers.DECORATED_POT_SHAKING_KEY;
+        ids[IDX_BASE_POT] = ModelIdentifiers.DECORATED_POT_BASE_KEY;
 
         int idIndex = BUILTIN_MODEL_COUNT;
         for (int dirIndex = 0; dirIndex < 4; dirIndex++) {

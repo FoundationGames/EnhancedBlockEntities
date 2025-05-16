@@ -1,12 +1,25 @@
 package foundationgames.enhancedblockentities.client.model;
 
+import net.fabricmc.fabric.api.renderer.v1.Renderer;
+import net.fabricmc.fabric.api.renderer.v1.material.RenderMaterial;
+import net.fabricmc.fabric.api.renderer.v1.mesh.QuadEmitter;
 import net.fabricmc.fabric.api.renderer.v1.model.FabricBlockStateModel;
-import net.minecraft.client.render.model.BlockModelPart;
-import net.minecraft.client.render.model.BlockStateModel;
+import net.fabricmc.fabric.api.renderer.v1.model.ModelHelper;
+import net.minecraft.block.BlockState;
+import net.minecraft.client.render.model.*;
 import net.minecraft.client.texture.Sprite;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.random.Random;
+import net.minecraft.world.BlockRenderView;
+import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 public class DynamicBakedModel implements BlockStateModel, FabricBlockStateModel {
     private final BlockStateModel[] models;
@@ -25,19 +38,15 @@ public class DynamicBakedModel implements BlockStateModel, FabricBlockStateModel
         this.displayedModels = ThreadLocal.withInitial(() -> new BlockStateModel[selector.displayedModelCount]);
     }
 
-/*    @Override
-    public boolean isVanillaAdapter() {
-        return false;
-    }
-
     @Override
-    public void emitBlockQuads(QuadEmitter emitter, BlockRenderView view, BlockState state, BlockPos pos, Supplier<Random> rng, Predicate<@Nullable Direction> cullTest) {
+    public void emitQuads(QuadEmitter emitter, BlockRenderView view, BlockPos pos, BlockState state, Random random, Predicate<@Nullable Direction> cullTest) {
         RenderMaterial mat = null;
 
         var indices = this.activeModelIndices.get();
         var models = this.displayedModels.get();
 
-        getSelector().writeModelIndices(view, state, pos, rng, indices);
+
+        getSelector().writeModelIndices(view, state, pos, () -> random, indices);
         for (int i = 0; i < indices.length; i++) {
             int modelIndex = indices[i];
 
@@ -56,13 +65,15 @@ public class DynamicBakedModel implements BlockStateModel, FabricBlockStateModel
         for (int i = 0; i <= 6; i++) {
             Direction dir = ModelHelper.faceFromIndex(i);
             for (BlockStateModel model : models) if (model != null) {
-                for (BakedQuad quad : model.getQuads(state, dir, rng.get())) {
-                    emitter.fromVanilla(quad, mat, dir);
-                    emitter.emit();
+                for (BlockModelPart part : model.getParts(random)) {
+                    for (BakedQuad quad : part.getQuads(dir)) {
+                        emitter.fromVanilla(quad, mat, dir);
+                        emitter.emit();
+                    }
                 }
             }
         }
-    }*/
+    }
 
 /*    @Override
     public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction face, Random random) {
@@ -91,10 +102,6 @@ public class DynamicBakedModel implements BlockStateModel, FabricBlockStateModel
         return null;
     }*/
 
-    public BlockStateModel[] getModels() {
-        return models;
-    }
-
     public ModelSelector getSelector() {
         return selector;
     }
@@ -105,7 +112,8 @@ public class DynamicBakedModel implements BlockStateModel, FabricBlockStateModel
 
     @Override
     public void addParts(Random random, List<BlockModelPart> parts) {
-
+        // add parts to models
+        return;
     }
 
     /**

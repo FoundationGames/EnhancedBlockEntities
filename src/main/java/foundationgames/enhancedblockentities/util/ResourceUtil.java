@@ -156,16 +156,16 @@ public enum ResourceUtil {;
     public static void addChestBlockStates(String chestName, EBEPack pack) {
         addBlockState(Identifier.of(chestName),
                 t0 -> list(
-                        variantHFacing(t0, "type=single,facing=", "builtin:"+chestName+"_center"),
-                        variantHFacing(t0, "type=left,facing=", "builtin:"+chestName+"_left"),
-                        variantHFacing(t0, "type=right,facing=", "builtin:"+chestName+"_right")
+                        variantHFacing(t0, "type=single,facing=", "minecraft:block/"+chestName+"_center"),
+                        variantHFacing(t0, "type=left,facing=", "minecraft:block/"+chestName+"_left"),
+                        variantHFacing(t0, "type=right,facing=", "minecraft:block/"+chestName+"_right")
                 ), pack);
     }
 
     public static void addSingleChestOnlyBlockStates(String chestName, EBEPack pack) {
         addBlockState(Identifier.of(chestName),
                 t0 -> list(
-                        variantHFacing(t0, "facing=", "builtin:"+chestName+"_center")
+                        variantHFacing(t0, "facing=", "minecraft:block/"+chestName+"_center")
                 ), pack);
     }
 
@@ -238,10 +238,10 @@ public enum ResourceUtil {;
                     for (Direction dir : EBEUtil.HORIZONTAL_DIRECTIONS) {
                         int rot = EBEUtil.angle(dir) + 90;
                         vars
-                                .append(variantY(t, "attachment=double_wall,facing="+dir.getId(), "builtin:bell_between_walls", rot))
-                                .append(variantY(t, "attachment=ceiling,facing="+dir.getId(), "builtin:bell_ceiling", rot + 90)) // adding 90 here and below to maintain Parity with vanilla's weird choice of rotations
-                                .append(variantY(t, "attachment=floor,facing="+dir.getId(), "builtin:bell_floor", rot + 90))
-                                .append(variantY(t, "attachment=single_wall,facing="+dir.getId(), "builtin:bell_wall", rot));
+                                .append(variantY(t, "attachment=double_wall,facing="+dir.getId(), "minecraft:block/bell_between_walls", rot))
+                                .append(variantY(t, "attachment=ceiling,facing="+dir.getId(), "minecraft:block/bell_ceiling", rot + 90)) // adding 90 here and below to maintain Parity with vanilla's weird choice of rotations
+                                .append(variantY(t, "attachment=floor,facing="+dir.getId(), "minecraft:block/bell_floor", rot + 90))
+                                .append(variantY(t, "attachment=single_wall,facing="+dir.getId(), "minecraft:block/bell_wall", rot));
                     }
                     return vars.get();
                 }, pack);
@@ -301,11 +301,11 @@ public enum ResourceUtil {;
                 t -> {
                     var vars = new DelimitedAppender(",");
                     vars
-                            .append(variant(t, "facing=up", "builtin:"+shulkerBoxStr))
-                            .append(variantXY(t, "facing=down", "builtin:"+shulkerBoxStr, 180, 0));
+                            .append(variant(t, "facing=up", "minecraft:block/"+shulkerBoxStr))
+                            .append(variantXY(t, "facing=down", "minecraft:block/"+shulkerBoxStr, 180, 0));
                     for (Direction dir : EBEUtil.HORIZONTAL_DIRECTIONS) {
                         int rot = EBEUtil.angle(dir) + 180;
-                        vars.append(variantXY(t, "facing="+dir.getId(), "builtin:"+shulkerBoxStr, 90, rot));
+                        vars.append(variantXY(t, "facing="+dir.getId(), "minecraft:block/"+shulkerBoxStr, 90, rot));
                     }
                     return vars.get();
                 }, pack);
@@ -313,7 +313,7 @@ public enum ResourceUtil {;
 
     public static void addDecoratedPotBlockState(EBEPack pack) {
         addBlockState(Identifier.of("decorated_pot"),
-                t -> variantHFacing(t, "facing=", "builtin:decorated_pot"), pack);
+                t -> variantHFacing(t, "facing=", "minecraft:block/decorated_pot"), pack);
     }
 
     public static void addDecoratedPotPatternModels(RegistryKey<DecoratedPotPattern> patternKey, EBEPack pack) {

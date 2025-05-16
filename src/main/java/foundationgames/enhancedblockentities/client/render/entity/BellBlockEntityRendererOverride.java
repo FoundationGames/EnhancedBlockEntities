@@ -49,7 +49,7 @@ public class BellBlockEntityRendererOverride extends BlockEntityRendererOverride
     }
 
     private BlockStateModel getBellModel() {
-        return MinecraftClient.getInstance().getBakedModelManager().getModel(ExtraModelKey.create(ModelIdentifiers.BELL_BODY::toString));
+        return MinecraftClient.getInstance().getBakedModelManager().getModel(ModelIdentifiers.BELL_BODY_KEY);
     }
 
     @Override
