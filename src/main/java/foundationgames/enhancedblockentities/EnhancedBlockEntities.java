@@ -12,7 +12,7 @@ import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.render.item.property.bool.BooleanProperties;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -59,9 +59,9 @@ public final class EnhancedBlockEntities implements ClientModInitializer {
     public static void reload(ReloadType type) {
         load();
         if (type == ReloadType.WORLD) {
-            MinecraftClient.getInstance().worldRenderer.reload();
+            Minecraft.getInstance().levelRenderer.allChanged();
         } else if (type == ReloadType.RESOURCES) {
-            MinecraftClient.getInstance().reloadResources();
+            Minecraft.getInstance().reloadResourcePacks();
         }
     }
 

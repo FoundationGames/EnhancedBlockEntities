@@ -1,3 +1,31 @@
+## ⚠️ Archival Notice (June 2026)
+
+> **This mod is likely no longer needed as of Minecraft Java Edition 26.2 (internal: 1.21.11).**
+>
+> Mojang completely overhauled the rendering pipeline in 26.x. The new architecture already addresses the core problems EBE was solving — see details below.
+>
+> **We propose this repository be archived.** If you disagree or have evidence the performance/visual gaps still exist in 26.x vanilla, please open an issue before archival.
+
+---
+
+### What happened to MC 26.2 support?
+
+A port to MC 26.2 was attempted in [PR #321](https://github.com/FoundationGames/EnhancedBlockEntities/pull/321). After ~8 hours of work, it became clear that a 1:1 port is not possible — the rendering system EBE is built on has been replaced:
+
+| EBE relied on | Removed/replaced in MC 26.x |
+|---|---|
+| `BakedModel` interface | Replaced by `BlockStateModel` (`net.minecraft.client.renderer.block.dispatch`) |
+| `BlockEntityRenderDispatcher.render(BlockEntityRenderer, BlockEntity, ...)` | Two-phase render: `BlockEntity` → `BlockEntityRenderState` → pixels |
+| `FabricBakedModelManager.getModel(Identifier)` | `FabricModelManager.getModel(ExtraModelKey<T>)` — typed key-based API |
+| `BlockRenderLayerMap` (Fabric API) | Removed entirely from Fabric API for 26.x |
+| `VertexConsumerProvider` / `MultiBufferSource` | Replaced by `SubmitNodeCollector` and new pipeline |
+
+Mojang's new **Entity Render State** system separates state extraction (game thread) from rendering (render thread), which provides the same caching and parallelism benefits EBE was delivering as a workaround. The new `BlockStateModel` pipeline already gets proper ambient occlusion and chunk-integrated lighting.
+
+The one remaining gap worth investigating: whether block entity render states get equivalent AO/lighting quality compared to static chunk geometry. If that gap exists in 26.x vanilla, a slimmer mod focused only on lighting quality (not full static baking) could still have value. If you want to explore this, check [PR #321](https://github.com/FoundationGames/EnhancedBlockEntities/pull/321) for a starting point.
+
+---
+
 ## Enhanced Block Entities
 
 EBE is a **100% client side** Minecraft mod for the **[Fabric](https://fabricmc.net/use/)** mod loader which aims to increase the performance of block entity rendering, as well as offer customizability via resource packs. <br/><br/>

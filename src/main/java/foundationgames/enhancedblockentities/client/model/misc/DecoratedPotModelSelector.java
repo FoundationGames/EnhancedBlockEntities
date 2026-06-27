@@ -3,18 +3,18 @@ package foundationgames.enhancedblockentities.client.model.misc;
 import foundationgames.enhancedblockentities.client.model.ModelIdentifiers;
 import foundationgames.enhancedblockentities.client.model.ModelSelector;
 import foundationgames.enhancedblockentities.util.duck.AppearanceStateHolder;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.DecoratedPotPattern;
-import net.minecraft.block.DecoratedPotPatterns;
-import net.minecraft.block.entity.DecoratedPotBlockEntity;
-import net.minecraft.item.Item;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.random.Random;
-import net.minecraft.world.BlockRenderView;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.BlockAndTintGetter;
+import net.minecraft.world.level.block.DecoratedPotPattern;
+import net.minecraft.world.level.block.DecoratedPotPatterns;
+import net.minecraft.world.level.block.entity.DecoratedPotBlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -28,18 +28,18 @@ public class DecoratedPotModelSelector extends ModelSelector {
     public static final int IDX_EMPTY = 0;
     public static final int IDX_BASE_POT = 1;
 
-    private final List<RegistryKey<DecoratedPotPattern>> potteryPatterns;
+    private final List<ResourceKey<DecoratedPotPattern>> potteryPatterns;
 
     public DecoratedPotModelSelector() {
         super(5);
 
-        this.potteryPatterns = new ArrayList<>(Registries.DECORATED_POT_PATTERN.getKeys());
+        this.potteryPatterns = new ArrayList<>(BuiltInRegistries.DECORATED_POT_PATTERN.registryKeySet());
     }
 
-    public Identifier[] createModelIDs() {
+    public ResourceLocation[] createModelIDs() {
         ModelIdentifiers.refreshPotteryPatterns();
 
-        var ids = new Identifier[BUILTIN_MODEL_COUNT + potteryPatterns.size() * 4];
+        var ids = new ResourceLocation[BUILTIN_MODEL_COUNT + potteryPatterns.size() * 4];
         ids[IDX_EMPTY] = ModelIdentifiers.DECORATED_POT_SHAKING;
         ids[IDX_BASE_POT] = ModelIdentifiers.DECORATED_POT_BASE;
 
@@ -56,7 +56,7 @@ public class DecoratedPotModelSelector extends ModelSelector {
     }
 
     @Override
-    public void writeModelIndices(BlockRenderView view, BlockState state, BlockPos pos, Supplier<Random> rand, int[] indices) {
+    public void writeModelIndices(BlockAndTintGetter view, BlockState state, BlockPos pos, Supplier<RandomSource> rand, int[] indices) {
         final int patternCount = potteryPatterns.size();
 
         indices[0] = IDX_BASE_POT;
@@ -82,6 +82,6 @@ public class DecoratedPotModelSelector extends ModelSelector {
     }
 
     private int getPatternIndex(Optional<Item> sherd, int max) {
-        return MathHelper.clamp(this.potteryPatterns.indexOf(sherd.map(DecoratedPotPatterns::fromSherd).orElse(DecoratedPotPatterns.BLANK)), 0, max - 1);
+        return Mth.clamp(this.potteryPatterns.indexOf(sherd.map(DecoratedPotPatterns::fromSherd).orElse(DecoratedPotPatterns.BLANK)), 0, max - 1);
     }
 }

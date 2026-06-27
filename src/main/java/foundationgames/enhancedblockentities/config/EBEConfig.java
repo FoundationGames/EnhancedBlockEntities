@@ -4,7 +4,7 @@ import foundationgames.enhancedblockentities.EnhancedBlockEntities;
 import foundationgames.enhancedblockentities.util.ConvUtil;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
-import net.minecraft.text.Text;
+import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
@@ -48,7 +48,7 @@ public class EBEConfig {
     public boolean shulkerBoxAO = false;
     public boolean decoratedPotAO = false;
     public String christmasChests = "allowed";
-    public String signTextRendering = "smart";
+    public String signComponentRendering = "smart";
     public boolean experimentalChests = true;
     public boolean experimentalBeds = true;
     public boolean experimentalSigns = true;
@@ -70,7 +70,7 @@ public class EBEConfig {
         properties.setProperty(SHULKER_BOX_AO_KEY, Boolean.toString(shulkerBoxAO));
         properties.setProperty(DECORATED_POT_AO_KEY, Boolean.toString(decoratedPotAO));
         properties.setProperty(CHRISTMAS_CHESTS_KEY, christmasChests);
-        properties.setProperty(SIGN_TEXT_RENDERING_KEY, signTextRendering);
+        properties.setProperty(SIGN_TEXT_RENDERING_KEY, signComponentRendering);
         properties.setProperty(EXPERIMENTAL_CHESTS_KEY, Boolean.toString(experimentalChests));
         properties.setProperty(EXPERIMENTAL_BEDS_KEY, Boolean.toString(experimentalBeds));
         properties.setProperty(EXPERIMENTAL_SIGNS_KEY, Boolean.toString(experimentalSigns));
@@ -93,10 +93,10 @@ public class EBEConfig {
         }
         String sST = properties.getProperty(SIGN_TEXT_RENDERING_KEY);
         if (sST != null && (sST.equals("smart") || sST.equals("all") || sST.equals("most") || sST.equals("some") || sST.equals("few"))) {
-            this.signTextRendering = sST;
+            this.signComponentRendering = sST;
         } else {
             EnhancedBlockEntities.LOG.warn("Configuration option 'sign_text_rendering' must be one of: 'smart', 'all', 'most', 'some', 'few'");
-            this.signTextRendering = "smart";
+            this.signComponentRendering = "smart";
         }
         this.chestAO = ConvUtil.defaultedBool(properties.getProperty(CHEST_AO_KEY), false);
         this.signAO = ConvUtil.defaultedBool(properties.getProperty(SIGN_AO_KEY), false);
@@ -162,11 +162,11 @@ public class EBEConfig {
         for (var modifier : ebeCompatCfgModifiers) {
             var mod = modifier.getProvider();
             var overrides = new Properties();
-            var reasons = new HashMap<String, Text>();
+            var reasons = new HashMap<String, Component>();
             modifier.getEntrypoint().accept(overrides, reasons);
 
             for (var key : overrides.stringPropertyNames()) {
-                @Nullable Text reason = reasons.get(key);
+                @Nullable Component reason = reasons.get(key);
                 this.overrides.put(key, new Override(mod, reason));
             }
 
@@ -174,5 +174,5 @@ public class EBEConfig {
         }
     }
 
-    public record Override(ModContainer modResponsible, @Nullable Text reason) {}
+    public record Override(ModContainer modResponsible, @Nullable Component reason) {}
 }

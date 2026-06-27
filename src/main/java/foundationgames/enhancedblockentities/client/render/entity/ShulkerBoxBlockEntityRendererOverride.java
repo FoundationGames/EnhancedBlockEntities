@@ -2,17 +2,17 @@ package foundationgames.enhancedblockentities.client.render.entity;
 
 import foundationgames.enhancedblockentities.client.render.BlockEntityRendererOverride;
 import foundationgames.enhancedblockentities.util.EBEUtil;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.ShulkerBoxBlock;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.ShulkerBoxBlockEntity;
-import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.render.block.entity.BlockEntityRenderer;
-import net.minecraft.client.render.model.BakedModel;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.util.DyeColor;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.RotationAxis;
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
+import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.core.Direction;
+import com.mojang.math.Axis;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.level.block.ShulkerBoxBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.ShulkerBoxBlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -27,31 +27,31 @@ public class ShulkerBoxBlockEntityRendererOverride extends BlockEntityRendererOv
     }
 
     @Override
-    public void render(BlockEntityRenderer<BlockEntity> renderer, BlockEntity blockEntity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
+    public void render(BlockEntityRenderer<BlockEntity> renderer, BlockEntity blockEntity, float tickDelta, PoseStack matrices, MultiBufferSource vertexConsumers, int light, int overlay) {
         if (models.isEmpty()) modelMapFiller.accept(models);
         if (blockEntity instanceof ShulkerBoxBlockEntity entity) {
             Direction dir = Direction.UP;
-            BlockState state = entity.getWorld().getBlockState(entity.getPos());
+            BlockState state = entity.getLevel().getBlockState(entity.getBlockPos());
             if (state.getBlock() instanceof ShulkerBoxBlock) {
-                dir = state.get(ShulkerBoxBlock.FACING);
+                dir = state.getValue(ShulkerBoxBlock.FACING);
             }
-            matrices.push();
+            matrices.pushPose();
 
-            float animation = entity.getAnimationProgress(tickDelta);
+            float animation = entity.getProgress(tickDelta);
 
             matrices.translate(0.5, 0.5, 0.5);
-            matrices.multiply(dir.getRotationQuaternion());
-            matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(270 * animation));
+            matrices.mulPose(dir.getRotation());
+            matrices.mulPose(Axis.YP.rotationDegrees(270 * animation));
             matrices.translate(-0.5, -0.5, -0.5);
 
             matrices.translate(0, animation * 0.5f, 0);
 
             var lidModel = models.get(entity.getColor());
             if (lidModel != null) {
-                EBEUtil.renderBakedModel(vertexConsumers, blockEntity.getCachedState(), matrices, lidModel, light, overlay);
+                EBEUtil.renderBakedModel(vertexConsumers, blockEntity.getBlockState(), matrices, lidModel, light, overlay);
             }
 
-            matrices.pop();
+            matrices.popPose();
         }
     }
 

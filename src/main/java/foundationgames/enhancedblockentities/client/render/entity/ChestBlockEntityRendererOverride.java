@@ -2,18 +2,18 @@ package foundationgames.enhancedblockentities.client.render.entity;
 
 import foundationgames.enhancedblockentities.client.render.BlockEntityRendererOverride;
 import foundationgames.enhancedblockentities.util.EBEUtil;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.ChestBlock;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.LidOpenable;
-import net.minecraft.block.enums.ChestType;
-import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.render.block.entity.BlockEntityRenderer;
-import net.minecraft.client.render.model.BakedModel;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.RotationAxis;
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
+import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import com.mojang.math.Axis;
+import net.minecraft.world.level.block.ChestBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.LidBlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.ChestType;
 
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -23,52 +23,54 @@ public class ChestBlockEntityRendererOverride extends BlockEntityRendererOverrid
     private final Supplier<BakedModel[]> modelGetter;
     private final Function<BlockEntity, Integer> modelSelector;
 
+    // LidOpenable was renamed to LidBlockEntity in Mojang mappings
+
     public ChestBlockEntityRendererOverride(Supplier<BakedModel[]> modelGetter, Function<BlockEntity, Integer> modelSelector) {
         this.modelGetter = modelGetter;
         this.modelSelector = modelSelector;
     }
 
     @Override
-    public void render(BlockEntityRenderer<BlockEntity> renderer, BlockEntity blockEntity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
+    public void render(BlockEntityRenderer<BlockEntity> renderer, BlockEntity blockEntity, float tickDelta, PoseStack matrices, MultiBufferSource vertexConsumers, int light, int overlay) {
         if (models == null) models = modelGetter.get();
-        if (blockEntity instanceof LidOpenable) {
-            matrices.push();
+        if (blockEntity instanceof LidBlockEntity) {
+            matrices.pushPose();
 
-            LidOpenable chest = getLidAnimationHolder(blockEntity, tickDelta);
+            LidBlockEntity chest = getLidAnimationHolder(blockEntity, tickDelta);
             matrices.translate(0.5f, 0, 0.5f);
-            Direction dir = blockEntity.getCachedState().get(ChestBlock.FACING);
-            matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(180 - EBEUtil.angle(dir)));
+            Direction dir = blockEntity.getBlockState().getValue(ChestBlock.FACING);
+            matrices.mulPose(Axis.YP.rotationDegrees(180 - EBEUtil.angle(dir)));
             matrices.translate(-0.5f, 0, -0.5f);
             float yPiv = 9f / 16;
             float zPiv = 15f / 16;
             matrices.translate(0, yPiv, zPiv);
-            float rot = chest.getAnimationProgress(tickDelta);
+            float rot = chest.getOpenNess(tickDelta);
             rot = 1f - rot;
             rot = 1f - (rot * rot * rot);
-            matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(rot * 90));
+            matrices.mulPose(Axis.XP.rotationDegrees(rot * 90));
             matrices.translate(0, -yPiv, -zPiv);
-            EBEUtil.renderBakedModel(vertexConsumers, blockEntity.getCachedState(), matrices, models[modelSelector.apply(blockEntity)], light, overlay);
+            EBEUtil.renderBakedModel(vertexConsumers, blockEntity.getBlockState(), matrices, models[modelSelector.apply(blockEntity)], light, overlay);
 
-            matrices.pop();
+            matrices.popPose();
         }
     }
 
-    public static LidOpenable getLidAnimationHolder(BlockEntity blockEntity, float tickDelta) {
-        LidOpenable chest = (LidOpenable)blockEntity;
+    public static LidBlockEntity getLidAnimationHolder(BlockEntity blockEntity, float tickDelta) {
+        LidBlockEntity chest = (LidBlockEntity)blockEntity;
 
-        BlockState state = blockEntity.getCachedState();
-        if (state.contains(ChestBlock.CHEST_TYPE) && state.get(ChestBlock.CHEST_TYPE) != ChestType.SINGLE) {
+        BlockState state = blockEntity.getBlockState();
+        if (state.hasProperty(ChestBlock.TYPE) && state.getValue(ChestBlock.TYPE) != ChestType.SINGLE) {
             BlockEntity neighbor = null;
-            BlockPos pos = blockEntity.getPos();
-            Direction facing = state.get(ChestBlock.FACING);
-            switch (state.get(ChestBlock.CHEST_TYPE)) {
-                case LEFT -> neighbor = blockEntity.getWorld().getBlockEntity(pos.offset(facing.rotateYClockwise()));
-                case RIGHT -> neighbor = blockEntity.getWorld().getBlockEntity(pos.offset(facing.rotateYCounterclockwise()));
+            BlockPos pos = blockEntity.getBlockPos();
+            Direction facing = state.getValue(ChestBlock.FACING);
+            switch (state.getValue(ChestBlock.TYPE)) {
+                case LEFT -> neighbor = blockEntity.getLevel().getBlockEntity(pos.relative(facing.getClockWise()));
+                case RIGHT -> neighbor = blockEntity.getLevel().getBlockEntity(pos.relative(facing.getCounterClockWise()));
             }
-            if (neighbor instanceof LidOpenable) {
-                float nAnim = ((LidOpenable)neighbor).getAnimationProgress(tickDelta);
-                if (nAnim > chest.getAnimationProgress(tickDelta)) {
-                    chest = ((LidOpenable)neighbor);
+            if (neighbor instanceof LidBlockEntity) {
+                float nAnim = ((LidBlockEntity)neighbor).getOpenNess(tickDelta);
+                if (nAnim > chest.getOpenNess(tickDelta)) {
+                    chest = ((LidBlockEntity)neighbor);
                 }
             }
         }

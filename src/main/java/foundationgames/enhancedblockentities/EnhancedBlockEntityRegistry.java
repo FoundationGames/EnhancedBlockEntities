@@ -1,10 +1,10 @@
 package foundationgames.enhancedblockentities;
 
+import com.mojang.datafixers.util.Pair;
 import foundationgames.enhancedblockentities.client.render.BlockEntityRenderCondition;
 import foundationgames.enhancedblockentities.client.render.BlockEntityRendererOverride;
-import net.minecraft.block.Block;
-import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.util.Pair;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 
 import java.util.HashMap;
 import java.util.HashSet;

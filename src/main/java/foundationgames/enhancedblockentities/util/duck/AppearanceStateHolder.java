@@ -1,8 +1,8 @@
 package foundationgames.enhancedblockentities.util.duck;
 
 import foundationgames.enhancedblockentities.util.WorldUtil;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 
 public interface AppearanceStateHolder {
     int getModelState();
@@ -13,8 +13,8 @@ public interface AppearanceStateHolder {
 
     void setRenderState(int state);
 
-    default void updateAppearanceState(int state, World world, BlockPos pos) {
-        if (!world.isClient()) {
+    default void updateAppearanceState(int state, Level world, BlockPos pos) {
+        if (!world.isClientSide()) {
             return;
         }
 
