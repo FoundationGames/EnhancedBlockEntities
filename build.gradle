@@ -18,13 +18,13 @@ dependencies {
 	implementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
 	// Fabric API
-	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+	implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
-	// Mod Menu for config screen
-	modCompileOnly "com.terraformersmc:modmenu:${project.modmenu_version}"
+	// Mod Menu for config screen (compile-only)
+	compileOnly "com.terraformersmc:modmenu:${project.modmenu_version}"
 
-	// Sodium for compatibility
-	modCompileOnly "maven.modrinth:sodium:${project.sodium_version}"
+	// Sodium for compatibility (compile-only)
+	compileOnly "maven.modrinth:sodium:${project.sodium_version}"
 }
 
 processResources {
