@@ -5,12 +5,12 @@ import foundationgames.enhancedblockentities.client.resource.EBEPack;
 import foundationgames.enhancedblockentities.client.resource.template.TemplateProvider;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
-import net.minecraft.block.DecoratedPotPattern;
-import net.minecraft.client.render.TexturedRenderLayers;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.util.DyeColor;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.Direction;
+import net.minecraft.client.renderer.Sheets;
+import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.level.block.DecoratedPotPattern;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
@@ -27,19 +27,19 @@ public enum ResourceUtil {;
     private static EBEPack TOP_LEVEL_PACK;
 
     public static void addChestItemDefinition(String chestName, String centerChest, boolean hasChristmas, EBEPack pack) {
-        pack.addTemplateResource(Identifier.of("items/"+chestName+".json"),
+        pack.addTemplateResource(ResourceLocation.parse("items/"+chestName+".json"),
                 t -> t.load(hasChristmas ? "item/chest_item.json" : "item/chest_item_no_christmas.json",
                         d -> d.def("chest", centerChest)));
     }
 
     public static void addBedItemDefinition(String bedColor, EBEPack pack) {
-        pack.addTemplateResource(Identifier.of("items/"+bedColor+"_bed.json"),
+        pack.addTemplateResource(ResourceLocation.parse("items/"+bedColor+"_bed.json"),
                 t -> t.load("item/bed.json",
                         d -> d.def("head", bedColor + "_bed_head").def("foot", bedColor + "_bed_foot")));
 
-        pack.addTemplateResource(Identifier.of("models/item/"+bedColor+"_bed_head.json"),
+        pack.addTemplateResource(ResourceLocation.parse("models/item/"+bedColor+"_bed_head.json"),
                 t -> t.load("model/bed_head_item.json", d -> d.def("bed", bedColor)));
-        pack.addTemplateResource(Identifier.of("models/item/"+bedColor+"_bed_foot.json"),
+        pack.addTemplateResource(ResourceLocation.parse("models/item/"+bedColor+"_bed_foot.json"),
                 t -> t.load("model/bed_foot_item.json", d -> d.def("bed", bedColor)));
     }
 
@@ -109,8 +109,8 @@ public enum ResourceUtil {;
         );
     }
 
-    private static void addChestLikeModel(String parent, String chestTex, String chestName, Identifier id, EBEPack pack) {
-        pack.addTemplateResource(Identifier.of(id.getNamespace(), "models/" + id.getPath() + ".json"),
+    private static void addChestLikeModel(String parent, String chestTex, String chestName, ResourceLocation id, EBEPack pack) {
+        pack.addTemplateResource(ResourceLocation.fromNamespaceAndPath(id.getNamespace(), "models/" + id.getPath() + ".json"),
                 t -> t.load("model/chest_like.json", d -> d
                         .def("parent", parent)
                         .def("chest_tex", chestTex)
@@ -120,18 +120,18 @@ public enum ResourceUtil {;
     }
 
     public static void addSingleChestModels(String chestTex, String chestName, EBEPack pack) {
-        addChestLikeModel("template_chest_center", chestTex, chestName, Identifier.of("block/" + chestName + "_center"), pack);
-        addChestLikeModel("template_chest_center_lid", chestTex, chestName, Identifier.of("block/" + chestName + "_center_lid"), pack);
-        addChestLikeModel("template_chest_center_trunk", chestTex, chestName, Identifier.of("block/" + chestName + "_center_trunk"), pack);
+        addChestLikeModel("template_chest_center", chestTex, chestName, ResourceLocation.parse("block/" + chestName + "_center"), pack);
+        addChestLikeModel("template_chest_center_lid", chestTex, chestName, ResourceLocation.parse("block/" + chestName + "_center_lid"), pack);
+        addChestLikeModel("template_chest_center_trunk", chestTex, chestName, ResourceLocation.parse("block/" + chestName + "_center_trunk"), pack);
     }
 
     public static void addDoubleChestModels(String leftTex, String rightTex, String chestName, EBEPack pack) {
-        addChestLikeModel("template_chest_left", leftTex, chestName, Identifier.of("block/" + chestName + "_left"), pack);
-        addChestLikeModel("template_chest_left_lid", leftTex, chestName, Identifier.of("block/" + chestName + "_left_lid"), pack);
-        addChestLikeModel("template_chest_left_trunk", leftTex, chestName, Identifier.of("block/" + chestName + "_left_trunk"), pack);
-        addChestLikeModel("template_chest_right", rightTex, chestName, Identifier.of("block/" + chestName + "_right"), pack);
-        addChestLikeModel("template_chest_right_lid", rightTex, chestName, Identifier.of("block/" + chestName + "_right_lid"), pack);
-        addChestLikeModel("template_chest_right_trunk", rightTex, chestName, Identifier.of("block/" + chestName + "_right_trunk"), pack);
+        addChestLikeModel("template_chest_left", leftTex, chestName, ResourceLocation.parse("block/" + chestName + "_left"), pack);
+        addChestLikeModel("template_chest_left_lid", leftTex, chestName, ResourceLocation.parse("block/" + chestName + "_left_lid"), pack);
+        addChestLikeModel("template_chest_left_trunk", leftTex, chestName, ResourceLocation.parse("block/" + chestName + "_left_trunk"), pack);
+        addChestLikeModel("template_chest_right", rightTex, chestName, ResourceLocation.parse("block/" + chestName + "_right"), pack);
+        addChestLikeModel("template_chest_right_lid", rightTex, chestName, ResourceLocation.parse("block/" + chestName + "_right_lid"), pack);
+        addChestLikeModel("template_chest_right_trunk", rightTex, chestName, ResourceLocation.parse("block/" + chestName + "_right_trunk"), pack);
     }
 
     private static String chestParticle(String chestName) {
@@ -149,13 +149,13 @@ public enum ResourceUtil {;
         return "";
     }
 
-    private static void addBlockState(Identifier id, TemplateProvider.TemplateApplyingFunction vars, EBEPack pack) {
-        pack.addTemplateResource(Identifier.of(id.getNamespace(), "blockstates/" + id.getPath() + ".json"),
+    private static void addBlockState(ResourceLocation id, TemplateProvider.TemplateApplyingFunction vars, EBEPack pack) {
+        pack.addTemplateResource(ResourceLocation.fromNamespaceAndPath(id.getNamespace(), "blockstates/" + id.getPath() + ".json"),
                 t -> t.load("blockstate/base.json", d -> d.def("vars", vars)));
     }
 
     public static void addChestBlockStates(String chestName, EBEPack pack) {
-        addBlockState(Identifier.of(chestName),
+        addBlockState(ResourceLocation.parse(chestName),
                 t0 -> list(
                         variantHFacing(t0, "type=single,facing=", "builtin:"+chestName+"_center"),
                         variantHFacing(t0, "type=left,facing=", "builtin:"+chestName+"_left"),
@@ -164,19 +164,19 @@ public enum ResourceUtil {;
     }
 
     public static void addSingleChestOnlyBlockStates(String chestName, EBEPack pack) {
-        addBlockState(Identifier.of(chestName),
+        addBlockState(ResourceLocation.parse(chestName),
                 t0 -> list(
                         variantHFacing(t0, "facing=", "builtin:"+chestName+"_center")
                 ), pack);
     }
 
-    public static void addParentModel(String parent, Identifier id, EBEPack pack) {
-        pack.addTemplateResource(Identifier.of(id.getNamespace(), "models/" + id.getPath() + ".json"), t ->
+    public static void addParentModel(String parent, ResourceLocation id, EBEPack pack) {
+        pack.addTemplateResource(ResourceLocation.fromNamespaceAndPath(id.getNamespace(), "models/" + id.getPath() + ".json"), t ->
                 "{" + kv("parent", parent) + "}");
     }
 
-    public static void addParentTexModel(String parent, String textures, Identifier id, EBEPack pack) {
-        pack.addTemplateResource(Identifier.of(id.getNamespace(), "models/" + id.getPath() + ".json"), t ->
+    public static void addParentTexModel(String parent, String textures, ResourceLocation id, EBEPack pack) {
+        pack.addTemplateResource(ResourceLocation.fromNamespaceAndPath(id.getNamespace(), "models/" + id.getPath() + ".json"), t ->
                 t.load("model/parent_and_tex.json", d -> d.def("parent", parent).def("textures", textures)));
     }
 
@@ -197,16 +197,16 @@ public enum ResourceUtil {;
                 ResourceUtil::signAOSuffix, pack);
 
         addParentTexModel(signAOSuffix("block/template_wall_sign"),
-                signParticle(signName) + kv("sign", signTex), Identifier.of("block/"+signType+"_wall_sign"), pack);
+                signParticle(signName) + kv("sign", signTex), ResourceLocation.parse("block/"+signType+"_wall_sign"), pack);
         addParentTexModel(signAOSuffix("block/template_wall_hanging_sign"),
-                hangingTexDef, Identifier.of("block/"+signType+"_wall_hanging_sign"), pack);
+                hangingTexDef, ResourceLocation.parse("block/"+signType+"_wall_hanging_sign"), pack);
     }
 
     public static void addRotation16Models(String textures, String templatePrefix, String modelPrefix, Function<String, String> suffix, EBEPack pack) {
-        addParentTexModel(suffix.apply(templatePrefix+"_0"), textures, Identifier.of(modelPrefix + "_0"), pack);
-        addParentTexModel(suffix.apply(templatePrefix+"_22_5"), textures, Identifier.of(modelPrefix + "_22_5"), pack);
-        addParentTexModel(suffix.apply(templatePrefix+"_45"), textures, Identifier.of(modelPrefix + "_45"), pack);
-        addParentTexModel(suffix.apply(templatePrefix+"_67_5"), textures, Identifier.of(modelPrefix + "_67_5"), pack);
+        addParentTexModel(suffix.apply(templatePrefix+"_0"), textures, ResourceLocation.parse(modelPrefix + "_0"), pack);
+        addParentTexModel(suffix.apply(templatePrefix+"_22_5"), textures, ResourceLocation.parse(modelPrefix + "_22_5"), pack);
+        addParentTexModel(suffix.apply(templatePrefix+"_45"), textures, ResourceLocation.parse(modelPrefix + "_45"), pack);
+        addParentTexModel(suffix.apply(templatePrefix+"_67_5"), textures, ResourceLocation.parse(modelPrefix + "_67_5"), pack);
     }
 
     private static String signAOSuffix(String model) {
@@ -215,25 +215,25 @@ public enum ResourceUtil {;
     }
 
     public static void addSignBlockStates(String signName, String wallSignName, EBEPack pack) {
-        addBlockState(Identifier.of(signName),
+        addBlockState(ResourceLocation.parse(signName),
                 t -> variantRotation16(t, "rotation=", "block/"+signName), pack);
-        addBlockState(Identifier.of(wallSignName),
+        addBlockState(ResourceLocation.parse(wallSignName),
                 t -> variantHFacing(t, "facing=", "block/"+wallSignName), pack);
     }
 
     public static void addHangingSignBlockStates(String signName, String wallSignName, EBEPack pack) {
-        addBlockState(Identifier.of(signName),
+        addBlockState(ResourceLocation.parse(signName),
                 t -> list(
                         variantRotation16(t, "attached=false,rotation=", "block/"+signName),
                         variantRotation16(t, "attached=true,rotation=", "block/"+signName+"_attached")
                 ), pack);
 
-        addBlockState(Identifier.of(wallSignName),
+        addBlockState(ResourceLocation.parse(wallSignName),
                 t -> variantHFacing(t, "facing=", "block/"+wallSignName), pack);
     }
 
     public static void addBellBlockState(EBEPack pack) {
-        addBlockState(Identifier.of("bell"),
+        addBlockState(ResourceLocation.parse("bell"),
                 t -> {
                     var vars = new DelimitedAppender(",");
                     for (Direction dir : EBEUtil.HORIZONTAL_DIRECTIONS) {
@@ -253,17 +253,17 @@ public enum ResourceUtil {;
 
         addParentTexModel(bedAOSuffix("block/template_bed_head"),
                 bedParticle(color) + kv("bed", "entity/bed/" + color),
-                Identifier.of("block/" + color + "_bed_head"), pack);
+                ResourceLocation.parse("block/" + color + "_bed_head"), pack);
         addParentTexModel(bedAOSuffix("block/template_bed_foot"),
                 bedParticle(color) + kv("bed", "entity/bed/" + color),
-                Identifier.of("block/" + color + "_bed_foot"), pack);
+                ResourceLocation.parse("block/" + color + "_bed_foot"), pack);
 
         addBedItemDefinition(color, pack);
     }
 
     public static void addBedBlockState(DyeColor bedColor, EBEPack pack) {
         String color = bedColor.getName();
-        addBlockState(Identifier.of(color + "_bed"),
+        addBlockState(ResourceLocation.parse(color + "_bed"),
                 t -> {
                     var vars = new DelimitedAppender(",");
                     for (Direction dir : EBEUtil.HORIZONTAL_DIRECTIONS) {
@@ -287,18 +287,18 @@ public enum ResourceUtil {;
         var particle = "block/"+shulkerBoxStr;
         addParentTexModel("block/template_shulker_box",
                 list(kv("shulker", texture), kv("particle", particle)),
-                Identifier.of("block/"+shulkerBoxStr), pack);
+                ResourceLocation.parse("block/"+shulkerBoxStr), pack);
         addParentTexModel("block/template_shulker_box_bottom",
                 list(kv("shulker", texture), kv("particle", particle)),
-                Identifier.of("block/"+shulkerBoxStr+"_bottom"), pack);
+                ResourceLocation.parse("block/"+shulkerBoxStr+"_bottom"), pack);
         addParentTexModel("block/template_shulker_box_lid",
                 list(kv("shulker", texture), kv("particle", particle)),
-                Identifier.of("block/"+shulkerBoxStr+"_lid"), pack);
+                ResourceLocation.parse("block/"+shulkerBoxStr+"_lid"), pack);
     }
 
     public static void addShulkerBoxBlockStates(@Nullable DyeColor color, EBEPack pack) {
         var shulkerBoxStr = color != null ? color.getName()+"_shulker_box" : "shulker_box";
-        addBlockState(Identifier.of(shulkerBoxStr),
+        addBlockState(ResourceLocation.parse(shulkerBoxStr),
                 t -> {
                     var vars = new DelimitedAppender(",");
                     vars
@@ -313,15 +313,15 @@ public enum ResourceUtil {;
     }
 
     public static void addDecoratedPotBlockState(EBEPack pack) {
-        addBlockState(Identifier.of("decorated_pot"),
+        addBlockState(ResourceLocation.parse("decorated_pot"),
                 t -> variantHFacing(t, "facing=", "builtin:decorated_pot"), pack);
     }
 
-    public static void addDecoratedPotPatternModels(RegistryKey<DecoratedPotPattern> patternKey, EBEPack pack) {
+    public static void addDecoratedPotPatternModels(ResourceKey<DecoratedPotPattern> patternKey, EBEPack pack) {
         for (Direction dir : EBEUtil.HORIZONTAL_DIRECTIONS) {
             addParentTexModel("block/template_pottery_pattern_" + dir.getName(),
-                    kv("pattern", TexturedRenderLayers.getDecoratedPotPatternTextureId(patternKey).getTextureId().toString()),
-                    Identifier.of("block/" + patternKey.getValue().getPath() + "_" + dir.getName()),
+                    kv("pattern", Sheets.getDecoratedPotMaterial(patternKey).texture().toString()),
+                    ResourceLocation.parse("block/" + patternKey.location().getPath() + "_" + dir.getName()),
                     pack);
         }
     }

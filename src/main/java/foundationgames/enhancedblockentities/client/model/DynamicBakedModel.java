@@ -5,15 +5,15 @@ import net.fabricmc.fabric.api.renderer.v1.material.RenderMaterial;
 import net.fabricmc.fabric.api.renderer.v1.mesh.QuadEmitter;
 import net.fabricmc.fabric.api.renderer.v1.model.FabricBakedModel;
 import net.fabricmc.fabric.api.renderer.v1.model.ModelHelper;
-import net.minecraft.block.BlockState;
-import net.minecraft.client.render.model.BakedModel;
-import net.minecraft.client.render.model.BakedQuad;
-import net.minecraft.client.render.model.json.ModelTransformation;
-import net.minecraft.client.texture.Sprite;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.random.Random;
-import net.minecraft.world.BlockRenderView;
+import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.renderer.block.model.ItemTransforms;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.BlockAndTintGetter;
+import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -43,7 +43,7 @@ public class DynamicBakedModel implements BakedModel, FabricBakedModel {
     }
 
     @Override
-    public void emitBlockQuads(QuadEmitter emitter, BlockRenderView view, BlockState state, BlockPos pos, Supplier<Random> rng, Predicate<@Nullable Direction> cullTest) {
+    public void emitBlockQuads(QuadEmitter emitter, BlockAndTintGetter view, BlockState state, BlockPos pos, Supplier<RandomSource> rng, Predicate<@Nullable Direction> cullTest) {
         RenderMaterial mat = null;
 
         var indices = this.activeModelIndices.get();
@@ -77,7 +77,7 @@ public class DynamicBakedModel implements BakedModel, FabricBakedModel {
     }
 
     @Override
-    public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction face, Random random) {
+    public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction face, RandomSource random) {
         return models[0].getQuads(state, face, random);
     }
 
@@ -97,13 +97,13 @@ public class DynamicBakedModel implements BakedModel, FabricBakedModel {
     }
 
     @Override
-    public Sprite getParticleSprite() {
-        return models[getSelector().getParticleModelIndex()].getParticleSprite();
+    public TextureAtlasSprite getParticleIcon() {
+        return models[getSelector().getParticleModelIndex()].getParticleIcon();
     }
 
     @Override
-    public ModelTransformation getTransformation() {
-        return null;
+    public ItemTransforms getTransforms() {
+        return ItemTransforms.NO_TRANSFORMS;
     }
 
     public BakedModel[] getModels() {

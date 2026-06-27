@@ -10,21 +10,21 @@ group = project.maven_group
 repositories {
 	maven { url = 'https://maven.terraformersmc.com/' }
 	maven { url = 'https://api.modrinth.com/maven/' }
+	maven { url = 'https://maven.fabricmc.net/' }
 }
 
 dependencies {
-	// To change the versions see the gradle.properties file
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
-	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+	implementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
 	// Fabric API
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
 	// Mod Menu for config screen
-	modApi "com.terraformersmc:modmenu:${project.modmenu_version}"
+	modCompileOnly "com.terraformersmc:modmenu:${project.modmenu_version}"
 
 	// Sodium for compatibility
-	modCompileOnlyApi "maven.modrinth:sodium:${project.sodium_version}"
+	modCompileOnly "maven.modrinth:sodium:${project.sodium_version}"
 }
 
 processResources {

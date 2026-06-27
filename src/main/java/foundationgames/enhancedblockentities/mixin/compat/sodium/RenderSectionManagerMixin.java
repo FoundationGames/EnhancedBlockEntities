@@ -5,7 +5,7 @@ import foundationgames.enhancedblockentities.util.duck.ChunkRebuildTaskAccess;
 import net.caffeinemc.mods.sodium.client.render.chunk.RenderSection;
 import net.caffeinemc.mods.sodium.client.render.chunk.RenderSectionManager;
 import net.caffeinemc.mods.sodium.client.render.chunk.compile.BuilderTaskOutput;
-import net.minecraft.util.math.ChunkSectionPos;
+import net.minecraft.world.level.ChunkPos;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Pseudo;
 import org.spongepowered.asm.mixin.injection.At;
@@ -23,7 +23,7 @@ public class RenderSectionManagerMixin {
     )
     private RenderSection enhanced_bes$compat_sodium$cacheUpdatingChunk(RenderSection section) {
         if (WorldUtil.CHUNK_UPDATE_TASKS.size() > 0) {
-            var pos = ChunkSectionPos.from(section.getChunkX(), section.getChunkY(), section.getChunkZ());
+            var pos = new ChunkPos(section.getChunkX(), section.getChunkZ());
 
             if (WorldUtil.CHUNK_UPDATE_TASKS.containsKey(pos)) {
                 var task = WorldUtil.CHUNK_UPDATE_TASKS.remove(pos);

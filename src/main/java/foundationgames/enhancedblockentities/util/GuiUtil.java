@@ -1,10 +1,10 @@
 package foundationgames.enhancedblockentities.util;
 
-import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
 
 public enum GuiUtil {;
-    public static Text shorten(String text, final int maxLength, Formatting ... formats) {
+    public static Component shorten(String text, final int maxLength, ChatFormatting ... formats) {
         String[] words = text.split(" ");
         StringBuilder line = new StringBuilder();
         StringBuilder result = new StringBuilder();
@@ -20,6 +20,6 @@ public enum GuiUtil {;
             }
         }
         if (line.length() > 0) result.append(line);
-        return Text.literal(result.toString()).formatted(formats);
+        return Component.literal(result.toString()).formatted(formats);
     }
 }

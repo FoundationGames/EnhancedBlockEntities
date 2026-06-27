@@ -2,11 +2,11 @@ package foundationgames.enhancedblockentities.mixin;
 
 import foundationgames.enhancedblockentities.EnhancedBlockEntities;
 import foundationgames.enhancedblockentities.util.duck.AppearanceStateHolder;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BellBlockEntity;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.entity.BellBlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
 import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -30,7 +30,7 @@ public class BellBlockEntityMixin extends BlockEntity implements AppearanceState
     private static BellBlockEntity enhanced_bes$listenForStopRinging(BellBlockEntity blockEntity) {
         int mState = blockEntity.ringTicks > 0 ? 1 : 0;
         if (EnhancedBlockEntities.CONFIG.renderEnhancedBells && ((AppearanceStateHolder)blockEntity).getModelState() != mState) {
-            ((AppearanceStateHolder)blockEntity).updateAppearanceState(mState, blockEntity.getWorld(), blockEntity.getPos());
+            ((AppearanceStateHolder)blockEntity).updateAppearanceState(mState, blockEntity.getLevel(), blockEntity.getBlockPos());
         }
         return blockEntity;
     }

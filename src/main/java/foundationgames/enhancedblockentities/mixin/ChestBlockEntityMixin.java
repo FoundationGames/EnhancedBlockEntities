@@ -3,12 +3,12 @@ package foundationgames.enhancedblockentities.mixin;
 import foundationgames.enhancedblockentities.EnhancedBlockEntities;
 import foundationgames.enhancedblockentities.client.render.entity.ChestBlockEntityRendererOverride;
 import foundationgames.enhancedblockentities.util.duck.AppearanceStateHolder;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.block.entity.ChestBlockEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.entity.ChestBlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -25,9 +25,9 @@ public abstract class ChestBlockEntityMixin extends BlockEntity implements Appea
     }
 
     @Inject(method = "clientTick", at = @At(value = "TAIL"))
-    private static void enhanced_bes$listenForOpenClose(World world, BlockPos pos, BlockState state, ChestBlockEntity blockEntity, CallbackInfo ci) {
+    private static void enhanced_bes$listenForOpenClose(Level world, BlockPos pos, BlockState state, ChestBlockEntity blockEntity, CallbackInfo ci) {
         var lid = ChestBlockEntityRendererOverride.getLidAnimationHolder(blockEntity, 0.5f);
-        int mState = lid.getAnimationProgress(0.5f) > 0 ? 1 : 0;
+        int mState = lid.getOpenNess(0.5f) > 0 ? 1 : 0;
 
         if (EnhancedBlockEntities.CONFIG.renderEnhancedChests && ((AppearanceStateHolder)blockEntity).getModelState() != mState) {
             ((AppearanceStateHolder)blockEntity).updateAppearanceState(mState, world, pos);
